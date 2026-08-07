@@ -177,31 +177,147 @@ function tickWebinar() {
 tickWebinar();
 setInterval(tickWebinar, 1000);
 
-/* ---------- Demo Day countdown ---------- */
-// Sanani o'zgartirish uchun shu qatorni tahrirlang (oy 0 dan boshlanadi: 7 = avgust)
-const DEMO_DAY = new Date(2026, 7, 10, 18, 0, 0);
+/* ---------- Demo Day ----------
+   Vidjet faqat Demo Day belgilangan bo'lsa ko'rinadi.
+   Real tizimda bu obyekt bazadan keladi; hech kim belgilamagan bo'lsa — null. */
+const DEMO_EVENT = {
+  at: new Date(2026, 7, 10, 12, 0, 0),   // qachon boshlanadi
+  module: 'HTML',                         // qaysi modul yakunida
+  progress: 100,                          // modul bajarilishi, %
+  mentor: 'Ali G\'aybullayev',            // kim qabul qiladi
+};
 
-function tickDemoDay() {
-  const left = Math.max(0, Math.floor((DEMO_DAY - Date.now()) / 1000));
-  const d = Math.floor(left / 86400);
-  const h = Math.floor((left % 86400) / 3600);
-  const m = Math.floor((left % 3600) / 60);
-  const s = left % 60;
+const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
+                   'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+
+(function demoDay() {
+  const card = document.getElementById('ddCard');
+  if (!DEMO_EVENT) return;               // belgilanmagan — vidjet umuman chiqmaydi
+  card.hidden = false;
+
+  const { at, module: mod, progress, mentor } = DEMO_EVENT;
+  const pad  = n => String(n).padStart(2, '0');
+  const date = `${at.getDate()}-${UZ_MONTHS[at.getMonth()]}`;
+  const time = `${pad(at.getHours())}:${pad(at.getMinutes())}`;
+
+  document.getElementById('ddWhen').textContent = `${date}, ${time}`;
+  document.getElementById('ddPct').textContent  = progress + '%';
+  document.getElementById('ddBar').style.width  = progress + '%';
+
+  document.getElementById('ddMsg').innerHTML = progress >= 100
+    ? `🎉 Siz <b>${mod}</b> modulini muvaffaqiyatli yakunladingiz, modul <b>100%</b> yakunlandi.
+       Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan.`
+    : `<b>${mod}</b> moduli bajarilishi hozir <b>${progress}%</b>.
+       Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan — ulgurishga harakat qiling.`;
+
+  function tick() {
+    const left = Math.max(0, Math.floor((at - Date.now()) / 1000));
+    const d = Math.floor(left / 86400);
+    const h = Math.floor((left % 86400) / 3600);
+    const m = Math.floor((left % 3600) / 60);
+    const s = left % 60;
+
+    document.getElementById('ddDays').textContent  = pad(d);
+    document.getElementById('ddHours').textContent = pad(h);
+    document.getElementById('ddMins').textContent  = pad(m);
+    document.getElementById('ddSecs').textContent  = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ---------- Qo'shimcha dars ----------
+   Vidjet faqat dars bugun yoki ertaga bo'lsa ko'rinadi. */
+const EXTRA_LESSON = {
+  at: new Date(2026, 7, 8, 13, 0, 0),   // dars vaqti
+  module: 'HTML',
+  topic: 'Inline elementlari',
+  mentor: 'Ali G\'aybullayev',
+};
+
+(function extraLesson() {
+  if (!EXTRA_LESSON) return;
+  const { at, module: mod, topic, mentor } = EXTRA_LESSON;
+  const day = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const dayDiff = Math.round((day(at) - day(now)) / 86400000);
+  if (dayDiff < 0 || dayDiff > 1) return;   // bugun yoki ertaga emas
+  if (at - Date.now() <= 0) return;         // vaqti o'tib ketgan
+
+  const pad  = n => String(n).padStart(2, '0');
+  const date = `${at.getDate()}-${UZ_MONTHS[at.getMonth()]}`;
+  const time = `${pad(at.getHours())}:${pad(at.getMinutes())}`;
+
+  document.getElementById('elCard').hidden = false;
+  document.getElementById('elWhen').textContent = `${date}, ${time}`;
+  document.getElementById('elMsg').innerHTML =
+    `📌 Sizga <b>${mod}</b>dagi «${topic}» mavzusi bo'yicha <b>${mentor}</b> mentor bilan
+     qo'shimcha dars belgilangan.<br>Dars vaqti: <b>${date}</b>, soat <b>${time}</b>.`;
+
+  function tick() {
+    const left = Math.max(0, Math.floor((at - Date.now()) / 1000));
+    document.getElementById('elHours').textContent = pad(Math.floor(left / 3600));
+    document.getElementById('elMins').textContent  = pad(Math.floor((left % 3600) / 60));
+    document.getElementById('elSecs').textContent  = pad(left % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ---------- Kurs tavsiyasi ----------
+   Asosiy kursda uzoq tanaffus bo'lsa, yengilroq kurs taklif qilinadi. */
+const MAIN_COURSE = { name: 'Dasturlash kursi', idleDays: 3 };
+const SUGGESTION = {
+  afterIdleDays: 3,             // necha kundan keyin taklif chiqsin
+  name: 'Grafik dizayn',
+  targetId: 'courseDesign',     // karuseldagi kurs kartasi
+  firstLesson: '12 daqiqa',
+  hook: 'kod yozish shart emas',
+};
+
+(function suggestCourse() {
+  if (MAIN_COURSE.idleDays < SUGGESTION.afterIdleDays) return;   // tanaffus qisqa — taklif yo'q
+
+  const { name, firstLesson, hook, targetId } = SUGGESTION;
+  document.getElementById('sgCard').hidden = false;
+  document.getElementById('sgName').textContent   = name + ' kursi';
+  document.getElementById('sgBtnTxt').textContent = name + ' kursini ochish';
+  document.getElementById('sgMsg').innerHTML =
+    `😴 <b>${MAIN_COURSE.name}</b>da <b>${MAIN_COURSE.idleDays} kundan</b> beri vazifa bajarmadingiz.
+     To'xtab qolmang — bugun <b>${name}</b>dan bitta dars qiling: atigi <b>${firstLesson}</b> va ${hook}.
+     Strayk yana tiklanadi 🔥`;
+
+  document.getElementById('sgBtn').addEventListener('click', () => {
+    const tab = document.querySelector('.nav-tab[data-view="kurslar"]');
+    if (tab && !tab.classList.contains('active')) tab.click();
+    const card = document.getElementById(targetId);
+    card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    card.classList.remove('flash');
+    void card.offsetWidth;                 // animatsiyani qayta ishga tushirish
+    card.classList.add('flash');
+    toast(`${name} kursi ochilmoqda… 🎨`);
+  });
+})();
+
+/* ---------- O'z vaqtida to'lov bonusi ----------
+   Vidjet faqat to'lov kuniga sanoqli kun qolganda ko'rinadi. */
+const PAYMENT = {
+  date: new Date(2026, 7, 10),   // to'lov kuni
+  window: 3,                      // necha kun qolganda vidjet chiqsin
+};
+
+(function paymentBonus() {
+  const day = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const left = Math.round((day(PAYMENT.date) - day(now)) / 86400000);
+  if (left < 0 || left > PAYMENT.window) return;   // vaqti emas — vidjet chiqmaydi
+
   const pad = n => String(n).padStart(2, '0');
-
-  document.getElementById('ddDays').textContent = pad(d);
-  document.getElementById('ddHours').textContent = pad(h);
-  document.getElementById('ddMins').textContent = pad(m);
-  document.getElementById('ddSecs').textContent = pad(s);
-
-  document.getElementById('ddLeft').textContent =
-    left === 0 ? 'Bugun!' :
-    d > 0      ? `${d} kun qoldi` :
-    h > 0      ? `${h} soat qoldi` :
-    m > 0      ? `${m} daqiqa qoldi` : `${s} soniya qoldi`;
-}
-tickDemoDay();
-setInterval(tickDemoDay, 1000);
+  document.getElementById('bonusCard').hidden = false;
+  document.getElementById('bonusLeft').textContent =
+    left === 0 ? 'Bugun to\'lov kuningiz' :
+    left === 1 ? 'To\'lovingizga 1 kun qoldi' : `To'lovingizga ${left} kun qoldi`;
+  document.getElementById('bonusDate').textContent =
+    `${pad(PAYMENT.date.getDate())}.${pad(PAYMENT.date.getMonth() + 1)}.${PAYMENT.date.getFullYear()}`;
+})();
 
 /* ---------- Aktivlik kalendari ---------- */
 const CAL_COURSES = ['Dasturlash kursi', 'Ingliz tili kursi', 'Matematika kursi'];

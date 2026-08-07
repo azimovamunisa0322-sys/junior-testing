@@ -216,6 +216,20 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .cover-sand   { background: linear-gradient(150deg, #E8DFCE, #CDBFa4); }
 .cover-purple { background: linear-gradient(150deg, #A78BFA, #7C5CF0); }
 .cover-teal   { background: linear-gradient(150deg, #34D399, #0E9F6E); }
+.cover-pink   { background: linear-gradient(150deg, #FB7BC0, #D63A9B); }
+.course-badge {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  padding: 4px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.92); color: #C2277F;
+  font-size: 11.5px; font-weight: 800;
+}
+/* tavsiyadan o'tilganda kursni ajratib ko'rsatish */
+.course.flash .course-cover { animation: course-flash 1.6s ease; }
+@keyframes course-flash {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(214,58,155,0); }
+  25%      { box-shadow: 0 0 0 5px rgba(214,58,155,.45); }
+  60%      { box-shadow: 0 0 0 5px rgba(214,58,155,.45); }
+}
 .cover-bot {
   position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
   width: 104px; height: 87px;
@@ -331,6 +345,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .tile-red    { background: #FDEBEB; }
 .tile-yellow { background: #FFF4DC; }
 .tile-green  { background: var(--green-soft); }
+.tile-purple { background: var(--purple-soft); }
 .card-head-txt { flex: 1; min-width: 0; }
 .card-head-txt h3 { font-size: 16px; font-weight: 800; }
 .big-num { font-size: 21px; font-weight: 800; letter-spacing: -.3px; }
@@ -385,12 +400,43 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .fill-purple { background: var(--purple); }
 .fill-orange { background: var(--orange); }
 
-/* ---- Demo Day taymeri (qolgani goal-card uslubidan meros) ---- */
+/* ---- Demo Day ---- */
+.dd-msg {
+  background: var(--orange-soft); border-radius: var(--r-md);
+  padding: 11px 13px; margin-bottom: 14px;
+  font-size: 12.8px; line-height: 1.45; color: #7A3A16; font-weight: 600;
+}
+.dd-msg b { color: var(--orange-deep); font-weight: 800; }
+
+/* ---- Qo'shimcha dars (Demo Day taymerini qayta ishlatadi, urg'u rangi ko'k) ---- */
+.el-when { color: var(--blue); }
+.el-msg {
+  background: #EDEFFE; border-radius: var(--r-md);
+  padding: 11px 13px; margin-bottom: 14px;
+  font-size: 12.8px; line-height: 1.45; color: #3B3F7A; font-weight: 600;
+}
+.el-msg b { color: var(--blue); font-weight: 800; }
+.el-card .dd-unit b { color: var(--blue); }
+.el-card .dd-timer { margin-bottom: 11px; }
+.el-note { font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; }
+
+/* ---- Kurs tavsiyasi ---- */
+.sg-name { color: var(--purple); }
+.sg-msg {
+  background: var(--purple-soft); border-radius: var(--r-md);
+  padding: 11px 13px; margin-bottom: 14px;
+  font-size: 12.8px; line-height: 1.45; color: #423874; font-weight: 600;
+}
+.sg-msg b { color: var(--purple); font-weight: 800; }
+.sg-note { margin-top: 10px; font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; }
+
+
 .dd-timer {
   display: flex; align-items: flex-start; justify-content: space-between;
   background: var(--card-soft); border-radius: var(--r-md);
   padding: 12px 8px; margin-bottom: 16px;
 }
+.dd-timer:last-child { margin-bottom: 0; }
 .dd-unit { flex: 1; text-align: center; }
 .dd-unit b {
   display: block; color: var(--orange);
@@ -403,7 +449,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 #ddSecs { animation: dd-beat 1s ease-out infinite; }
 @keyframes dd-beat { 0% { transform: scale(1.07); } 40% { transform: scale(1); } }
 
-/* ---- Modul muddati vidjeti ---- */
+/* ---- ikki ustunli statistika bloki (Demo Day) ---- */
 .goal-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 12px; margin-bottom: 16px;
@@ -430,26 +476,6 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   background: var(--card-soft); color: var(--muted);
   font-size: 12.5px; font-weight: 700;
 }
-.goal-chip.chip-ok { background: var(--green-soft); color: var(--green); }
-
-/* jonli soat: millar aylanib turadi */
-.clock-ico { width: 14px; height: 14px; flex-shrink: 0; }
-.clock-h, .clock-m { transform-origin: 12px 12px; }
-.clock-h { animation: clock-spin 24s linear infinite; }
-.clock-m { animation: clock-spin 4s linear infinite; }
-@keyframes clock-spin { to { transform: rotate(360deg); } }
-.goal-card:hover .clock-h { animation-duration: 6s; }
-.goal-card:hover .clock-m { animation-duration: 1s; }
-
-.goal-cta .play-badge {
-  width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
-  background: rgba(255,255,255,.22); color: #fff;
-  display: grid; place-items: center;
-  font-size: 12px; line-height: 1;
-  transition: transform .18s ease;
-}
-.goal-cta .play-badge svg { margin: 0; }
-.goal-cta:hover .play-badge { transform: scale(1.12); }
 
 .duo-cols { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; margin-bottom: 16px; }
 .duo-cols span { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
@@ -487,26 +513,31 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .btn-in-panel:hover { background: #6B54E8; }
 
 /* bonus */
-.bonus-body { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-.bonus-daylabel { display: block; font-size: 12.5px; color: var(--muted); font-weight: 700; }
-.bonus-date { display: block; font-size: 20px; font-weight: 800; letter-spacing: -.4px; margin-bottom: 12px; }
-.bonus-left span { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; }
-.bonus-left b { font-size: 16px; font-weight: 800; }
-.bonus-right { text-align: right; position: relative; }
-.bonus-amount { color: var(--orange); font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -.5px; }
-.bonus-amount span { display: block; font-size: 16px; margin-top: 2px; }
-.bonus-gift { font-size: 44px; line-height: 1; margin-top: 6px; transition: transform .25s ease; }
-.bonus-card:hover .bonus-gift { transform: rotate(-8deg) scale(1.06); }
+.bonus-body {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 12px;
+}
+.bonus-info { min-width: 0; }
+.bonus-daylabel { display: block; font-size: 12.5px; color: var(--muted); font-weight: 700; margin-bottom: 2px; }
+.bonus-date { display: block; font-size: 21px; font-weight: 800; letter-spacing: -.4px; line-height: 1.1; }
+.bonus-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.bonus-amount {
+  color: var(--orange); font-size: 23px; font-weight: 800;
+  line-height: 1; letter-spacing: -.5px; text-align: right;
+}
+.bonus-amount span { display: block; font-size: 12.5px; margin-top: 3px; }
+.bonus-gift { font-size: 30px; line-height: 1; transition: transform .25s ease; }
+.bonus-card:hover .bonus-gift { transform: rotate(-8deg) scale(1.08); }
 
 /* nega bonus berilishini tushuntiruvchi qator */
 .bonus-why {
-  display: flex; gap: 8px;
+  display: flex; align-items: flex-start; gap: 8px;
   background: #FFF6E3; border-radius: var(--r-sm);
-  padding: 10px 12px; margin-bottom: 14px;
-  font-size: 12.8px; line-height: 1.42; color: #6C5A33; font-weight: 600;
+  padding: 11px 13px; margin-bottom: 12px;
+  font-size: 12.8px; line-height: 1.45; color: #6C5A33; font-weight: 600;
 }
 .bonus-why b { color: var(--orange-deep); font-weight: 800; }
-.bonus-why-ico { flex-shrink: 0; font-size: 14px; line-height: 1.3; }
+.bonus-why-ico { flex-shrink: 0; font-size: 14px; line-height: 1.35; }
 
 /* activity calendar */
 .cal-month { font-weight: 700; font-size: 13.5px; color: #555; margin-bottom: 10px; }
