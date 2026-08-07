@@ -130,38 +130,194 @@ document.getElementById('streakWeek').innerHTML = WEEK.map((d, i) => `
     <span class="week-label">${d}</span>
   </div>`).join('');
 
+/* ---------- Oylik challenge ---------- */
+(function monthlyChallenge() {
+  const y  = inDemoMonth ? now.getFullYear() : 2026;
+  const mo = inDemoMonth ? now.getMonth() : 7;      // 7 = avgust
+  const total = new Date(y, mo + 1, 0).getDate();   // shu oydagi kunlar soni
+  const done  = Math.min(todayNum, total);          // har kuni o'zi bittaga oshadi
+  const left  = total - done;
+  const pct   = Math.round(done / total * 100);
+
+  document.getElementById('chTotal').textContent = total;
+  document.getElementById('chDone').textContent  = done;
+  document.getElementById('chLeft').textContent  = `${left} kun`;
+  document.getElementById('chBar').style.width   = pct + '%';
+  document.getElementById('chNow').textContent   = `${done} / ${total}`;
+  document.querySelector('.ch-lead b').textContent = `${total} kun — bironta kunni qoldirmasdan!`;
+  document.getElementById('chMsg').textContent =
+    left === 0 ? 'Challenge yakunlandi — mukofot sizniki! 🎉' :
+    pct >= 75  ? 'Oz qoldi, shu tempda davom eting! 🚀' :
+    pct >= 40  ? 'Yarmidan oshdingiz, zo\'r ketyapsiz! 💪' :
+                 'Endi boshlandi — har kuni 1 ta dars! 🔥';
+
+  const toggle = document.getElementById('chToggle');
+  const info   = document.getElementById('chInfo');
+  toggle.addEventListener('click', () => {
+    const open = info.hidden;
+    info.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+})();
+
 /* ---------- Vebinar countdown ---------- */
 function tickWebinar() {
   const target = new Date();
   target.setHours(18, 0, 0, 0);
   let label = 'Bugun';
-  if (Date.now() > target.getTime()) { target.setDate(target.getDate() + 1); label = 'Ertaga'; }
-  const diffMin = Math.max(1, Math.round((target - Date.now()) / 60000));
-  const h = Math.floor(diffMin / 60), m = diffMin % 60;
+  // 18:00 o'tib ketgan bo'lsa — keyingi kunning vebinariga sanaymiz
+  if (Date.now() >= target.getTime()) { target.setDate(target.getDate() + 1); label = 'Ertaga'; }
+  const left = Math.max(0, Math.floor((target - Date.now()) / 1000));
+  const h = Math.floor(left / 3600), m = Math.floor((left % 3600) / 60), s = left % 60;
+  const pad = n => String(n).padStart(2, '0');
   document.getElementById('webinarWhen').textContent = label;
   document.getElementById('webinarCountdown').textContent =
-    h > 0 ? `${h} soat ${m} daqiqadan keyin` : `${m} daqiqadan keyin`;
+    `${pad(h)}:${pad(m)}:${pad(s)} qoldi`;
 }
 tickWebinar();
-setInterval(tickWebinar, 30000);
+setInterval(tickWebinar, 1000);
+
+/* ---------- Demo Day countdown ---------- */
+// Sanani o'zgartirish uchun shu qatorni tahrirlang (oy 0 dan boshlanadi: 7 = avgust)
+const DEMO_DAY = new Date(2026, 7, 10, 18, 0, 0);
+
+function tickDemoDay() {
+  const left = Math.max(0, Math.floor((DEMO_DAY - Date.now()) / 1000));
+  const d = Math.floor(left / 86400);
+  const h = Math.floor((left % 86400) / 3600);
+  const m = Math.floor((left % 3600) / 60);
+  const s = left % 60;
+  const pad = n => String(n).padStart(2, '0');
+
+  document.getElementById('ddDays').textContent = pad(d);
+  document.getElementById('ddHours').textContent = pad(h);
+  document.getElementById('ddMins').textContent = pad(m);
+  document.getElementById('ddSecs').textContent = pad(s);
+
+  document.getElementById('ddLeft').textContent =
+    left === 0 ? 'Bugun!' :
+    d > 0      ? `${d} kun qoldi` :
+    h > 0      ? `${h} soat qoldi` :
+    m > 0      ? `${m} daqiqa qoldi` : `${s} soniya qoldi`;
+}
+tickDemoDay();
+setInterval(tickDemoDay, 1000);
 
 /* ---------- Aktivlik kalendari ---------- */
+const CAL_COURSES = ['Dasturlash kursi', 'Ingliz tili kursi', 'Matematika kursi'];
+
+/* Namuna ma'lumoti. st: full | part | rej | view | none, c: kurs indekslari */
+const CAL_DAYS = {
+  1:  { st: 'full', c: [0, 1] },     2:  { st: 'full', c: [0] },
+  3:  { st: 'part', c: [0, 2] },     4:  { st: 'full', c: [0, 1, 2] },
+  5:  { st: 'view', c: [1] },        6:  { st: 'full', c: [0, 1] },
+  7:  { st: 'full', c: [0, 1] },     8:  { st: 'rej',  c: [0] },
+  9:  { st: 'none', c: [] },         10: { st: 'full', c: [0, 2] },
+  11: { st: 'part', c: [1] },        12: { st: 'full', c: [0, 1] },
+  13: { st: 'full', c: [0] },        14: { st: 'view', c: [0, 2] },
+  15: { st: 'full', c: [0, 1, 2] },  16: { st: 'rej',  c: [1] },
+  17: { st: 'full', c: [0] },        18: { st: 'part', c: [0, 1] },
+  19: { st: 'full', c: [1, 2] },     20: { st: 'none', c: [] },
+  21: { st: 'full', c: [0, 1] },     22: { st: 'full', c: [0] },
+  23: { st: 'view', c: [1] },        24: { st: 'part', c: [0, 2] },
+  25: { st: 'full', c: [0, 1] },     26: { st: 'rej',  c: [0, 1] },
+  27: { st: 'full', c: [2] },        28: { st: 'full', c: [0, 1] },
+  29: { st: 'part', c: [0] },        30: { st: 'full', c: [0, 1, 2] },
+  31: { st: 'full', c: [0, 1, 2] },
+};
+
+/* har bir holatda qaysi bosqich bajarilgani */
+const CAL_STEPS = {
+  full: [['Dars', 'ok'],   ['Test', 'ok'], ['Amaliy vazifa', 'ok']],
+  part: [['Dars', 'ok'],   ['Test', 'ok'], ['Amaliy vazifa', '']],
+  rej:  [['Dars', 'ok'],   ['Test', 'ok'], ['Amaliy vazifa', 'warn']],
+  view: [['Dars', 'ok'],   ['Test', ''],   ['Amaliy vazifa', '']],
+};
+const CAL_ICON = { ok: '✓', warn: '✕', '': '⏳' };
+
 (function renderCalendar() {
-  const DAYS = 31;                                  // avgust 2026
-  const offset = (new Date(2026, 7, 1).getDay() + 6) % 7; // Du=0 … Ya=6 (1-avgust — Shanba)
-  const level = d => {
-    const r = (d * 2654435761) % 10;                // deterministik "tasodifiylik"
-    if (r < 2) return 0;
-    return 1 + (r % 3);
-  };
+  const Y = 2026, M = 7;                                  // avgust 2026
+  const DAYS = new Date(Y, M + 1, 0).getDate();
+  const offset = (new Date(Y, M, 1).getDay() + 6) % 7;    // Du=0 … Ya=6
+  const DOW = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
+
+  const grid   = document.getElementById('calGrid');
+  const detail = document.getElementById('calDetail');
+  const hint   = document.getElementById('calHint');
+
+  const joinUz = a => a.length < 2 ? (a[0] || '') : `${a.slice(0, -1).join(', ')} va ${a[a.length - 1]}`;
+
   let cells = '';
   for (let i = 0; i < offset; i++) cells += '<span class="cal-cell empty"></span>';
   for (let d = 1; d <= DAYS; d++) {
-    if (d === todayNum) { cells += `<span class="cal-cell today" title="Bugun, ${d}-avgust"></span>`; continue; }
-    const cls = d < todayNum ? (level(d) ? `a${level(d)}` : '') : '';
-    cells += `<span class="cal-cell ${cls}" title="${d}-avgust"></span>`;
+    const st = (CAL_DAYS[d] || {}).st || 'none';
+    cells += `<button class="cal-cell st-${st}${d === todayNum ? ' today' : ''}" data-day="${d}"
+                 title="${d}-avgust">${d}</button>`;
   }
-  document.getElementById('calGrid').innerHTML = cells;
+  grid.innerHTML = cells;
+
+  function buildDetail(d) {
+    const info  = CAL_DAYS[d] || { st: 'none', c: [] };
+    const names = info.c.map(i => CAL_COURSES[i]);
+    const list  = joinUz(names);
+    const when  = d === todayNum ? 'Bugun' : `${d}-avgust kuni`;
+
+    const text =
+      info.st === 'full' ? `${when} siz <b>${list}</b>dan vazifalaringizni to'liq topshirdingiz 🎉` :
+      info.st === 'part' ? `${when} <b>${list}</b>dan darsni ko'rib, testni topshirdingiz. Amaliy vazifa hali yuborilmagan ⏳` :
+      info.st === 'rej'  ? `${when} <b>${list}</b>dan hammasini bajardingiz, ammo amaliy vazifa tekshiruvdan o'tmadi — qayta topshirish kerak 🔁` :
+      info.st === 'view' ? `${when} faqat <b>${list}</b> darsini ko'rdingiz. Test va amaliy vazifa bajarilmagan 👀` :
+                           'Bu kuni hech qanday faoliyat qayd etilmagan 😴';
+
+    const steps = CAL_STEPS[info.st] || [];
+    const courses = names.map(n => `
+      <div class="cal-d-course">
+        <span class="cal-d-name">${n}</span>
+        <div class="cal-d-steps">
+          ${steps.map(([lbl, cls]) => `<span class="cal-d-step ${cls}">${CAL_ICON[cls]} ${lbl}</span>`).join('')}
+        </div>
+      </div>`).join('');
+
+    return `
+      <div class="cal-d-head">
+        <span class="cal-d-date">${d}-avgust</span>
+        <span class="cal-d-dow">${DOW[(new Date(Y, M, d).getDay() + 6) % 7]}</span>
+        <button class="cal-d-close" aria-label="Yopish">✕</button>
+      </div>
+      <p class="cal-d-text">${text}</p>
+      ${courses}`;
+  }
+
+  function closeDetail() {
+    grid.querySelectorAll('.picked').forEach(c => c.classList.remove('picked'));
+    detail.hidden = true;
+    hint.hidden = false;
+    picked = null;
+  }
+
+  let picked = null;
+  grid.addEventListener('click', e => {
+    const btn = e.target.closest('button.cal-cell');
+    if (!btn) return;
+    const d = +btn.dataset.day;
+    if (picked === d) { closeDetail(); return; }
+    picked = d;
+    grid.querySelectorAll('.picked').forEach(c => c.classList.remove('picked'));
+    btn.classList.add('picked');
+    detail.innerHTML = buildDetail(d);
+    detail.hidden = false;
+    hint.hidden = true;
+    detail.querySelector('.cal-d-close').addEventListener('click', closeDetail);
+  });
+
+  /* ranglar izohi — bosilganda ochiladi */
+  const lgBtn = document.getElementById('calLegendBtn');
+  const lgBox = document.getElementById('calLegend');
+  lgBtn.addEventListener('click', () => {
+    const open = lgBox.hidden;
+    lgBox.hidden = !open;
+    lgBtn.setAttribute('aria-expanded', String(open));
+  });
 })();
 
 /* ---------- CoinShop ---------- */

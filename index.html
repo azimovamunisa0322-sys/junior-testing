@@ -81,9 +81,9 @@
         </button>
         <div class="bell-panel" id="bellPanel" hidden>
           <div class="bell-title">Bildirishnomalar</div>
-          <div class="bell-item"><span>🔴</span><div><b>Live Webinar bugun 18:00 da</b><small>HTML: Position xususiyati</small></div></div>
-          <div class="bell-item"><span>⏳</span><div><b>HTML moduli deadline yaqin</b><small>2 kun qoldi — davom eting!</small></div></div>
-          <div class="bell-item"><span>🎁</span><div><b>+500 coin bonus</b><small>08.08.2026 gacha to'lov qiling</small></div></div>
+          <div class="bell-item"><span>🔴</span><div><b>Live Webinar bugun 18:00 da</b><small>Mavzu vebinar oldidan e'lon qilinadi</small></div></div>
+          <div class="bell-item"><span>⏳</span><div><b>HTML moduli muddati tugayapti</b><small>2 kun qoldi — davom eting!</small></div></div>
+          <div class="bell-item"><span>🎁</span><div><b>+100 coin bonus</b><small>To'lov kuningiz — 08.08.2026. O'z vaqtida to'lang</small></div></div>
         </div>
       </div>
       <button class="icon-btn" aria-label="Tarix"><svg width="20" height="20"><use href="#i-history"/></svg></button>
@@ -101,10 +101,6 @@
     <section class="hero">
       <div class="hero-text">
         <h1>Salom!<br>Sheraliyev Abdulrauf</h1>
-        <div class="hero-note">
-          <svg width="18" height="18"><use href="#i-cal"/></svg>
-          <span>Keyingi sarxsob <b>08.08.2026</b> kuni soat <b>21:30</b> da boshlanadi</span>
-        </div>
         <div class="hero-chips">
           <span class="chip">⚡ <b id="energyChip">5 297</b></span>
           <span class="chip">🪙 <b id="coinChip">5 297</b></span>
@@ -197,6 +193,56 @@
   <!-- ===== Sidebar ===== -->
   <aside class="col-side">
 
+    <!-- Demo Day -->
+    <section class="card goal-card dd-card">
+      <div class="card-head">
+        <span class="emoji-tile tile-orange">🚀</span>
+        <div class="card-head-txt">
+          <h3>Demo Day</h3>
+          <div class="big-num orange-txt" id="ddLeft">…</div>
+        </div>
+        <button class="info-btn" aria-label="Demo Day haqida" data-toast="Demo Day — modul yakunida loyihangizni jamoaga taqdim qilasiz 🎤">
+          <svg width="17" height="17"><use href="#i-info"/></svg>
+        </button>
+      </div>
+
+      <div class="bar-row"><span class="bar-name">Modul bajarilishi</span><span class="bar-pct orange-txt">75%</span></div>
+      <div class="bar"><div class="bar-fill fill-orange" style="width:75%"></div></div>
+
+      <div class="dd-timer">
+        <div class="dd-unit"><b id="ddDays">00</b><span>kun</span></div>
+        <i class="dd-sep">:</i>
+        <div class="dd-unit"><b id="ddHours">00</b><span>soat</span></div>
+        <i class="dd-sep">:</i>
+        <div class="dd-unit"><b id="ddMins">00</b><span>daq</span></div>
+        <i class="dd-sep">:</i>
+        <div class="dd-unit"><b id="ddSecs">00</b><span>soniya</span></div>
+      </div>
+
+      <div class="goal-grid">
+        <div class="goal-cell">
+          <div class="goal-top">
+            <span class="goal-tile tile-orange">💻</span>
+            <div class="goal-txt">
+              <span class="goal-label">Tugatayotgan modul</span>
+              <b class="goal-value">HTML</b>
+            </div>
+          </div>
+          <span class="goal-chip">Dasturlash kursi</span>
+        </div>
+
+        <div class="goal-cell">
+          <div class="goal-top">
+            <span class="goal-tile tile-blue">📖</span>
+            <div class="goal-txt">
+              <span class="goal-label">Qolgan darslar</span>
+              <b class="goal-value orange-txt">5 dars</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Streak -->
     <section class="card">
       <div class="card-head">
@@ -220,7 +266,7 @@
       <div class="webinar-body">
         <div class="webinar-info">
           <h4>Live Webinar</h4>
-          <p>HTML: Position xususiyati</p>
+          <p>Mavzu vebinar oldidan e'lon qilinadi</p>
           <div class="webinar-meta">
             <span><svg width="15" height="15"><use href="#i-cal"/></svg> <b id="webinarWhen">Bugun</b></span>
             <span><svg width="15" height="15"><use href="#i-clock"/></svg> <b>18:00</b></span>
@@ -242,53 +288,121 @@
       <button class="btn btn-primary" data-toast="Vebinar xonasi 17:45 da ochiladi 🎥">Vebinarga qo'shilish <svg width="16" height="16"><use href="#i-chev-r"/></svg></button>
     </section>
 
-    <!-- Deadline -->
-    <section class="card">
+    <!-- Modul muddati -->
+    <section class="card goal-card">
       <div class="card-head">
         <span class="emoji-tile tile-sand">⏳</span>
-        <div class="card-head-txt"><h3>Modul deadline</h3></div>
+        <div class="card-head-txt"><h3>Modul muddati</h3></div>
         <button class="info-btn" aria-label="Ma'lumot"><svg width="17" height="17"><use href="#i-info"/></svg></button>
       </div>
       <div class="bar-row"><span class="bar-name">HTML</span><span class="bar-pct green">82%</span></div>
       <div class="bar"><div class="bar-fill fill-green" style="width:82%"></div></div>
-      <div class="duo-cols">
-        <div><span>Qolgan vaqt</span><b class="orange-txt">2 kun</b></div>
-        <div><span>Keyingi dars:</span><b>Position xususiyati</b></div>
+
+      <div class="goal-grid">
+        <div class="goal-cell">
+          <div class="goal-top">
+            <span class="goal-tile tile-orange">📅</span>
+            <div class="goal-txt">
+              <span class="goal-label">Qolgan vaqt</span>
+              <b class="goal-value orange-txt">2 kun</b>
+            </div>
+          </div>
+          <span class="goal-chip">
+            <svg class="clock-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <line class="clock-h" x1="12" y1="12" x2="12" y2="7.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              <line class="clock-m" x1="12" y1="12" x2="12" y2="6.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="1.1" fill="currentColor"/>
+            </svg>
+            Maqsadga yetish
+          </span>
+        </div>
+
+        <div class="goal-cell">
+          <div class="goal-top">
+            <span class="goal-tile tile-green">🎯</span>
+            <div class="goal-txt">
+              <span class="goal-label">Maqsad</span>
+              <b class="goal-value">Modulni 100% yakunlash</b>
+            </div>
+          </div>
+          <span class="goal-chip chip-ok">
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M8.4 12.3l2.5 2.5 4.7-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Yo'ldasan!
+          </span>
+        </div>
       </div>
-      <button class="btn btn-outline" data-toast="Dars yuklanmoqda… 📖">Davom etish <svg width="16" height="16"><use href="#i-chev-r"/></svg></button>
+
+      <button class="btn btn-primary goal-cta" data-toast="Dars yuklanmoqda… 📖">
+        <span class="play-badge"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M9 7.2v9.6l8.2-4.8z" fill="currentColor"/></svg></span>
+        Darsni davom ettirish
+        <svg width="16" height="16"><use href="#i-chev-r"/></svg>
+      </button>
     </section>
 
     <!-- Challenge -->
     <section class="card">
       <div class="card-head">
         <span class="emoji-tile tile-red">🎯</span>
-        <div class="card-head-txt"><h3>Hafta challenge</h3></div>
+        <div class="card-head-txt"><h3>Oylik challenge</h3></div>
       </div>
-      <div class="bar-row"><span class="bar-name muted">Maqsad</span><span class="bar-pct"><b>4</b> / 7 dars</span></div>
-      <div class="bar"><div class="bar-fill fill-purple" style="width:57%"></div></div>
+      <div class="bar-row">
+        <span class="bar-name muted">Maqsad</span>
+        <span class="bar-pct"><b id="chDone">0</b> / <span id="chTotal">31</span> kun</span>
+      </div>
+      <div class="bar"><div class="bar-fill fill-purple" id="chBar" style="width:0%"></div></div>
       <div class="duo-cols">
-        <div><span>Qolgan darslar</span><b>3 dars</b></div>
-        <div><span>🏆 Mukofot</span><b class="orange-txt">+200 Coin</b></div>
+        <div><span>Qolgan kunlar</span><b id="chLeft">— kun</b></div>
+        <div><span>🏆 Mukofot</span><b class="orange-txt">+100 Coin</b></div>
       </div>
-      <button class="btn btn-soft-purple" data-toast="Challenge darsi boshlandi! 💪">Darsni boshlash <svg width="16" height="16"><use href="#i-chev-r"/></svg></button>
+
+      <button class="btn btn-soft-purple ch-toggle" id="chToggle" aria-expanded="false" aria-controls="chInfo">
+        Challenge shartlari
+        <svg width="16" height="16" class="ch-caret"><use href="#i-chev-r"/></svg>
+      </button>
+
+      <div class="ch-info" id="chInfo" hidden>
+        <p class="ch-lead">🔥 <b>31 kun — bironta kunni qoldirmasdan!</b></p>
+        <ul class="ch-rules">
+          <li><span>✅</span><div>Har kuni kamida <b>1 ta dars</b> yakunlang</div></li>
+          <li><span>😬</span><div>Bir kun tashlab ketsangiz, hisob <b>0 dan</b> boshlanadi</div></li>
+          <li><span>🎁</span><div>Oyni to'liq bosib o'tsangiz — <b>qo'shimcha +100 coin</b></div></li>
+        </ul>
+        <div class="ch-now">
+          <span class="ch-now-num" id="chNow">0 / 31</span>
+          <span class="ch-now-msg" id="chMsg">…</span>
+        </div>
+        <button class="btn btn-soft-purple btn-in-panel" data-toast="Challenge darsi boshlandi! 💪">
+          Darsni boshlash <svg width="16" height="16"><use href="#i-chev-r"/></svg>
+        </button>
+      </div>
     </section>
 
     <!-- Payment bonus -->
-    <section class="card">
+    <section class="card bonus-card">
       <div class="card-head">
         <span class="emoji-tile tile-yellow">😊</span>
-        <div class="card-head-txt"><h3>Muddati to'lov bonusi</h3></div>
+        <div class="card-head-txt"><h3>O'z vaqtida to'lov bonusi</h3></div>
       </div>
       <div class="bonus-body">
         <div class="bonus-info">
-          <p><b>08.08.2026</b> gacha to'lov qilsangiz bonusga ega bo'lasiz</p>
+          <span class="bonus-daylabel">Sizning to'lov kuningiz</span>
+          <b class="bonus-date">08.08.2026</b>
           <div class="bonus-left"><span>Qolgan vaqt</span><b>3 kun</b></div>
         </div>
         <div class="bonus-right">
-          <div class="bonus-amount">+500<span>Coin</span></div>
+          <div class="bonus-amount">+100<span>Coin</span></div>
           <div class="bonus-gift">🎁</div>
         </div>
       </div>
+      <p class="bonus-why">
+        <span class="bonus-why-ico">💡</span>
+        Shu kungacha to'lasangiz — hisobingizga <b>+100 coin</b> qo'shiladi.
+        Muddat o'tsa, bu oygi bonus berilmaydi.
+      </p>
       <button class="btn btn-warn" data-toast="To'lov sahifasi prototipda mavjud emas 🙂">To'lov qilish <svg width="16" height="16"><use href="#i-chev-r"/></svg></button>
     </section>
 
@@ -303,11 +417,25 @@
         <span>Du</span><span>Se</span><span>Ch</span><span>Pa</span><span>Ju</span><span>Sh</span><span>Ya</span>
       </div>
       <div class="cal-grid" id="calGrid"></div>
-      <div class="cal-legend">
-        <span><i class="lg lg-green"></i> Faol</span>
-        <span><i class="lg lg-gray"></i> Faol emas</span>
-        <span><i class="lg lg-today"></i> Bugun</span>
-      </div>
+
+      <div class="cal-detail" id="calDetail" hidden></div>
+      <p class="cal-hint" id="calHint">👆 Kunni bosing — o'sha kuni nima qilganingizni ko'rsatadi</p>
+
+      <button class="cal-legend-btn" id="calLegendBtn" aria-expanded="false" aria-controls="calLegend">
+        <span class="cal-swatches">
+          <i class="lg st-full"></i><i class="lg st-part"></i><i class="lg st-rej"></i><i class="lg st-view"></i><i class="lg st-none"></i>
+        </span>
+        Ranglar nimani anglatadi?
+        <svg width="16" height="16"><use href="#i-chev-r"/></svg>
+      </button>
+
+      <ul class="cal-legend" id="calLegend" hidden>
+        <li><i class="lg st-full"></i><span><b>Yashil</b> — Barcha darslar 100% yakunlangan, amaliy vazifa muvaffaqiyatli topshirilgan.</span></li>
+        <li><i class="lg st-part"></i><span><b>Olovrang</b> — Dars ko'rilgan va test bajarilgan, ammo amaliy vazifa topshirilmagan.</span></li>
+        <li><i class="lg st-rej"></i><span><b>Qizil</b> — Barcha vazifalar bajarilgan, ammo amaliy vazifa tekshiruvdan o'tmagan (rad etilgan).</span></li>
+        <li><i class="lg st-view"></i><span><b>Kulrang</b> — Faqat dars ko'rilgan. Test va amaliy vazifa hali bajarilmagan.</span></li>
+        <li><i class="lg st-none"></i><span><b>Bo'sh</b> — Bu kuni hech qanday faoliyat qayd etilmagan.</span></li>
+      </ul>
     </section>
   </aside>
 </main>
