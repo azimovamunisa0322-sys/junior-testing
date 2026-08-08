@@ -1,25 +1,52 @@
-/* ============ Junior — prototype ============ */
+/* ============ Junior — prototype ============
+   Ranglar, shriftlar va soyalar go.junior-it.uz platformasidan olingan
+   (assets/index.KMuYyFZH.css → :root va Tailwind klasslari).            */
 :root {
-  --bg: #F5F4F1;
+  /* platformaning asosiy tokenlari */
+  --bg: #F5F5F5;              /* --mainBg */
   --card: #FFFFFF;
-  --card-soft: #F1F0EC;
-  --ink: #141413;
-  --muted: #8B8B90;
-  --line: #EBE9E4;
-  --orange: #FF4E00;
-  --orange-deep: #E64500;
-  --orange-soft: #FFEDE4;
-  --orange-line: #FFD3BD;
-  --green: #23B457;
-  --green-soft: #E7F7ED;
-  --purple: #7C66F2;
-  --purple-soft: #EFECFE;
-  --blue: #4F46E5;
-  --amber: #FFA71B;
-  --r-lg: 22px;
+  --card-soft: #F7F7F8;       /* ichki yumshoq bloklar */
+  --card-soft2: #F8F9FA;      /* rasm/placeholder bloklari */
+  --ink: #000000;             /* --textColor */
+  --ink-2: #2F2F2F;           /* input va kuchli matn */
+  --muted: #757575;           /* ikkilamchi matn */
+  --gray1: #94A3B8;
+  --line: #F0F0F0;            /* karta chegarasi */
+
+  --orange: #FE5B1A;          /* --primary */
+  --orange-deep: #D53A17;     /* tugma qattiq soyasi */
+  --orange-press: #C03A05;
+  --orange-light: #FF8B3E;    /* --lightOrange */
+  --orange-soft: #FFF7F4;     /* och to'q sariq blok foni */
+  --orange-line: #FFE0D6;     /* och to'q sariq blok chegarasi */
+
+  --green: #10B981;           /* --green1 */
+  --green-deep: #00965E;
+  --green-2: #6EE7B7;
+  --green-3: #A7F3D0;
+  --green-soft: #ECFDF5;      /* --green4 */
+
+  --blue: #019ACB;
+  --blue-deep: #1BAFF6;
+  --purple: #7B61FF;
+  --amber: #FCD34D;           /* --yellow1 */
+  --amber-soft: #FFFBEB;      /* --yellow3 */
+  --red: #FF6A6A;             /* --red2 */
+  --red-soft: #FF9090;        /* --red1 */
+
+  /* platformada kartalar 16px, katta bloklar 20-26px, chiplar to'liq dumaloq */
+  --r-lg: 20px;
   --r-md: 16px;
   --r-sm: 12px;
-  --shadow: 0 1px 2px rgba(20,20,19,.04), 0 10px 28px rgba(20,20,19,.05);
+  --shadow: 0 1px 2px rgba(0,0,0,.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -4px rgba(0,0,0,.1);
+}
+
+/* strayk raqamlari uchun platformadagi shrift */
+@font-face {
+  font-family: StreakNumber;
+  src: url(assets/SF-Compact-Rounded-Bold.woff) format("woff");
+  font-weight: 700; font-style: normal; font-display: swap;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,7 +54,7 @@
 html { scroll-behavior: smooth; height: 100%; }
 
 body {
-  font-family: "Manrope", -apple-system, "SF Pro Rounded", "Segoe UI", sans-serif;
+  font-family: Roboto, -apple-system, "Segoe UI", sans-serif;
   background: var(--bg);
   color: var(--ink);
   font-size: 15px;
@@ -52,7 +79,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 /* ============ Topbar ============ */
 .topbar {
   position: sticky; top: 0; z-index: 50; flex-shrink: 0;
-  background: rgba(245,244,241,.85);
+  background: rgba(245,245,245,.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -61,9 +88,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   padding: 14px 24px;
   display: flex; align-items: center; gap: 22px;
 }
-.logo { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); }
-.logo-cat { width: 34px; height: 31px; }
-.logo span { font-size: 24px; font-weight: 800; letter-spacing: -.5px; }
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { height: 34px; width: auto; display: block; }
 
 .nav { display: flex; gap: 4px; margin-right: auto; }
 .nav-tab {
@@ -134,9 +160,11 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .col-main::-webkit-scrollbar-thumb, .col-side::-webkit-scrollbar-thumb, .shop-layout::-webkit-scrollbar-thumb { background: transparent; border-radius: 99px; }
 .col-main:hover::-webkit-scrollbar-thumb, .col-side:hover::-webkit-scrollbar-thumb, .shop-layout:hover::-webkit-scrollbar-thumb { background: #D6D3CC; }
 
+/* platformadagi karta: rounded-2xl + border-[#F0F0F0] + bg-white + shadow-sm + p-5 */
 .card {
   background: var(--card);
-  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
   box-shadow: var(--shadow);
   padding: 20px;
 }
@@ -175,7 +203,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .chip b { font-weight: 800; }
 .chip-lg { padding: 12px 20px; font-size: 18px; }
 .hero-mascot { align-self: flex-end; flex-shrink: 0; margin-right: 20px; }
-.hero-mascot svg { width: 210px; height: 189px; display: block; }
+.hero-mascot img { width: 220px; height: auto; display: block; }
 
 /* ============ Sections ============ */
 .section-head {
@@ -348,7 +376,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .tile-purple { background: var(--purple-soft); }
 .card-head-txt { flex: 1; min-width: 0; }
 .card-head-txt h3 { font-size: 16px; font-weight: 800; }
-.big-num { font-size: 21px; font-weight: 800; letter-spacing: -.3px; }
+/* platformada bunday raqamlar SF Compact Rounded Bold bilan yoziladi */
+.big-num { font-family: StreakNumber, Roboto, sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
 .info-btn { color: #C4C4C8; display: grid; place-items: center; }
 .info-btn:hover { color: var(--muted); }
 
@@ -420,15 +449,56 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .el-card .dd-timer { margin-bottom: 11px; }
 .el-note { font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; }
 
-/* ---- Kurs tavsiyasi ---- */
-.sg-name { color: var(--purple); }
-.sg-msg {
-  background: var(--purple-soft); border-radius: var(--r-md);
-  padding: 11px 13px; margin-bottom: 14px;
-  font-size: 12.8px; line-height: 1.45; color: #423874; font-weight: 600;
+/* darsga kirilmagan holat — ogohlantirish ohangi */
+.el-missed .emoji-tile { background: #FFE9E9; }
+.el-missed .el-when { color: var(--red); }
+.el-missed .el-msg { background: #FFECEC; color: #8A2B2B; }
+.el-missed .el-msg b { color: #C62828; }
+
+/* vaqti kelmagan tugma */
+.btn-disabled {
+  background: var(--card-soft) !important; color: var(--gray1) !important;
+  box-shadow: none !important; cursor: not-allowed;
 }
-.sg-msg b { color: var(--purple); font-weight: 800; }
-.sg-note { margin-top: 10px; font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; }
+.btn-disabled:hover { filter: none; }
+
+/* ---- Mentor yordami ---- */
+.ai-tile { background: #C4F0D5; }
+.ai-status { color: #12A04A; display: flex; align-items: center; gap: 7px; }
+.ai-status::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: #16C25C; box-shadow: 0 0 0 3px rgba(22,194,92,.22);
+  animation: ai-pulse 1.8s ease-in-out infinite;
+}
+@keyframes ai-pulse { 50% { opacity: .35; transform: scale(.75); } }
+
+.ai-msg {
+  background: #D3F5E0; border-radius: var(--r-md);
+  padding: 12px 14px; margin-bottom: 13px;
+  font-size: 13.2px; line-height: 1.4; color: #0E6B36; font-weight: 800;
+}
+
+.btn-green { background: var(--green); color: #fff; box-shadow: 0 2.5px 0 var(--green-deep); }
+.btn-green:hover { filter: brightness(1.06); }
+.btn-green:active { box-shadow: 0 0 0 var(--green-deep); }
+
+/* ---- Kurs tavsiyasi (rang karuseldagi kurs muqovasi bilan bir xil) ---- */
+.tile-pink { background: #FFE1F0; }
+.sg-name { color: #D63A9B; }
+.sg-msg {
+  background: linear-gradient(140deg, #FFE6F3, #FFF1E7);
+  border-radius: var(--r-md);
+  padding: 12px 14px; margin-bottom: 14px;
+  font-size: 12.8px; line-height: 1.45; color: #7B2B57; font-weight: 600;
+}
+.sg-msg b { color: #C42A87; font-weight: 800; }
+.sg-msg b:first-child {
+  display: block; margin-bottom: 5px;
+  font-size: 13.4px; color: #A81E6E; line-height: 1.3;
+}
+.btn-pink { background: #E8479F; color: #fff; box-shadow: 0 2.5px 0 #B62279; }
+.btn-pink:hover { filter: brightness(1.06); }
+.btn-pink:active { box-shadow: 0 0 0 #B62279; }
 
 
 .dd-timer {
@@ -477,12 +547,76 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   font-size: 12.5px; font-weight: 700;
 }
 
-.duo-cols { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; margin-bottom: 16px; }
-.duo-cols span { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
-.duo-cols b { font-size: 14.5px; font-weight: 800; }
+/* ---- Kunlik chek-list ---- */
+.cl-count { color: var(--green); }
+.cl-card .bar { margin-bottom: 12px; }
 
-/* ---- Oylik challenge ---- */
-.ch-toggle .ch-caret { transition: transform .2s ease; }
+.cl-list { list-style: none; display: grid; gap: 7px; margin-bottom: 14px; }
+.cl-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 11px; border-radius: var(--r-sm);
+  background: var(--card-soft);
+}
+.cl-item.done { background: var(--green-soft); }
+.cl-mark {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 800;
+  background: #fff; color: #C9C7C1; box-shadow: inset 0 0 0 1.5px #DCDAD4;
+}
+.cl-item.done .cl-mark { background: var(--green); color: #fff; box-shadow: none; }
+.cl-txt { min-width: 0; flex: 1; }
+.cl-name { display: block; font-size: 13px; font-weight: 800; line-height: 1.2; }
+.cl-task {
+  display: block; font-size: 11.5px; font-weight: 600; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cl-item.done .cl-task { color: #3E8A5C; }
+.cl-go { color: var(--muted); flex-shrink: 0; }
+.cl-go:hover { color: var(--ink); }
+
+.cl-claim {
+  width: 100%; display: flex; align-items: center; gap: 11px;
+  padding: 12px 14px; border-radius: var(--r-md);
+  background: var(--card-soft); color: var(--muted);
+  text-align: left; cursor: default;
+}
+.cl-claim-ico { font-size: 22px; line-height: 1; flex-shrink: 0; filter: grayscale(1); opacity: .5; }
+.cl-claim-txt b { display: block; font-size: 14.5px; font-weight: 800; line-height: 1.2; }
+.cl-claim-txt small { font-size: 11.5px; font-weight: 600; opacity: .85; }
+/* chek-list to'liq bajarilganda — jonli, bosiladigan holat */
+.cl-claim.ready {
+  background: linear-gradient(140deg, #FF8A2B, #F04E00); color: #fff;
+  cursor: pointer; box-shadow: 0 6px 18px rgba(240,78,0,.28);
+  transition: transform .15s, filter .15s;
+}
+.cl-claim.ready .cl-claim-ico { filter: none; opacity: 1; animation: cl-coin 2.2s ease-in-out infinite; }
+.cl-claim.ready:hover { filter: brightness(1.05); }
+.cl-claim.ready:active { transform: scale(.985); }
+@keyframes cl-coin { 50% { transform: translateY(-3px) rotate(-8deg); } }
+.cl-claim.taken { background: var(--green-soft); color: var(--green); cursor: default; box-shadow: none; }
+.cl-claim.taken .cl-claim-ico { filter: none; opacity: 1; animation: none; }
+
+/* ---- Oylik challenge (Strayk kartasi ichida) ---- */
+.ch-toggle {
+  margin-top: 14px; gap: 10px;
+  justify-content: flex-start; text-align: left;
+  padding: 11px 14px;
+}
+.ch-tog-ico { font-size: 18px; line-height: 1; flex-shrink: 0; }
+.ch-tog-txt { min-width: 0; flex: 1; }
+.ch-tog-txt b { display: block; font-size: 14px; font-weight: 800; line-height: 1.2; }
+.ch-tog-txt small {
+  display: block; margin-top: 2px;
+  font-size: 11.5px; font-weight: 700; color: #8279BE;
+}
+.ch-tog-txt i { font-style: normal; color: var(--orange-deep); font-weight: 800; }
+.ch-badge {
+  flex-shrink: 0; padding: 4px 9px; border-radius: 999px;
+  background: var(--purple); color: #fff;
+  font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.ch-toggle .ch-caret { margin-left: 0; transition: transform .2s ease; }
 .ch-toggle[aria-expanded="true"] .ch-caret { transform: rotate(90deg); }
 
 .ch-info {
@@ -491,26 +625,17 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   animation: ch-in .22s ease;
 }
 @keyframes ch-in { from { opacity: 0; transform: translateY(-6px); } }
-.ch-lead { font-size: 13.5px; color: #3F3470; margin-bottom: 10px; line-height: 1.35; }
-.ch-lead b { font-weight: 800; }
+.ch-left { font-size: 12.8px; font-weight: 600; color: #4A417A; margin-bottom: 12px; }
+.ch-left b { color: var(--purple); font-weight: 800; }
 
 .ch-rules { list-style: none; display: grid; gap: 8px; margin-bottom: 12px; }
 .ch-rules li { display: flex; gap: 8px; font-size: 12.8px; line-height: 1.4; color: #4A417A; font-weight: 600; }
 .ch-rules li span { flex-shrink: 0; font-size: 13px; }
 .ch-rules li b { color: var(--purple); font-weight: 800; }
 
-.ch-now {
-  display: flex; align-items: center; gap: 9px;
-  background: var(--card); border-radius: var(--r-sm);
-  padding: 9px 12px; margin-bottom: 12px;
-}
-.ch-now-num {
-  font-size: 15px; font-weight: 800; color: var(--purple);
-  font-variant-numeric: tabular-nums; flex-shrink: 0;
-}
-.ch-now-msg { font-size: 12.5px; font-weight: 600; color: var(--muted); }
-.btn-in-panel { background: var(--purple); color: #fff; }
-.btn-in-panel:hover { background: #6B54E8; }
+.btn-in-panel { background: var(--purple); color: #fff; box-shadow: 0 2.5px 0 #5B41E0; }
+.btn-in-panel:hover { filter: brightness(1.06); }
+.btn-in-panel:active { box-shadow: 0 0 0 #5B41E0; }
 
 /* bonus */
 .bonus-body {
@@ -612,25 +737,34 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .lg { width: 13px; height: 13px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
 .lg.st-none { border: 1px solid var(--line); }
 
-/* ============ Buttons ============ */
+/* ============ Buttons ============
+   Platformada tugmalar "qattiq" soyali: shadow-[0_2.5px_0_<to'qroq rang>],
+   bosilganda soya yo'qolib tugma pastga siljiydi.                        */
 .btn {
   width: 100%; padding: 13px 18px;
-  border-radius: var(--r-sm);
-  font-weight: 800; font-size: 15px;
+  border-radius: var(--r-md);
+  font-weight: 700; font-size: 15px;
   display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: transform .15s, filter .15s, background .18s;
+  transition: filter .15s, background .18s, box-shadow .1s, transform .1s;
 }
 .btn svg { margin-left: auto; }
-.btn:active { transform: scale(.98); }
-.btn-primary { background: var(--orange); color: #fff; }
+.btn:active { transform: translateY(2.5px); box-shadow: 0 0 0 currentColor; }
+
+.btn-primary { background: var(--orange); color: #fff; box-shadow: 0 2.5px 0 var(--orange-deep); }
 .btn-primary:hover { filter: brightness(1.06); }
+.btn-primary:active { box-shadow: 0 0 0 var(--orange-deep); }
+
 .btn-outline { background: var(--card); color: var(--orange); border: 1.5px solid var(--orange-line); }
 .btn-outline:hover { background: var(--orange-soft); }
-.btn-soft-purple { background: var(--purple-soft); color: var(--purple); }
+
+.btn-soft-purple { background: #EFECFE; color: var(--purple); }
 .btn-soft-purple:hover { background: #E5E0FD; }
-.btn-warn { background: linear-gradient(160deg, #FFC14D, var(--amber)); color: #fff; }
+
+.btn-warn { background: var(--amber); color: #7A4E00; box-shadow: 0 2.5px 0 #D9A400; }
 .btn-warn:hover { filter: brightness(1.04); }
-.btn-sm { width: auto; padding: 9px 16px; font-size: 13.5px; border-radius: 10px; }
+.btn-warn:active { box-shadow: 0 0 0 #D9A400; }
+
+.btn-sm { width: auto; padding: 9px 16px; font-size: 13.5px; border-radius: var(--r-sm); }
 .btn-sm svg { margin: 0; }
 
 /* ============ CoinShop ============ */
@@ -729,10 +863,11 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 @media (max-width: 680px) {
   .page { padding: 6px 14px 90px; }
   .topbar-inner { padding: 12px 14px; gap: 12px; }
-  .logo span, .topbar-actions .icon-btn:nth-child(2) { display: none; }
+  .logo img { height: 28px; }
+  .topbar-actions .icon-btn:nth-child(2) { display: none; }
   .hero { flex-direction: column; padding: 24px 20px 0; }
   .hero-mascot { align-self: center; margin: 0; }
-  .hero-mascot svg { width: 170px; height: 153px; }
+  .hero-mascot img { width: 170px; }
   .hero h1 { font-size: 25px; }
   .courses { grid-auto-columns: 78%; }
   .col-side { grid-template-columns: 1fr; }

@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Junior — O'quv platformasi</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+  <link rel="icon" href="assets/juniorlogo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -56,16 +56,8 @@
 <!-- ===== Topbar ===== -->
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="logo" href="#">
-      <svg class="logo-cat" viewBox="0 0 48 44" aria-hidden="true">
-        <path d="M6 17 L9.5 2.5 L20 10 Z" fill="#FF4E00"/>
-        <path d="M42 17 L38.5 2.5 L28 10 Z" fill="#FF4E00"/>
-        <rect x="4" y="8" width="40" height="34" rx="14" fill="#FF4E00"/>
-        <circle cx="17" cy="24" r="3.1" fill="#fff"/>
-        <circle cx="31" cy="24" r="3.1" fill="#fff"/>
-        <path d="M19 31 Q24 35.5 29 31" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
-      </svg>
-      <span>Junior</span>
+    <a class="logo" href="#" aria-label="Junior">
+      <img src="assets/juniorlogo.png" alt="Junior" width="160" height="41">
     </a>
 
     <nav class="nav" aria-label="Asosiy bo'limlar">
@@ -107,13 +99,7 @@
         </div>
       </div>
       <div class="hero-mascot" aria-hidden="true">
-        <svg viewBox="0 0 200 180">
-          <path d="M42 180 C42 136 64 118 100 118 C136 118 158 136 158 180 Z" fill="#17181C"/>
-          <rect x="150" y="112" width="12" height="22" rx="6" fill="#EFE7D8"/>
-          <circle cx="156" cy="140" r="11" fill="#EFE7D8"/>
-          <text x="100" y="160" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" letter-spacing="3">JUNIOR</text>
-          <use href="#robot-head" x="40" y="8" width="120" height="100"/>
-        </svg>
+        <img src="assets/robo-1.png" alt="" width="593" height="441">
       </div>
     </section>
 
@@ -237,6 +223,26 @@
       </div>
     </section>
 
+    <!-- Mentor yordami -->
+    <section class="card ai-card" id="mentorCard">
+      <div class="card-head">
+        <span class="emoji-tile ai-tile">👨‍🏫</span>
+        <div class="card-head-txt">
+          <h3>Mentor yordami</h3>
+          <div class="big-num ai-status">24/7 onlayn</div>
+        </div>
+        <button class="info-btn" aria-label="Mentor yordami haqida" data-toast="Mentor darslar, vazifalar va xatoliklar bo'yicha javob beradi 💬">
+          <svg width="17" height="17"><use href="#i-info"/></svg>
+        </button>
+      </div>
+
+      <p class="ai-msg">Dars bo'yicha savolingiz bormi yoki bajarishda qiynalyapsizmi?</p>
+
+      <button class="btn btn-green" id="aiOpen">
+        Mentorga yozish <svg width="16" height="16"><use href="#i-chev-r"/></svg>
+      </button>
+    </section>
+
     <!-- Qo'shimcha dars (faqat bugun yoki ertaga bo'lsa chiqadi) -->
     <section class="card el-card" id="elCard" hidden>
       <div class="card-head">
@@ -266,26 +272,48 @@
     <!-- Kurs tavsiyasi (asosiy kursda uzoq tanaffus bo'lsa chiqadi) -->
     <section class="card sg-card" id="sgCard" hidden>
       <div class="card-head">
-        <span class="emoji-tile tile-purple">🎨</span>
+        <span class="emoji-tile tile-pink">🎨</span>
         <div class="card-head-txt">
           <h3>Sizga tavsiya</h3>
           <div class="big-num sg-name" id="sgName">—</div>
         </div>
-        <button class="info-btn" aria-label="Tavsiya haqida" data-toast="Tanaffusni uzaytirmaslik uchun yengilroq kurs taklif qilamiz 💡">
+        <button class="info-btn" aria-label="Tavsiya haqida" data-toast="Kurslar natijalaringiz va qiziqishlaringizga qarab tanlanadi 🎯">
           <svg width="17" height="17"><use href="#i-info"/></svg>
         </button>
       </div>
 
       <p class="sg-msg" id="sgMsg">…</p>
 
-      <button class="btn btn-soft-purple" id="sgBtn">
+      <button class="btn btn-pink" id="sgBtn">
         <span id="sgBtnTxt">Kursni ochish</span> <svg width="16" height="16"><use href="#i-chev-r"/></svg>
       </button>
-      <p class="sg-note">Asosiy kursingiz saqlanib qoladi — istagan payt qaytasiz</p>
+    </section>
+
+    <!-- Kunlik chek-list -->
+    <section class="card cl-card" id="clCard">
+      <div class="card-head">
+        <span class="emoji-tile tile-green">✅</span>
+        <div class="card-head-txt">
+          <h3>Kunlik chek-list</h3>
+          <div class="big-num cl-count" id="clCount">—</div>
+        </div>
+        <button class="info-btn" aria-label="Chek-list haqida" data-toast="Har kuni har bir yo'nalishdan kamida 1 ta dars — barcha kurslar parallel yursin 🎯">
+          <svg width="17" height="17"><use href="#i-info"/></svg>
+        </button>
+      </div>
+
+      <div class="bar"><div class="bar-fill fill-green" id="clBar" style="width:0%"></div></div>
+
+      <ul class="cl-list" id="clList"></ul>
+
+      <button class="cl-claim" id="clClaim">
+        <span class="cl-claim-ico">🪙</span>
+        <span class="cl-claim-txt"><b id="clClaimTitle">—</b><small id="clClaimSub">—</small></span>
+      </button>
     </section>
 
     <!-- Streak -->
-    <section class="card">
+    <section class="card" id="streakCard">
       <div class="card-head">
         <span class="emoji-tile tile-orange">🔥</span>
         <div class="card-head-txt"><h3>Strayk</h3><div class="big-num">4 kun</div></div>
@@ -296,10 +324,38 @@
         <div><span>Joriy seriya</span><b>4 kun</b></div>
         <div><span>Eng yaxshi seriya</span><b>12 kun</b></div>
       </div>
+
+      <button class="btn btn-soft-purple ch-toggle" id="chToggle" aria-expanded="false" aria-controls="chInfo">
+        <span class="ch-tog-ico">🎯</span>
+        <span class="ch-tog-txt">
+          <b>Oylik challenge</b>
+          <small>🏆 Mukofot <i>+100 coin</i></small>
+        </span>
+        <b class="ch-badge" id="chBadge">—</b>
+        <svg width="16" height="16" class="ch-caret"><use href="#i-chev-r"/></svg>
+      </button>
+
+      <div class="ch-info" id="chInfo" hidden>
+        <div class="bar-row">
+          <span class="bar-name muted">Maqsad</span>
+          <span class="bar-pct"><b id="chDone">0</b> / <span id="chTotal">31</span> kun</span>
+        </div>
+        <div class="bar"><div class="bar-fill fill-purple" id="chBar" style="width:0%"></div></div>
+        <p class="ch-left">Yakunlashga <b id="chLeft">— kun</b> qoldi</p>
+
+        <ul class="ch-rules">
+          <li><span>✅</span><div>Har kuni kamida <b>1 ta dars</b> yakunlang</div></li>
+          <li><span>😬</span><div>Bir kun tashlab ketsangiz, hisob <b>0 dan</b> boshlanadi</div></li>
+          <li><span>🎁</span><div>Oyni to'liq bosib o'tsangiz — <b>qo'shimcha +100 coin</b></div></li>
+        </ul>
+        <button class="btn btn-in-panel" data-toast="Challenge darsi boshlandi! 💪">
+          Darsni boshlash <svg width="16" height="16"><use href="#i-chev-r"/></svg>
+        </button>
+      </div>
     </section>
 
     <!-- Webinar -->
-    <section class="card">
+    <section class="card" id="webinarCard" hidden>
       <div class="card-head">
         <span class="emoji-tile tile-blue">📅</span>
         <div class="card-head-txt"><h3>Keyingi vebinar</h3></div>
@@ -310,7 +366,7 @@
           <p>Mavzu vebinar oldidan e'lon qilinadi</p>
           <div class="webinar-meta">
             <span><svg width="15" height="15"><use href="#i-cal"/></svg> <b id="webinarWhen">Bugun</b></span>
-            <span><svg width="15" height="15"><use href="#i-clock"/></svg> <b>18:00</b></span>
+            <span><svg width="15" height="15"><use href="#i-clock"/></svg> <b id="webinarTime">—</b></span>
           </div>
           <div class="webinar-count">⏳ <span id="webinarCountdown">…</span></div>
         </div>
@@ -326,45 +382,7 @@
           <path d="M89 92c0-5 4-8 9-8s9 3 9 8" fill="#6366F1"/>
         </svg>
       </div>
-      <button class="btn btn-primary" data-toast="Vebinar xonasi 17:45 da ochiladi 🎥">Vebinarga qo'shilish <svg width="16" height="16"><use href="#i-chev-r"/></svg></button>
-    </section>
-
-    <!-- Challenge -->
-    <section class="card">
-      <div class="card-head">
-        <span class="emoji-tile tile-red">🎯</span>
-        <div class="card-head-txt"><h3>Oylik challenge</h3></div>
-      </div>
-      <div class="bar-row">
-        <span class="bar-name muted">Maqsad</span>
-        <span class="bar-pct"><b id="chDone">0</b> / <span id="chTotal">31</span> kun</span>
-      </div>
-      <div class="bar"><div class="bar-fill fill-purple" id="chBar" style="width:0%"></div></div>
-      <div class="duo-cols">
-        <div><span>Qolgan kunlar</span><b id="chLeft">— kun</b></div>
-        <div><span>🏆 Mukofot</span><b class="orange-txt">+100 Coin</b></div>
-      </div>
-
-      <button class="btn btn-soft-purple ch-toggle" id="chToggle" aria-expanded="false" aria-controls="chInfo">
-        Challenge shartlari
-        <svg width="16" height="16" class="ch-caret"><use href="#i-chev-r"/></svg>
-      </button>
-
-      <div class="ch-info" id="chInfo" hidden>
-        <p class="ch-lead">🔥 <b>31 kun — bironta kunni qoldirmasdan!</b></p>
-        <ul class="ch-rules">
-          <li><span>✅</span><div>Har kuni kamida <b>1 ta dars</b> yakunlang</div></li>
-          <li><span>😬</span><div>Bir kun tashlab ketsangiz, hisob <b>0 dan</b> boshlanadi</div></li>
-          <li><span>🎁</span><div>Oyni to'liq bosib o'tsangiz — <b>qo'shimcha +100 coin</b></div></li>
-        </ul>
-        <div class="ch-now">
-          <span class="ch-now-num" id="chNow">0 / 31</span>
-          <span class="ch-now-msg" id="chMsg">…</span>
-        </div>
-        <button class="btn btn-soft-purple btn-in-panel" data-toast="Challenge darsi boshlandi! 💪">
-          Darsni boshlash <svg width="16" height="16"><use href="#i-chev-r"/></svg>
-        </button>
-      </div>
+      <button class="btn btn-primary" id="webinarJoin">Vebinarga qo'shilish <svg width="16" height="16"><use href="#i-chev-r"/></svg></button>
     </section>
 
     <!-- Payment bonus (to'lovga 3 kun qolganda chiqadi) -->
@@ -391,7 +409,7 @@
     </section>
 
     <!-- Activity -->
-    <section class="card">
+    <section class="card" id="calCard">
       <div class="card-head">
         <span class="emoji-tile tile-green">📈</span>
         <div class="card-head-txt"><h3>Aktivlik kalendari</h3></div>
@@ -476,14 +494,14 @@
 </div>
 
 <!-- ===== Chat ===== -->
-<button class="fab" id="chatFab" aria-label="Junior AI yordamchi">
+<button class="fab" id="chatFab" aria-label="Junior mentor yordami">
   <svg viewBox="0 0 120 100" width="34" height="28"><use href="#robot-head"/></svg>
 </button>
 
 <div class="chat" id="chatPop" hidden>
   <div class="chat-head">
     <svg viewBox="0 0 120 100" width="28" height="23"><use href="#robot-head"/></svg>
-    <div><b>Junior AI</b><small>yordamchi · onlayn</small></div>
+    <div><b>Junior mentor</b><small>onlayn · tez javob</small></div>
     <button class="chat-close" id="chatClose" aria-label="Yopish">✕</button>
   </div>
   <div class="chat-body" id="chatBody">
