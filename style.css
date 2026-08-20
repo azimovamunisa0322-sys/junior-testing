@@ -151,14 +151,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   height: 100%;
   overflow-y: auto;
   padding-bottom: 48px;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+  scrollbar-width: none;
 }
-.col-main:hover, .col-side:hover, .shop-layout:hover { scrollbar-color: #D6D3CC transparent; }
-.col-main::-webkit-scrollbar, .col-side::-webkit-scrollbar, .shop-layout::-webkit-scrollbar { width: 5px; }
-.col-main::-webkit-scrollbar-track, .col-side::-webkit-scrollbar-track, .shop-layout::-webkit-scrollbar-track { background: transparent; }
-.col-main::-webkit-scrollbar-thumb, .col-side::-webkit-scrollbar-thumb, .shop-layout::-webkit-scrollbar-thumb { background: transparent; border-radius: 99px; }
-.col-main:hover::-webkit-scrollbar-thumb, .col-side:hover::-webkit-scrollbar-thumb, .shop-layout:hover::-webkit-scrollbar-thumb { background: #D6D3CC; }
+.col-main::-webkit-scrollbar, .col-side::-webkit-scrollbar, .shop-layout::-webkit-scrollbar { display: none; }
 
 /* platformadagi karta: rounded-2xl + border-[#F0F0F0] + bg-white + shadow-sm + p-5 */
 .card {
@@ -381,9 +376,16 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .info-btn { color: #C4C4C8; display: grid; place-items: center; }
 .info-btn:hover { color: var(--muted); }
 
+/* streak muzlatgichlari */
+.streak-freezes { display: flex; gap: 8px; flex-shrink: 0; }
+.freeze-ico {
+  width: 34px; height: 34px; display: grid; place-items: center;
+  font-size: 20px; filter: drop-shadow(0 1px 1px rgba(0,0,0,.08));
+}
+
 /* streak week */
-.week { display: flex; justify-content: space-between; margin: 4px 2px 16px; }
-.week-day { display: grid; justify-items: center; gap: 6px; }
+.week { display: flex; align-items: flex-start; margin: 4px 2px 16px; }
+.week-day { display: grid; justify-items: center; gap: 6px; flex-shrink: 0; }
 .week-flame {
   width: 38px; height: 38px; border-radius: 50%;
   border: 1.5px solid var(--line);
@@ -391,32 +393,80 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   background: var(--card);
 }
 .week-day.on .week-flame { border-color: var(--orange-line); background: #FFF7F2; }
-.week-day.off .week-flame { filter: grayscale(1); opacity: .55; }
+.week-day.off .week-flame { filter: grayscale(1); opacity: .55; background: var(--card); }
+.week-day.today .week-flame { border-width: 2.5px; border-color: var(--orange); box-shadow: 0 0 0 2px var(--orange-soft); }
 .week-label { font-size: 12px; font-weight: 700; color: var(--muted); }
 .week-day.today .week-label { color: var(--orange); }
 
+.week-connector {
+  flex: 1; height: 2px; margin-top: 18px;
+  background: var(--orange-line);
+}
+.week-connector.off {
+  background: none; border-top: 2px dashed var(--line);
+}
+
 .duo-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .duo-stats > div {
-  border: 1px solid transparent; border-radius: var(--r-md);
+  border: 1px solid var(--orange-line); border-radius: var(--r-md);
+  background: var(--orange-soft);
   padding: 12px 14px; text-align: center;
 }
-/* joriy seriya — "tirik" olovrang, eng yaxshisi — rekord, oltinrang */
-.duo-stats > div:first-child { background: var(--orange-soft); border-color: var(--orange-line); }
-.duo-stats > div:first-child b { color: var(--orange-deep); }
-.duo-stats > div:last-child { background: #FFF4DC; border-color: #FFE1A8; }
-.duo-stats > div:last-child b { color: #B0730A; }
 .duo-stats span { display: block; font-size: 12.5px; color: #9A8E7A; font-weight: 600; margin-bottom: 3px; }
-.duo-stats b { font-size: 17px; font-weight: 800; }
+.duo-stats b { font-size: 17px; font-weight: 800; color: var(--ink); }
+
+/* ---- Oylik challenge (Strayk kartasi ichida) ---- */
+.ch-toggle {
+  margin-top: 14px; gap: 10px;
+  justify-content: flex-start; text-align: left;
+  padding: 11px 14px;
+}
+.ch-tog-ico { font-size: 18px; line-height: 1; flex-shrink: 0; }
+.ch-tog-txt { min-width: 0; flex: 1; }
+.ch-tog-txt b { display: block; font-size: 14px; font-weight: 800; line-height: 1.2; }
+.ch-tog-txt small {
+  display: block; margin-top: 2px;
+  font-size: 11.5px; font-weight: 700; color: #8279BE;
+}
+.ch-tog-txt i { font-style: normal; color: var(--orange-deep); font-weight: 800; }
+.ch-badge {
+  flex-shrink: 0; padding: 4px 9px; border-radius: 999px;
+  background: var(--purple); color: #fff;
+  font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.ch-toggle .ch-caret { margin-left: 0; transition: transform .2s ease; }
+.ch-toggle[aria-expanded="true"] .ch-caret { transform: rotate(90deg); }
+
+.ch-info {
+  margin-top: 12px; padding: 14px;
+  background: var(--purple-soft); border-radius: var(--r-md);
+  animation: ch-in .22s ease;
+}
+@keyframes ch-in { from { opacity: 0; transform: translateY(-6px); } }
+.ch-left { font-size: 12.8px; font-weight: 600; color: #4A417A; margin-bottom: 12px; }
+.ch-left b { color: var(--purple); font-weight: 800; }
+
+.ch-rules { list-style: none; display: grid; gap: 8px; margin-bottom: 12px; }
+.ch-rules li { display: flex; gap: 8px; font-size: 12.8px; line-height: 1.4; color: #4A417A; font-weight: 600; }
+.ch-rules li span { flex-shrink: 0; font-size: 13px; }
+.ch-rules li b { color: var(--purple); font-weight: 800; }
 
 /* webinar */
 .webinar-body { display: flex; gap: 12px; justify-content: space-between; margin-bottom: 16px; }
-.webinar-info h4 { font-size: 17px; font-weight: 800; }
+.webinar-title { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
 .webinar-info p { color: #555; font-size: 13.5px; margin: 2px 0 12px; }
 .webinar-meta { display: flex; gap: 16px; margin-bottom: 10px; }
 .webinar-meta span { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
 .webinar-meta b { color: var(--ink); font-weight: 700; }
 .webinar-count { color: var(--blue); font-size: 13.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .webinar-art { width: 108px; flex-shrink: 0; align-self: center; }
+.webinar-card .dd-unit b { color: var(--ink); }
+#webinarList { display: contents; }
+.webinar-live { color: var(--blue); font-size: 14px; font-weight: 700; text-align: center; margin: 0 0 16px; }
+.webinar-hint {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  color: var(--blue); font-size: 13px; font-weight: 600; margin-top: 10px;
+}
 
 /* progress cards */
 .bar-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-weight: 800; }
@@ -437,6 +487,12 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 }
 .dd-msg b { color: var(--orange-deep); font-weight: 800; }
 
+/* Demo Day vaqti o'tib "kirmadingiz" holatiga tushgan holat — ogohlantirish ohangi */
+.dd-missed .emoji-tile { background: #FFE9E9; }
+.dd-missed .orange-txt { color: var(--red); }
+.dd-missed .dd-msg { background: #FFECEC; color: #8A2B2B; }
+.dd-missed .dd-msg b { color: #C62828; }
+
 /* ---- Qo'shimcha dars (Demo Day taymerini qayta ishlatadi, urg'u rangi ko'k) ---- */
 .el-when { color: var(--blue); }
 .el-msg {
@@ -445,9 +501,16 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   font-size: 12.8px; line-height: 1.45; color: #3B3F7A; font-weight: 600;
 }
 .el-msg b { color: var(--blue); font-weight: 800; }
-.el-card .dd-unit b { color: var(--blue); }
+.el-card .dd-unit b { color: var(--ink); }
+.dd-card .dd-unit b { color: var(--ink); }
 .el-card .dd-timer { margin-bottom: 11px; }
 .el-note { font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; }
+.el-cancel, .dd-cancel {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--card-soft); color: var(--red); font-weight: 700; font-size: 13.5px;
+  padding: 11px 14px; border-radius: var(--r-sm); margin-bottom: 10px;
+}
+.el-cancel:hover, .dd-cancel:hover { filter: brightness(0.92); }
 
 /* darsga kirilmagan holat — ogohlantirish ohangi */
 .el-missed .emoji-tile { background: #FFE9E9; }
@@ -461,10 +524,11 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   box-shadow: none !important; cursor: not-allowed;
 }
 .btn-disabled:hover { filter: none; }
+.btn-disabled svg { display: none; }
 
 /* ---- Mentor yordami ---- */
 .ai-tile { background: #C4F0D5; }
-.ai-status { color: #12A04A; display: flex; align-items: center; gap: 7px; }
+.ai-status { color: var(--orange); display: flex; align-items: center; gap: 7px; }
 .ai-status::before {
   content: ''; width: 8px; height: 8px; border-radius: 50%;
   background: #16C25C; box-shadow: 0 0 0 3px rgba(22,194,92,.22);
@@ -473,9 +537,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 @keyframes ai-pulse { 50% { opacity: .35; transform: scale(.75); } }
 
 .ai-msg {
-  background: #D3F5E0; border-radius: var(--r-md);
+  background: var(--orange-soft); border-radius: var(--r-md);
   padding: 12px 14px; margin-bottom: 13px;
-  font-size: 13.2px; line-height: 1.4; color: #0E6B36; font-weight: 800;
+  font-size: 13.2px; line-height: 1.4; color: var(--muted); font-weight: 600;
 }
 
 .btn-green { background: var(--green); color: #fff; box-shadow: 0 2.5px 0 var(--green-deep); }
@@ -548,31 +612,60 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 }
 
 /* ---- Kunlik chek-list ---- */
-.cl-count { color: var(--green); }
+.cl-head { align-items: center; }
+.cl-head-title { flex: 1; display: flex; align-items: center; gap: 8px; }
+.cl-head-title h3 { flex-shrink: 0; }
+.cl-count-badge {
+  background: var(--card-soft); color: var(--muted);
+  font-size: 12.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px;
+}
+.cl-info-btn { width: auto; gap: 6px; padding: 0 4px; color: var(--muted); font-size: 13px; font-weight: 600; }
+.cl-info-btn:hover { color: var(--ink); }
 .cl-card .bar { margin-bottom: 12px; }
 
-.cl-list { list-style: none; display: grid; gap: 7px; margin-bottom: 14px; }
-.cl-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 11px; border-radius: var(--r-sm);
-  background: var(--card-soft);
+.cl-dots-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.cl-dots { flex: 1; display: flex; align-items: center; }
+.cl-dot-check {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px;
+  background: var(--card-soft); display: grid; place-items: center;
+  font-size: 12px; color: transparent; font-weight: 800;
 }
-.cl-item.done { background: var(--green-soft); }
+.cl-dot-check.done { background: var(--orange); color: #fff; }
+.cl-dot-line { flex: 1; height: 3px; background: var(--card-soft); }
+.cl-dot-line.done { background: var(--orange); }
+.cl-dots-reward {
+  flex-shrink: 0; background: #FFF4DC; color: #B0730A;
+  font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 999px;
+  display: flex; align-items: center; gap: 4px;
+}
+
+.cl-list { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; margin-bottom: 14px; }
+.cl-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 11px; border-radius: var(--r-sm);
+  background: var(--card-soft); border: 1.5px solid transparent;
+  min-width: 0;
+}
+.cl-item.done { background: var(--card); border-color: var(--green); }
 .cl-mark {
   width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
   display: grid; place-items: center;
   font-size: 12px; font-weight: 800;
   background: #fff; color: #C9C7C1; box-shadow: inset 0 0 0 1.5px #DCDAD4;
+  margin-top: 1px;
 }
 .cl-item.done .cl-mark { background: var(--green); color: #fff; box-shadow: none; }
 .cl-txt { min-width: 0; flex: 1; }
-.cl-name { display: block; font-size: 13px; font-weight: 800; line-height: 1.2; }
+.cl-name {
+  display: block; font-size: 13px; font-weight: 800; line-height: 1.2;
+  overflow-wrap: break-word;
+}
 .cl-task {
   display: block; font-size: 11.5px; font-weight: 600; color: var(--muted);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  line-height: 1.35; margin-top: 2px; overflow-wrap: break-word;
 }
 .cl-item.done .cl-task { color: #3E8A5C; }
-.cl-go { color: var(--muted); flex-shrink: 0; }
+.cl-go { color: var(--muted); flex-shrink: 0; align-self: center; }
 .cl-go:hover { color: var(--ink); }
 
 .cl-claim {
@@ -597,72 +690,14 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .cl-claim.taken { background: var(--green-soft); color: var(--green); cursor: default; box-shadow: none; }
 .cl-claim.taken .cl-claim-ico { filter: none; opacity: 1; animation: none; }
 
-/* ---- Oylik challenge (Strayk kartasi ichida) ---- */
-.ch-toggle {
-  margin-top: 14px; gap: 10px;
-  justify-content: flex-start; text-align: left;
-  padding: 11px 14px;
-}
-.ch-tog-ico { font-size: 18px; line-height: 1; flex-shrink: 0; }
-.ch-tog-txt { min-width: 0; flex: 1; }
-.ch-tog-txt b { display: block; font-size: 14px; font-weight: 800; line-height: 1.2; }
-.ch-tog-txt small {
-  display: block; margin-top: 2px;
-  font-size: 11.5px; font-weight: 700; color: #8279BE;
-}
-.ch-tog-txt i { font-style: normal; color: var(--orange-deep); font-weight: 800; }
-.ch-badge {
-  flex-shrink: 0; padding: 4px 9px; border-radius: 999px;
-  background: var(--purple); color: #fff;
-  font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
-}
-.ch-toggle .ch-caret { margin-left: 0; transition: transform .2s ease; }
-.ch-toggle[aria-expanded="true"] .ch-caret { transform: rotate(90deg); }
-
-.ch-info {
-  margin-top: 12px; padding: 14px;
-  background: var(--purple-soft); border-radius: var(--r-md);
-  animation: ch-in .22s ease;
-}
-@keyframes ch-in { from { opacity: 0; transform: translateY(-6px); } }
-.ch-left { font-size: 12.8px; font-weight: 600; color: #4A417A; margin-bottom: 12px; }
-.ch-left b { color: var(--purple); font-weight: 800; }
-
-.ch-rules { list-style: none; display: grid; gap: 8px; margin-bottom: 12px; }
-.ch-rules li { display: flex; gap: 8px; font-size: 12.8px; line-height: 1.4; color: #4A417A; font-weight: 600; }
-.ch-rules li span { flex-shrink: 0; font-size: 13px; }
-.ch-rules li b { color: var(--purple); font-weight: 800; }
-
-.btn-in-panel { background: var(--purple); color: #fff; box-shadow: 0 2.5px 0 #5B41E0; }
-.btn-in-panel:hover { filter: brightness(1.06); }
-.btn-in-panel:active { box-shadow: 0 0 0 #5B41E0; }
-
 /* bonus */
-.bonus-body {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; margin-bottom: 12px;
+.bonus-box {
+  background: #FFF6E3; border: 1.5px solid #FFE9B8; border-radius: var(--r-md);
+  padding: 14px 15px; margin-bottom: 14px;
 }
-.bonus-info { min-width: 0; }
-.bonus-daylabel { display: block; font-size: 12.5px; color: var(--muted); font-weight: 700; margin-bottom: 2px; }
-.bonus-date { display: block; font-size: 21px; font-weight: 800; letter-spacing: -.4px; line-height: 1.1; }
-.bonus-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
-.bonus-amount {
-  color: var(--orange); font-size: 23px; font-weight: 800;
-  line-height: 1; letter-spacing: -.5px; text-align: right;
-}
-.bonus-amount span { display: block; font-size: 12.5px; margin-top: 3px; }
-.bonus-gift { font-size: 30px; line-height: 1; transition: transform .25s ease; }
-.bonus-card:hover .bonus-gift { transform: rotate(-8deg) scale(1.08); }
-
-/* nega bonus berilishini tushuntiruvchi qator */
-.bonus-why {
-  display: flex; align-items: flex-start; gap: 8px;
-  background: #FFF6E3; border-radius: var(--r-sm);
-  padding: 11px 13px; margin-bottom: 12px;
-  font-size: 12.8px; line-height: 1.45; color: #6C5A33; font-weight: 600;
-}
-.bonus-why b { color: var(--orange-deep); font-weight: 800; }
-.bonus-why-ico { flex-shrink: 0; font-size: 14px; line-height: 1.35; }
+.bonus-box-title { display: block; color: var(--orange-deep); font-size: 14.5px; font-weight: 800; margin-bottom: 6px; }
+.bonus-box p { font-size: 13px; line-height: 1.5; color: #6C5A33; font-weight: 600; }
+.bonus-box p b { color: var(--orange-deep); font-weight: 800; }
 
 /* activity calendar */
 .cal-month { font-weight: 700; font-size: 13.5px; color: #555; margin-bottom: 10px; }
@@ -767,6 +802,112 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .btn-sm { width: auto; padding: 9px 16px; font-size: 13.5px; border-radius: var(--r-sm); }
 .btn-sm svg { margin: 0; }
 
+.btn-gold {
+  background: linear-gradient(180deg, #FFD666, #F2B613);
+  color: #7A4E00; box-shadow: 0 2.5px 0 #C48A00;
+}
+.btn-gold:hover { filter: brightness(1.05); }
+.btn-gold:active { box-shadow: 0 0 0 #C48A00; }
+.btn-gold.claimed {
+  background: var(--card-soft) !important; color: var(--gray1) !important;
+  box-shadow: none !important; cursor: default;
+}
+
+/* ---- Oylik challenge: mukofot olish paneli ---- */
+.ch-claim {
+  margin-top: 14px; padding: 16px 14px; border-radius: var(--r-md);
+  background: #FFF7E0; border: 1.5px dashed #F2B613;
+  text-align: center;
+}
+.ch-claim-emoji { font-size: 28px; margin-bottom: 6px; }
+.ch-claim-text { font-size: 13px; color: #7A5B00; font-weight: 600; margin-bottom: 12px; line-height: 1.4; }
+.ch-claim-text b { color: #B8860B; }
+
+/* ---- Konfetti effekti ---- */
+.confetti-layer { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+.confetti-piece {
+  position: absolute; top: -14px; width: 8px; height: 14px; opacity: .95;
+  border-radius: 2px;
+  animation-name: confetti-fall; animation-timing-function: ease-in; animation-fill-mode: forwards;
+}
+@keyframes confetti-fall {
+  0%   { transform: translate(0, -10px) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--drift, 0px), 105vh) rotate(var(--rot, 360deg)); opacity: 0; }
+}
+
+/* ---- Test paneli (profil almashtirish) ---- */
+.test-panel {
+  background: #14171F; color: #fff;
+  padding: 10px 24px; position: relative; z-index: 200;
+}
+.test-panel-row { display: flex; align-items: center; gap: 12px; max-width: 1180px; margin: 0 auto; }
+.test-panel-emoji { font-size: 20px; flex-shrink: 0; }
+.test-panel-field { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.test-panel-field label { font-size: 12px; color: #9CA3AF; font-weight: 700; }
+.test-panel-field select {
+  background: #262B36; color: #fff; border: 1px solid #3A3F4B;
+  border-radius: 8px; padding: 6px 10px; font-weight: 700; font-size: 13.5px;
+  font-family: inherit; cursor: pointer;
+}
+.test-panel-desc { max-width: 1180px; margin: 6px auto 0; font-size: 12.5px; color: #9CA3AF; line-height: 1.4; }
+
+/* ---- Strayk taqvimi (modal) ---- */
+.streak-flame-btn { cursor: pointer; border: none; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; z-index: 1000;
+}
+.streak-modal {
+  position: relative; width: 100%; max-width: 360px;
+  background: var(--card); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg); padding: 28px 20px 20px;
+  text-align: center; max-height: 90vh; overflow-y: auto;
+}
+.streak-modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--card-soft); color: var(--muted);
+  display: grid; place-items: center; font-size: 14px;
+}
+.streak-modal-close:hover { background: var(--line); }
+.streak-modal-flame { font-size: 56px; line-height: 1; margin-bottom: 6px; }
+
+.streak-modal-nav {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin-bottom: 14px;
+}
+.streak-modal-nav b { font-size: 17px; font-weight: 800; min-width: 90px; }
+
+.streak-modal-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--orange-soft); color: var(--orange);
+  font-weight: 800; font-size: 15px;
+  padding: 7px 16px; border-radius: 999px; margin-bottom: 18px;
+}
+
+.streak-modal-dow {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 8px;
+}
+.streak-modal-dow span { font-size: 12.5px; color: var(--muted); font-weight: 700; }
+
+.streak-modal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  row-gap: 10px;
+}
+.streak-day-cell {
+  width: 34px; height: 34px; margin: 0 auto;
+  border-radius: 50%; display: grid; place-items: center;
+  font-size: 13.5px; font-weight: 700; color: var(--ink);
+}
+.streak-day-cell.on { background: var(--orange); color: #fff; }
+.streak-day-cell.today { box-shadow: 0 0 0 2px var(--orange); }
+.streak-day-cell.on.today { box-shadow: 0 0 0 2px var(--orange-deep); }
+
+.streak-modal-nav button[disabled] { opacity: .35; cursor: not-allowed; }
+
 /* ============ CoinShop ============ */
 .shop-layout:not([hidden]) { display: block; }
 .shop-head {
@@ -861,10 +1002,15 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
   .shop-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 680px) {
+  html, body { overflow-x: hidden; }
   .page { padding: 6px 14px 90px; }
-  .topbar-inner { padding: 12px 14px; gap: 12px; }
-  .logo img { height: 28px; }
+  .topbar-inner { padding: 12px 14px; gap: 8px; }
+  .logo img { height: 26px; }
+  .nav { gap: 2px; }
+  .nav-tab { padding: 8px 12px; font-size: 13.5px; }
+  .topbar-actions { gap: 8px; }
   .topbar-actions .icon-btn:nth-child(2) { display: none; }
+  .icon-btn { width: 38px; height: 38px; }
   .hero { flex-direction: column; padding: 24px 20px 0; }
   .hero-mascot { align-self: center; margin: 0; }
   .hero-mascot img { width: 170px; }

@@ -1,5 +1,20 @@
 /* ============ Junior — prototype logic ============ */
 
+/* ---------- TEST/DEMO rejimi ----------
+   "Bugun" sifatida 2026-yil 31-avgust, soat 09:00 qabul qilinadi,
+   shundan keyin vaqt real tezlikda (jonli) davom etadi.
+   ESLATMA: bu vaqtinchalik test bloki, productionga chiqishdan oldin
+   o'chirilishi kerak. */
+const TEST_NOW_OFFSET_MS = new Date(2026, 7, 20, 9, 0, 0).getTime() - Date.now();
+const _RealDate = Date;
+function TestDate(...args) {
+  if (args.length === 0) return new _RealDate(_RealDate.now() + TEST_NOW_OFFSET_MS);
+  return new _RealDate(...args);
+}
+TestDate.now = () => _RealDate.now() + TEST_NOW_OFFSET_MS;
+TestDate.prototype = _RealDate.prototype;
+Date = TestDate;
+
 const state = { coins: 5297, energy: 5297 };
 
 const fmt = n => n.toLocaleString('ru-RU'); // 12 560 formatida
@@ -121,62 +136,149 @@ renderBoard();
 
 const now = new Date();
 const todayAt = (h, m = 0) => { const d = new Date(); d.setHours(h, m, 0, 0); return d; };
+const dayAt = (offsetDays, h, m = 0) => { const d = new Date(); d.setDate(d.getDate() + offsetDays); d.setHours(h, m, 0, 0); return d; };
+const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
+                   'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
 const dayKey  = d => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 const isToday = d => d && dayKey(d) === dayKey(now);
 
-const PROFILES = {
-  /* Faol o'quvchi profili: 31 kunlik uzluksiz strayk.
-     Raqamlar Junior bazasidagi haqiqiy o'quvchidan olingan (08.08.2026). */
-  faol: {
-    name: 'O\'quvchi A',
-    coins: 24119,
-    mainCourse: 'Dasturlash kursi',
-    module: 'DOM eventlari va selectorlari',
-    idleDays: 0,                       // asosiy kursda tanaffus yo'q
-    streak: 31,                        // bir oydan beri uzluksiz
-    bestStreak: 31,
-    monthActiveDays: 8,                // avgustda faol kunlar (1–8)
-    // bugungi chek-list: bazadagi haqiqiy topshiriqlar
-    checklist: [
-      { name: 'Dasturlash kursi', task: 'Amaliy ish. DOM eventlari va selectorlari', note: 'qabul qilindi',   done: true },
-      { name: 'Telegram Bot',     task: 'Telegram bot. Kirish darsi',                note: 'qabul qilindi',   done: true },
-      { name: 'English',          task: 'Basic conversation 1',                      note: 'hali boshlanmagan', done: false },
-      { name: 'Grafik dizayn',    task: 'Kompozitsiya asoslari',                     note: 'hali boshlanmagan', done: false },
-    ],
-    demoDay:     { at: todayAt(18, 0), mentor: 'Ali G\'aybullayev', module: 'HTML', progress: 100 },
-    extraLesson: { at: todayAt(16, 0), mentor: 'Ali G\'aybullayev', module: 'HTML',
-                   topic: 'Inline elementlari', attended: false },
-    webinar:     { at: todayAt(20, 0), durationMin: 60 },
-    payment:     { date: new Date(2026, 7, 10), paid: false, windowDays: 3, reward: 100 },
-  },
+const PROFILES = {};
 
-  /* Tanaffusdagi o'quvchi profili: 3 kundan beri dars qilmagan.
-     Raqamlar bazadagi haqiqiy o'quvchidan olingan. */
-  tanaffus: {
-    name: 'O\'quvchi B',
-    coins: 37622,
-    mainCourse: 'Dasturlash kursi',
-    module: 'DOM eventlari va selectorlari',
-    idleDays: 3,                       // oxirgi faollik 3 kun oldin
-    streak: 0,
-    bestStreak: 24,
-    monthActiveDays: 5,
-    checklist: [
-      { name: 'Dasturlash kursi', task: 'Amaliy ish. DOM eventlari', note: 'hali boshlanmagan', done: false },
-      { name: 'English',          task: 'Unit 12. Past Simple',      note: 'hali boshlanmagan', done: false },
-      { name: 'Matematika',       task: 'Mental hisob · 12-dars',    note: 'hali boshlanmagan', done: false },
-      { name: 'Typing',           task: 'Yuqori qator: nazorat',     note: 'hali boshlanmagan', done: false },
-    ],
-    demoDay: null,
-    extraLesson: null,
-    webinar: null,
-    payment: { date: new Date(2026, 7, 10), paid: false, windowDays: 3, reward: 100 },
-    // bazada Typing eng kam bajarilgan kurs (4/36) — shuning uchun tavsiya qilinadi
-    suggest: { name: 'Typing', targetId: 'courseTyping', done: 4, total: 36 },
-  },
+PROFILES.demoTest = {
+  name: 'Sheraliyev Abdulrauf',
+  coins: 24500,
+  mainCourse: 'Dasturlash kursi',
+  module: 'HTML',
+  idleDays: 0,
+  forceSuggest: true,        // "Sizga tavsiya" vidjetini shartsiz chiqarish
+  streak: 31,
+  bestStreak: 31,
+  monthActiveDays: 31,       // avgustni 31/31 kun bilan yakunlagan
+  monthReward: 500,          // shu profil uchun oylik challenge mukofoti
+
+  checklist: [
+    { name: 'Dasturlash kursi', task: 'Amaliy ish. DOM eventlari va selectorlari', note: 'qabul qilindi',    done: true  },
+    { name: 'Ingliz tili',      task: 'Unit 12. Past Simple',                     note: 'qabul qilindi',    done: true  },
+    { name: 'Matematika',       task: 'Mental hisob · 12-dars',                   note: 'qabul qilindi',    done: true  },
+    { name: 'Telegram Bot',     task: 'Telegram bot. Kirish darsi',               note: 'hali boshlanmagan', done: false },
+  ],
+
+  demoDay:     { at: dayAt(1, 15, 0), mentor: 'Ali G\'aybullayev', module: 'HTML', progress: 100 },
+  extraLesson: { at: dayAt(1, 14, 0), mentor: 'Ali G\'aybullayev', module: 'HTML',
+                 topic: 'Inline elementlari', attended: false },
+  webinars: [
+    { course: 'IT', at: dayAt(1, 18, 0), durationMin: 60 },
+    { course: 'Grafik dizayn',     at: dayAt(1, 19, 0), durationMin: 60 },
+  ],
+  payment:     { date: dayAt(1, 0, 0), paid: false, windowDays: 3, reward: 100 },
+
+  suggest: { name: 'Sun\'iy Intellekt', targetId: 'courseAI' },
+  calendar: { green: 25, red: 2, gray: 3 },
 };
 
-const S = PROFILES.faol;   // tavsiya vidjetini ko'rish uchun: PROFILES.tanaffus
+/* 2-o'quvchi: ertaga Demo Day, 2 ta vebinar, chek-list 3/3 (claim+konfetti), to'lovga 2 kun qoldi */
+PROFILES.student2 = {
+  name: 'Nodira Yusupova',
+  coins: 8340,
+  mainCourse: 'Dasturlash kursi',
+  module: 'HTML',
+  idleDays: 0,
+  streak: 10,
+  bestStreak: 14,
+  monthActiveDays: 10,
+  monthReward: 100,
+  checklist: [
+    { name: 'Dasturlash kursi', task: 'Amaliy ish. HTML',        note: 'qabul qilindi', done: true },
+    { name: 'Matematika',       task: 'Mental hisob · 10-dars',  note: 'qabul qilindi', done: true },
+    { name: 'Ingliz tili',      task: 'Unit 10. Present Perfect', note: 'qabul qilindi', done: true },
+  ],
+  demoDay:     { at: dayAt(2, 10, 0), mentor: 'Ali G\'aybullayev', module: 'HTML', progress: 100 },
+  extraLesson: null,
+  webinars: [
+    { course: 'IT', at: dayAt(1, 19, 0), durationMin: 60 },
+    { course: 'Grafik dizayn', at: dayAt(1, 20, 0), durationMin: 60 },
+  ],
+  payment: { date: dayAt(2, 0, 0), paid: false, windowDays: 3, reward: 100 },
+  calendar: { green: 5, red: 2, gray: 3 },
+};
+
+/* 3-o'quvchi: ertaga Qo'shimcha dars (Form elementlari), 1 ta vebinar, chek-list 1/2 */
+PROFILES.student3 = {
+  name: 'Jasur Tursunov',
+  coins: 15200,
+  mainCourse: 'Dasturlash kursi',
+  module: 'HTML',
+  idleDays: 0,
+  streak: 15,
+  bestStreak: 15,
+  monthActiveDays: 15,
+  monthReward: 100,
+  checklist: [
+    { name: 'Ingliz tili',      task: 'Unit 15. Comparatives',    note: 'qabul qilindi',     done: true  },
+    { name: 'Dasturlash kursi', task: 'Amaliy ish. Formalar',     note: 'hali boshlanmagan', done: false },
+  ],
+  demoDay:     null,
+  extraLesson: { at: dayAt(3, 9, 0), mentor: 'Ali G\'aybullayev', module: 'HTML',
+                 topic: 'Form elementlari', attended: false },
+  webinars: [{ course: 'IT', at: dayAt(1, 17, 0), durationMin: 60 }],
+  payment: { date: dayAt(10, 0, 0), paid: false, windowDays: 3, reward: 100 },
+  calendar: { green: 10, red: 2, gray: 3 },
+};
+
+/* 5-o'quvchi: faqat vebinar (Grafik dizayn), chek-list 2/3, "Matematika" tavsiya, to'lovga 3 kun qoldi */
+PROFILES.student5 = {
+  name: 'Bekzod Nurmatov',
+  coins: 3200,
+  forceSuggest: true,
+  mainCourse: 'Dasturlash kursi',
+  module: 'HTML',
+  idleDays: 0,
+  streak: 30,
+  bestStreak: 30,
+  monthActiveDays: 30,
+  monthReward: 100,
+  checklist: [
+    { name: 'Ingliz tili',      task: 'Unit 20. Future Simple', note: 'qabul qilindi', done: true  },
+    { name: 'Dasturlash kursi', task: 'Amaliy ish. JS asoslari', note: 'qabul qilindi', done: true  },
+    { name: 'Matematika',       task: 'Mental hisob · 20-dars', note: 'hali boshlanmagan', done: false },
+  ],
+  demoDay: null,
+  extraLesson: null,
+  webinars: [{ course: 'Grafik dizayn', at: dayAt(4, 20, 0), durationMin: 60 }],
+  payment: { date: dayAt(3, 0, 0), paid: false, windowDays: 3, reward: 100 },
+  suggest: { name: 'Matematika', targetId: 'courseMath' },
+  calendar: { green: 20, red: 5, gray: 5 },
+};
+
+/* Test panelida ko'rsatiladigan profil ro'yxati (tavsif bilan) */
+const PROFILE_META = [
+  { key: 'demoTest', desc: 'Bugun Demo Day, Qo\'shimcha dars, 2 ta vebinar, to\'lov bonusi, 31 kunlik strayk — barcha vidjetlar faol.' },
+  { key: 'student2', desc: '2 kundan keyin Demo Day, vebinarlar bugun va ertaga, chek-list 3/3 (mukofot tayyor), to\'lovga 2 kun qoldi.' },
+  { key: 'student3', desc: '3 kundan keyin Qo\'shimcha dars (Form elementlari), vebinar ertaga, chek-list 1/2.' },
+  { key: 'student5', desc: '4 kundan keyin vebinar (Grafik dizayn), chek-list 2/3, "Matematika" tavsiya etiladi, to\'lovga 3 kun qoldi.' },
+].map((p, i) => ({ ...p, label: `${i + 1}. ${PROFILES[p.key].name}` }));
+
+const _profileParam = new URLSearchParams(location.search).get('profile');
+const _activeProfileKey = (_profileParam && PROFILES[_profileParam]) ? _profileParam : 'demoTest';
+const S = PROFILES[_activeProfileKey];
+
+/* ---------- Test paneli: profil almashtirish ---------- */
+(function testPanel() {
+  const select = document.getElementById('profileSelect');
+  const desc   = document.getElementById('profileDesc');
+
+  select.innerHTML = PROFILE_META.map(p =>
+    `<option value="${p.key}"${p.key === _activeProfileKey ? ' selected' : ''}>${p.label}</option>`).join('');
+
+  const current = PROFILE_META.find(p => p.key === _activeProfileKey);
+  desc.textContent = current ? current.desc : '—';
+
+  select.addEventListener('change', () => {
+    const url = new URL(location.href);
+    url.searchParams.set('profile', select.value);
+    location.href = url.toString();
+  });
+})();
 
 const CHECKLIST_REWARD = 30;   // to'liq chek-list uchun
 const MONTH_REWARD     = 100;  // oyni to'liq bosib o'tgani uchun
@@ -185,10 +287,13 @@ const MONTH_REWARD     = 100;  // oyni to'liq bosib o'tgani uchun
 const WEEK = ['Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh', 'Ya'];
 const todayNum = now.getDate();
 const todayDow = now.getDay() || 7;                 // 1=Du … 7=Ya
-// strayk uzluksiz bo'lsa — shu kungacha hamma kun yonadi
-const streakActive = WEEK.map((_, i) => (i + 1 <= todayDow ? (S.streak > i ? 1 : 0) : 0));
+// strayk 7 kun yoki undan uzunroq bo'lsa — haftaning hamma kuni yonadi,
+// aks holda faqat shu kungacha bo'lgan kunlar yonadi
+const streakActive = WEEK.map((_, i) =>
+  S.streak >= 7 ? 1 : (i + 1 <= todayDow ? (S.streak > i ? 1 : 0) : 0));
 
 document.getElementById('streakWeek').innerHTML = WEEK.map((d, i) => `
+  ${i > 0 ? `<span class="week-connector ${streakActive[i - 1] && streakActive[i] ? 'on' : 'off'}"></span>` : ''}
   <div class="week-day ${streakActive[i] ? 'on' : 'off'}${i + 1 === todayDow ? ' today' : ''}">
     <span class="week-flame">🔥</span>
     <span class="week-label">${d}</span>
@@ -198,26 +303,62 @@ document.querySelector('#streakCard .big-num').textContent = `${S.streak} kun`;
 document.querySelectorAll('#streakCard .duo-stats b')[0].textContent = `${S.streak} kun`;
 document.querySelectorAll('#streakCard .duo-stats b')[1].textContent = `${S.bestStreak} kun`;
 
+/* ---------- Strayk oylik taqvimi (katta olovga bosilganda ochiladi) ---------- */
+(function streakModal() {
+  const overlay   = document.getElementById('streakModalOverlay');
+  const openBtn   = document.getElementById('streakFlameBtn');
+  const closeBtn  = document.getElementById('streakModalClose');
+  const grid      = document.getElementById('streakModalGrid');
+  const dow       = document.getElementById('streakModalDow');
+  const monthName = document.getElementById('streakMonthName');
+  const countEl   = document.getElementById('streakModalCount');
+
+  dow.innerHTML = WEEK.map(d => `<span>${d}</span>`).join('');
+
+  function render() {
+    const Y = now.getFullYear(), M = now.getMonth();
+    const total      = new Date(Y, M + 1, 0).getDate();
+    const activeDays = Math.min(S.monthActiveDays, total);
+    const offset     = (new Date(Y, M, 1).getDay() + 6) % 7;   // Du=0 … Ya=6
+
+    monthName.textContent = UZ_MONTHS[M][0].toUpperCase() + UZ_MONTHS[M].slice(1);
+    countEl.textContent = `${activeDays} / ${total}`;
+
+    let cells = '';
+    for (let i = 0; i < offset; i++) cells += '<span></span>';
+    for (let d = 1; d <= total; d++) {
+      const on = d <= activeDays;
+      cells += `<span class="streak-day-cell${on ? ' on' : ''}${d === todayNum ? ' today' : ''}">${d}</span>`;
+    }
+    grid.innerHTML = cells;
+  }
+
+  openBtn.addEventListener('click', () => { render(); overlay.hidden = false; });
+  closeBtn.addEventListener('click', () => { overlay.hidden = true; });
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.hidden = true; });
+
+  // hozircha faqat joriy oy bo'yicha ma'lumot bor
+  document.getElementById('streakMonthPrev').disabled = true;
+  document.getElementById('streakMonthNext').disabled = true;
+})();
+
 /* ---------- Oylik challenge ----------
    Har kunlik amaliy topshirilganda progress to'ladi.
-   Oy to'liq bosib o'tilsa — avtomatik +100 coin. */
+   Oy to'liq bosib o'tilsa — tugma bosilganda mukofot beriladi. */
 (function monthlyChallenge() {
-  const total = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-  const done  = Math.min(S.monthActiveDays, total);
-  const left  = total - done;
-  const pct   = Math.round(done / total * 100);
+  const total  = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const done   = Math.min(S.monthActiveDays, total);
+  const left   = total - done;
+  const pct    = Math.round(done / total * 100);
+  const reward = S.monthReward || MONTH_REWARD;
 
   document.getElementById('chTotal').textContent = total;
   document.getElementById('chDone').textContent  = done;
   document.getElementById('chLeft').textContent  = `${left} kun`;
   document.getElementById('chBar').style.width   = pct + '%';
   document.getElementById('chBadge').textContent = `${done} / ${total} kun`;
-
-  if (left === 0) {                       // oy yakunlandi — mukofot avtomatik
-    state.coins += MONTH_REWARD;
-    syncBalances();
-    toast(`🏆 Oylik challenge bajarildi! +${MONTH_REWARD} coin`);
-  }
+  document.getElementById('chRewardTxt').textContent = `+${reward} coin`;
+  document.getElementById('chRuleReward').textContent = `qo'shimcha +${reward} coin`;
 
   const toggle = document.getElementById('chToggle');
   const info   = document.getElementById('chInfo');
@@ -226,61 +367,116 @@ document.querySelectorAll('#streakCard .duo-stats b')[1].textContent = `${S.best
     info.hidden = !open;
     toggle.setAttribute('aria-expanded', String(open));
   });
+
+  if (left === 0) {                       // oy yakunlandi — mukofot tugma bosilganda
+    document.getElementById('chClaim').hidden = false;
+    document.getElementById('chClaimDone').textContent = `${done}/${total}`;
+
+    const claimBtn = document.getElementById('chClaimBtn');
+    claimBtn.addEventListener('click', () => {
+      if (claimBtn.classList.contains('claimed')) return;
+      state.coins += reward;
+      syncBalances();
+      launchConfetti();
+      claimBtn.classList.add('claimed');
+      document.getElementById('chClaimBtnTxt').textContent = `Olindi ✅ +${reward} coin`;
+      toast(`🏆 G'alaba! +${reward} coin hisobingizga qo'shildi`);
+    });
+  }
 })();
+
+function launchConfetti() {
+  const COLORS = ['#FF7A2F', '#7C66F2', '#23B457', '#4F46E5', '#E0529C', '#F2C230'];
+  const layer = document.createElement('div');
+  layer.className = 'confetti-layer';
+  document.body.appendChild(layer);
+  for (let i = 0; i < 90; i++) {
+    const piece = document.createElement('span');
+    piece.className = 'confetti-piece';
+    piece.style.left = `${Math.random() * 100}vw`;
+    piece.style.background = COLORS[i % COLORS.length];
+    piece.style.setProperty('--drift', `${Math.random() * 160 - 80}px`);
+    piece.style.setProperty('--rot', `${Math.random() * 540}deg`);
+    piece.style.animationDelay = `${Math.random() * 0.35}s`;
+    piece.style.animationDuration = `${2.2 + Math.random() * 1.2}s`;
+    layer.appendChild(piece);
+  }
+  setTimeout(() => layer.remove(), 3800);
+}
 
 /* ---------- Vebinar ----------
    Jonli efir bo'lsa kun boshidan kun oxirigacha ko'rinadi.
    "Qo'shilish" tugmasi boshlanishiga 30 daqiqa qolganda ochiladi.
    Efir tugagach vidjet yo'qoladi. */
 const WEBINAR_OPEN_MIN = 30;
-(function webinar() {
-  const w = S.webinar;
-  if (!w || !isToday(w.at)) return;
+const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
 
-  const card = document.getElementById('webinarCard');
-  const join = document.getElementById('webinarJoin');
-  const pad  = n => String(n).padStart(2, '0');
-  const endsAt = new Date(w.at.getTime() + w.durationMin * 60000);
+(function webinars() {
+  const list = (S.webinars || []).filter(w => dayKey(w.at) >= dayKey(now));
+  const container = document.getElementById('webinarList');
+  const template = document.getElementById('webinarTemplate');
+  const pad = n => String(n).padStart(2, '0');
 
-  document.getElementById('webinarWhen').textContent = 'Bugun';
-  document.getElementById('webinarTime').textContent = `${pad(w.at.getHours())}:${pad(w.at.getMinutes())}`;
+  list.forEach((w, i) => {
+    const id = `webinarCard${i}`;
+    WEBINAR_CARD_IDS.push(id);
 
-  join.addEventListener('click', () => {
-    if (join.disabled) return;
-    toast('Vebinar xonasiga kirilmoqda… 🎥');
-  });
+    const card = template.content.firstElementChild.cloneNode(true);
+    card.id = id;
+    container.appendChild(card);
 
-  function tick() {
-    const t = Date.now();
-    if (t >= endsAt.getTime()) {          // efir tugadi — vidjet yo'qoladi
-      card.hidden = true;
-      arrangeWidgets();
-      return;
+    const endsAt = new Date(w.at.getTime() + w.durationMin * 60000);
+    const join   = card.querySelector('.webinar-join');
+    const timer  = card.querySelector('.webinar-timer');
+    const live   = card.querySelector('.webinar-live');
+    const hint   = card.querySelector('.webinar-hint');
+
+    card.querySelector('.webinar-desc').textContent = `${w.course} bo'yicha qiziqarli mavzu — efirda bilib olasiz 🔓`;
+    card.querySelector('.webinar-when').textContent = isToday(w.at)
+      ? 'Bugun' : `${w.at.getDate()}-${UZ_MONTHS[w.at.getMonth()]}`;
+    card.querySelector('.webinar-time').textContent = `${pad(w.at.getHours())}:${pad(w.at.getMinutes())}`;
+
+    join.addEventListener('click', () => {
+      if (join.disabled) return;
+      toast('Vebinar xonasiga kirilmoqda… 🎥');
+    });
+
+    function tick() {
+      const t = Date.now();
+      if (t >= endsAt.getTime()) {          // efir tugadi — vidjet yo'qoladi
+        card.hidden = true;
+        arrangeWidgets();
+        return;
+      }
+      card.hidden = false;
+      const left = Math.max(0, Math.floor((w.at - t) / 1000));
+      const open = left <= WEBINAR_OPEN_MIN * 60;   // 30 daqiqa qoldi
+      const started = left === 0;
+
+      join.disabled = !open;
+      join.classList.toggle('btn-disabled', !open);
+      hint.hidden = open;
+
+      timer.hidden = started;
+      live.hidden  = !started;
+      if (!started) {
+        card.querySelector('.wb-days').textContent  = pad(Math.floor(left / 86400));
+        card.querySelector('.wb-hours').textContent = pad(Math.floor(left % 86400 / 3600));
+        card.querySelector('.wb-mins').textContent  = pad(Math.floor(left % 3600 / 60));
+        card.querySelector('.wb-secs').textContent  = pad(left % 60);
+      }
     }
-    card.hidden = false;
-    const left = Math.max(0, Math.floor((w.at - t) / 1000));
-    const open = left <= WEBINAR_OPEN_MIN * 60;   // 30 daqiqa qoldi
-
-    join.disabled = !open;
-    join.classList.toggle('btn-disabled', !open);
-    join.firstChild.textContent = open ? 'Vebinarga qo\'shilish ' : `Xona ${WEBINAR_OPEN_MIN} daqiqa oldin ochiladi `;
-
-    document.getElementById('webinarCountdown').textContent = left === 0
-      ? 'Efir davom etmoqda 🔴'
-      : `${pad(Math.floor(left / 3600))}:${pad(Math.floor(left % 3600 / 60))}:${pad(left % 60)} qoldi`;
-  }
-  tick();
-  setInterval(tick, 1000);
+    tick();
+    setInterval(tick, 1000);
+  });
 })();
 
 /* ---------- Demo Day ----------
    Faqat BOOK qilingan kuni ko'rinadi, o'tib ketgach yo'qoladi. */
-const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
-                   'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
 
 (function demoDay() {
   const e = S.demoDay;
-  if (!e || !isToday(e.at)) return;              // bugunga belgilanmagan
+  if (!e || dayKey(e.at) < dayKey(now)) return;   // bugungi yoki kelajakdagi kun bo'lsa ko'rinadi
 
   const card = document.getElementById('ddCard');
   const { at, module: mod, progress, mentor } = e;
@@ -291,19 +487,35 @@ const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
   document.getElementById('ddWhen').textContent = `${date}, ${time}`;
   document.getElementById('ddPct').textContent  = progress + '%';
   document.getElementById('ddBar').style.width  = progress + '%';
-  document.getElementById('ddMsg').innerHTML = progress >= 100
-    ? `🎉 Siz <b>${mod}</b> modulini muvaffaqiyatli yakunladingiz, modul <b>100%</b> yakunlandi.
-       Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan.`
-    : `<b>${mod}</b> moduli bajarilishi hozir <b>${progress}%</b>.
-       Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan.`;
+  const timer  = card.querySelector('.dd-timer');
+  const note   = card.querySelector('.dd-note');
+  const cancel = document.getElementById('ddCancel');
 
   function tick() {
-    if (Date.now() >= at.getTime()) {            // o'tib ketdi — yo'qoladi
-      card.hidden = true;
-      arrangeWidgets();
+    const missed = Date.now() >= at.getTime();
+    card.hidden = false;
+    card.dataset.missed = missed ? '1' : '0';
+
+    if (missed) {                                // vaqti o'tdi, kirmagan
+      card.classList.add('dd-missed');
+      timer.hidden = true;
+      note.hidden = true;
+      cancel.hidden = true;
+      document.getElementById('ddMsg').innerHTML =
+        `⚠️ Sizda bugun soat <b>${time}</b> ga belgilangan Demo Day bor edi, kirmadingiz.
+         Mentor — <b>${mentor}</b>.`;
       return;
     }
-    card.hidden = false;
+
+    card.classList.remove('dd-missed');
+    timer.hidden = false;
+    note.hidden = false;
+    document.getElementById('ddMsg').innerHTML = progress >= 100
+      ? `🎉 Siz <b>${mod}</b> modulini muvaffaqiyatli yakunladingiz, modul <b>100%</b> yakunlandi.
+         Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan.`
+      : `<b>${mod}</b> moduli bajarilishi hozir <b>${progress}%</b>.
+         Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan.`;
+
     const left = Math.max(0, Math.floor((at - Date.now()) / 1000));
     document.getElementById('ddDays').textContent  = pad(Math.floor(left / 86400));
     document.getElementById('ddHours').textContent = pad(Math.floor(left % 86400 / 3600));
@@ -319,7 +531,7 @@ const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
    "kirmadingiz" holatida turadi. */
 (function extraLesson() {
   const e = S.extraLesson;
-  if (!e || !isToday(e.at)) return;
+  if (!e || dayKey(e.at) < dayKey(now)) return;
 
   const card = document.getElementById('elCard');
   const { at, module: mod, topic, mentor } = e;
@@ -328,16 +540,19 @@ const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
   const time = `${pad(at.getHours())}:${pad(at.getMinutes())}`;
   card.hidden = false;
 
-  const note  = card.querySelector('.el-note');
-  const timer = card.querySelector('.dd-timer');
+  const note   = card.querySelector('.el-note');
+  const timer  = card.querySelector('.dd-timer');
+  const cancel = document.getElementById('elCancel');
 
   function tick() {
     const missed = Date.now() >= at.getTime() && !e.attended;
+    card.dataset.missed = missed ? '1' : '0';
     document.getElementById('elWhen').textContent = `${date}, ${time}`;
 
     if (missed) {                                 // vaqti o'tdi, kirmagan
       card.classList.add('el-missed');
       timer.hidden = true;
+      cancel.hidden = true;
       document.getElementById('elMsg').innerHTML =
         `⚠️ Siz bugun soat <b>${time}</b> ga belgilangan qo'shimcha darsga kirmadingiz.
          Mavzu: «${topic}», mentor — <b>${mentor}</b>.`;
@@ -346,11 +561,13 @@ const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
     }
 
     timer.hidden = false;
+    cancel.hidden = false;
     document.getElementById('elMsg').innerHTML =
       `📌 Sizga <b>${mod}</b>dagi «${topic}» mavzusi bo'yicha <b>${mentor}</b> mentor bilan
        qo'shimcha dars belgilangan.<br>Dars vaqti: <b>${date}</b>, soat <b>${time}</b>.`;
     const left = Math.max(0, Math.floor((at - Date.now()) / 1000));
-    document.getElementById('elHours').textContent = pad(Math.floor(left / 3600));
+    document.getElementById('elDays').textContent  = pad(Math.floor(left / 86400));
+    document.getElementById('elHours').textContent = pad(Math.floor(left % 86400 / 3600));
     document.getElementById('elMins').textContent  = pad(Math.floor(left % 3600 / 60));
     document.getElementById('elSecs').textContent  = pad(left % 60);
   }
@@ -359,15 +576,24 @@ const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
 })();
 
 /* ---------- Kunlik chek-list ----------
-   Har kuni yangilanadi. Barcha kurslar bajarilsa — avtomatik +30 coin. */
+   Har kuni yangilanadi. Barcha kurslar bajarilsa — tugma bosilganda +30 coin. */
 (function checklist() {
   const items = S.checklist;
   const done  = items.filter(i => i.done).length;
   const total = items.length;
   const left  = total - done;
 
-  document.getElementById('clCount').textContent = `${done} / ${total} bajarildi`;
+  document.getElementById('clCount').textContent = `${done}/${total}`;
   document.getElementById('clBar').style.width   = Math.round(done / total * 100) + '%';
+
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  const hoursLeft = Math.max(0, Math.ceil((midnight - Date.now()) / 3600000));
+  document.getElementById('clTimeLeft').textContent = `${hoursLeft} soat qoldi`;
+
+  document.getElementById('clDots').innerHTML = items.map((i, idx) => `
+    ${idx > 0 ? `<span class="cl-dot-line${items[idx - 1].done ? ' done' : ''}"></span>` : ''}
+    <span class="cl-dot-check${i.done ? ' done' : ''}">✓</span>`).join('');
+  document.getElementById('clDotsReward').textContent = `+${CHECKLIST_REWARD} coin`;
 
   document.getElementById('clList').innerHTML = items.map(i => `
     <li class="cl-item${i.done ? ' done' : ''}">
@@ -383,13 +609,22 @@ const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
   const title = document.getElementById('clClaimTitle');
   const sub   = document.getElementById('clClaimSub');
 
-  if (left === 0) {                    // to'liq bajarildi — coin avtomatik qo'shiladi
-    state.coins += CHECKLIST_REWARD;
-    syncBalances();
-    claim.classList.add('taken');
-    title.textContent = `+${CHECKLIST_REWARD} coin qo'shildi`;
-    sub.textContent   = 'Chek-list bajarildi — do\'konda sarflashingiz mumkin';
-    toast(`🪙 Chek-list bajarildi! +${CHECKLIST_REWARD} coin`);
+  if (left === 0) {                    // to'liq bajarildi — tugma bosilishini kutadi
+    claim.classList.add('ready');
+    title.textContent = `+${CHECKLIST_REWARD} coin olish`;
+    sub.textContent   = 'Barcha darslar bajarildi — mukofotni oling';
+
+    claim.addEventListener('click', () => {
+      if (claim.classList.contains('taken')) return;
+      state.coins += CHECKLIST_REWARD;
+      syncBalances();
+      launchConfetti();
+      claim.classList.remove('ready');
+      claim.classList.add('taken');
+      title.textContent = `+${CHECKLIST_REWARD} coin qo'shildi`;
+      sub.textContent   = 'Chek-list bajarildi — do\'konda sarflashingiz mumkin';
+      toast(`🪙 Chek-list bajarildi! +${CHECKLIST_REWARD} coin`);
+    });
   } else {
     title.textContent = `Yana ${left} ta dars`;
     sub.textContent   = `To'liq bajarsangiz +${CHECKLIST_REWARD} coin`;
@@ -405,10 +640,12 @@ const SUGGEST_POOL = {
   'Grafik dizayn': { hook: 'Kod yozmasdan ijod qilishni sinab ko\'ring 🎨', outcome: 'Canva\'da o\'z birinchi posteringizni yasaysiz' },
   'Typing':        { hook: 'Klaviaturaga qaramay yozishni o\'rganing ⌨️', outcome: 'birinchi darsda tezligingizni o\'lchaysiz' },
   'Matematika':    { hook: 'Miyani mashq qildiradigan kurs 🧮', outcome: 'birinchi darsda mental hisobni sinab ko\'rasiz' },
+  'Sun\'iy Intellekt': { hook: 'Kelajak kasbini bugundan boshlang 🤖',
+    outcome: 'AI vositalaridan professional foydalanishni o\'rganasiz' },
 };
 
 (function suggestCourse() {
-  if (S.idleDays < SUGGEST_AFTER_IDLE || !S.suggest) return;
+  if ((S.idleDays < SUGGEST_AFTER_IDLE && !S.forceSuggest) || !S.suggest) return;
 
   const { name, targetId } = S.suggest;
   const tone = SUGGEST_POOL[name] || SUGGEST_POOL['Grafik dizayn'];
@@ -448,22 +685,49 @@ const SUGGEST_POOL = {
     left === 0 ? 'Bugun to\'lov kuningiz' : `To'lovingizga ${left} kun qoldi`;
   document.getElementById('bonusDate').textContent =
     `${pad(p.date.getDate())}.${pad(p.date.getMonth() + 1)}.${p.date.getFullYear()}`;
+  document.getElementById('bonusWhyText').innerHTML =
+    `Shu kungacha to'lasangiz — hisobingizga <b>+${p.reward} coin</b> qo'shiladi. Muddat o'tsa, bu oygi bonus berilmaydi.`;
 })();
 
 /* ================= Vidjetlar tartibi =================
    Muhim eslatmalar: Demo Day → Qo'shimcha dars → Vebinar → To'lov.
    Kechqurun 19:00–00:00 da chek-list ularning ortidan birinchi bo'lib chiqadi,
    aks holda strayk oldinda. Kalendar doim oxirida.                          */
-const EVENING_FROM = 19;
+const EVENING_FROM_H = 20;
+const EVENING_FROM_M = 30;
 
 function arrangeWidgets() {
   const shown = id => { const el = document.getElementById(id); return el && !el.hidden; };
-  const evening = new Date().getHours() >= EVENING_FROM;
+  const missed = id => { const el = document.getElementById(id); return el && el.dataset.missed === '1'; };
+  const d = new Date();
+  const evening = d.getHours() > EVENING_FROM_H ||
+    (d.getHours() === EVENING_FROM_H && d.getMinutes() >= EVENING_FROM_M);
 
   const seq = [];
-  ['ddCard', 'elCard', 'webinarCard', 'bonusCard'].forEach(id => { if (shown(id)) seq.push(id); });
+
+  const EVENT_TIME = { ddCard: S.demoDay?.at, elCard: S.extraLesson?.at };
+  (S.webinars || []).forEach((w, i) => { EVENT_TIME[`webinarCard${i}`] = w.at; });
+
+  const activeEvents = ['ddCard', 'elCard', ...WEBINAR_CARD_IDS]
+    .filter(id => shown(id) && !missed(id))
+    .sort((a, b) => EVENT_TIME[a] - EVENT_TIME[b]);
+  seq.push(...activeEvents);
+
+  if (shown('bonusCard')) seq.push('bonusCard');
+
+  const anyEventToday = activeEvents.length > 0;
+  if (anyEventToday) seq.push('mentorCard');
+
+  ['ddCard', 'elCard']
+    .filter(id => shown(id) && missed(id))
+    .sort((a, b) => EVENT_TIME[a] - EVENT_TIME[b])
+    .forEach(id => seq.push(id));
+
   seq.push(...(evening ? ['clCard', 'streakCard'] : ['streakCard', 'clCard']));
-  seq.push('mentorCard', 'sgCard', 'calCard');
+
+  if (!anyEventToday) seq.push('mentorCard');
+
+  seq.push('sgCard', 'calCard');
 
   seq.forEach((id, i) => {
     const el = document.getElementById(id);
@@ -476,25 +740,16 @@ setInterval(arrangeWidgets, 30000);   // kun/vaqt o'zgarsa tartib o'zi yangilana
 /* ---------- Aktivlik kalendari ---------- */
 const CAL_COURSES = ['Dasturlash kursi', 'Ingliz tili kursi', 'Matematika kursi'];
 
-/* Namuna ma'lumoti. st: full | part | rej | view | none, c: kurs indekslari */
-const CAL_DAYS = {
-  1:  { st: 'full', c: [0, 1] },     2:  { st: 'full', c: [0] },
-  3:  { st: 'part', c: [0, 2] },     4:  { st: 'full', c: [0, 1, 2] },
-  5:  { st: 'view', c: [1] },        6:  { st: 'full', c: [0, 1] },
-  7:  { st: 'full', c: [0, 1] },     8:  { st: 'rej',  c: [0] },
-  9:  { st: 'none', c: [] },         10: { st: 'full', c: [0, 2] },
-  11: { st: 'part', c: [1] },        12: { st: 'full', c: [0, 1] },
-  13: { st: 'full', c: [0] },        14: { st: 'view', c: [0, 2] },
-  15: { st: 'full', c: [0, 1, 2] },  16: { st: 'rej',  c: [1] },
-  17: { st: 'full', c: [0] },        18: { st: 'part', c: [0, 1] },
-  19: { st: 'full', c: [1, 2] },     20: { st: 'none', c: [] },
-  21: { st: 'full', c: [0, 1] },     22: { st: 'full', c: [0] },
-  23: { st: 'view', c: [1] },        24: { st: 'part', c: [0, 2] },
-  25: { st: 'full', c: [0, 1] },     26: { st: 'rej',  c: [0, 1] },
-  27: { st: 'full', c: [2] },        28: { st: 'full', c: [0, 1] },
-  29: { st: 'part', c: [0] },        30: { st: 'full', c: [0, 1, 2] },
-  31: { st: 'full', c: [0, 1, 2] },
-};
+/* Profil bo'yicha: st: full(yashil) | rej(qizil) | view(kulrang) | none(bo'sh), c: kurs indekslari
+   S.calendar = { green, red, gray } — kunlar shu tartibda 1-kundan boshlab to'ldiriladi. */
+const CAL_DAYS = {};
+(function buildCalDays() {
+  const cfg = S.calendar || { green: 25, red: 2, gray: 3 };
+  let d = 1;
+  for (let i = 0; i < cfg.green; i++) CAL_DAYS[d++] = { st: 'full', c: [i % 3] };
+  for (let i = 0; i < cfg.red;   i++) CAL_DAYS[d++] = { st: 'rej',  c: [i % 3] };
+  for (let i = 0; i < cfg.gray;  i++) CAL_DAYS[d++] = { st: 'view', c: [i % 3] };
+})();
 
 /* har bir holatda qaysi bosqich bajarilgani */
 const CAL_STEPS = {

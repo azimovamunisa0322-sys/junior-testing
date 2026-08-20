@@ -1,0 +1,56 @@
+TEST O'QUVCHI PROFILLARI (bugun = 20-avgust)
+=============================================
+
+1. SHERALIYEV ABDULRAUF
+-----------------------
+Demo Day: 21-avgust, 15:00, Ali G'aybullayev, HTML - 100% modul, taymer ishlaydi, "Demodayni bekor qilish" tugmasi bor
+Qo'shimcha dars: 21-avgust, 14:00, Ali G'aybullayev, HTML (Inline elementlari)
+Vebinar: 2 ta - IT (21-avgust, 18:00) va Grafik dizayn (21-avgust, 19:00)
+Strayk: 31 kun (butun oy uzluksiz), eng yaxshisi ham 31 kun
+Oylik challenge: 31/31 kun - mukofot tayyor, tugma bosilganda +500 coin va konfetti
+Kunlik chek-list: 4 kurs (Dasturlash, Ingliz tili, Matematika - bajarilgan; Telegram Bot - bajarilmagan) - 3/4
+To'lov bonusi: ertaga (21-avgust) - "1 kun qoldi", +100 coin
+Sizga tavsiya: Sun'iy Intellekt kursi (majburiy ko'rsatiladi)
+Aktivlik kalendari: 25 yashil / 2 qizil / 3 kulrang
+
+2. NODIRA YUSUPOVA
+-------------------
+Demo Day: 22-avgust, 10:00, HTML - 100% modul
+Qo'shimcha dars: yo'q
+Vebinar: 2 ta - IT (21-avgust, 19:00) va Grafik dizayn (21-avgust, 20:00)
+Strayk: 10 kun, eng yaxshisi 14 kun
+Oylik challenge: 10/31 kun (yarmidan kam)
+Kunlik chek-list: 3 kurs, HAMMASI bajarilgan (3/3) - mukofot tugmasi tayyor, bosilganda +30 coin va konfetti
+To'lov bonusi: 22-avgust - "2 kun qoldi", +100 coin
+Aktivlik kalendari: 5 yashil / 2 qizil / 3 kulrang
+
+3. JASUR TURSUNOV
+------------------
+Demo Day: yo'q
+Qo'shimcha dars: 23-avgust, 09:00, HTML (Form elementlari)
+Vebinar: 1 ta - IT (21-avgust, 17:00)
+Strayk: 15 kun, eng yaxshisi ham 15 kun
+Oylik challenge: 15/31 kun
+Kunlik chek-list: 2 kurs (Ingliz tili - bajarilgan, Dasturlash kursi - bajarilmagan) - 1/2
+To'lov bonusi: yo'q (muddati juda uzoq, oyna tashqarisida)
+Aktivlik kalendari: 10 yashil / 2 qizil / 3 kulrang
+
+4. BEKZOD NURMATOV
+-------------------
+Demo Day: yo'q
+Qo'shimcha dars: yo'q
+Vebinar: 1 ta - Grafik dizayn (24-avgust, 20:00)
+Strayk: 30 kun, eng yaxshisi ham 30 kun
+Oylik challenge: 30/31 kun (deyarli tugagan)
+Kunlik chek-list: 3 kurs (Ingliz tili, Dasturlash kursi - bajarilgan; Matematika - bajarilmagan) - 2/3
+To'lov bonusi: 23-avgust - "3 kun qoldi", +100 coin
+Sizga tavsiya: Matematika kursi (majburiy ko'rsatiladi)
+Aktivlik kalendari: 20 yashil / 5 qizil / 5 kulrang
+
+-------------------------------------------------------
+Profilni almashtirish: sahifa yuqorisidagi qora panelda
+"O'quvchi profili (test)" dropdown, yoki URL orqali:
+  ?profile=demoTest
+  ?profile=student2
+  ?profile=student3
+  ?profile=student5
