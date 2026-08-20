@@ -262,6 +262,13 @@ const _profileParam = new URLSearchParams(location.search).get('profile');
 const _activeProfileKey = (_profileParam && PROFILES[_profileParam]) ? _profileParam : 'demoTest';
 const S = PROFILES[_activeProfileKey];
 
+document.getElementById('heroName').textContent = S.name;
+const _youRowGuruh  = BOARDS.guruh.find(p => p.you);
+const _youRowBarcha = BOARDS.barcha.find(p => p.you);
+if (_youRowGuruh)  _youRowGuruh.name  = S.name;
+if (_youRowBarcha) _youRowBarcha.name = S.name;
+renderBoard();
+
 /* ---------- Test paneli: profil almashtirish ---------- */
 (function testPanel() {
   const select = document.getElementById('profileSelect');
