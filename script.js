@@ -1,7 +1,7 @@
 /* ============ Junior — prototype logic ============ */
 
 /* ---------- TEST/DEMO rejimi ----------
-   "Bugun" sifatida 2026-yil 31-avgust, soat 09:00 qabul qilinadi,
+   "Bugun" sifatida 2026-yil 20-avgust, soat 09:00 qabul qilinadi,
    shundan keyin vaqt real tezlikda (jonli) davom etadi.
    ESLATMA: bu vaqtinchalik test bloki, productionga chiqishdan oldin
    o'chirilishi kerak. */
@@ -132,7 +132,7 @@ renderBoard();
 
 /* ================= VIDJETLAR: ma'lumot ==================
    Namunaviy ma'lumotlar go.junior-it.uz bazasidan olingan (MCP, 08.08.2026).
-   Profilni almashtirish uchun pastdagi `const S = ...` qatorini o'zgartiring. */
+   Profilni almashtirish uchun yuqoridagi test panelidan foydalaning. */
 
 const now = new Date();
 const todayAt = (h, m = 0) => { const d = new Date(); d.setHours(h, m, 0, 0); return d; };
@@ -262,13 +262,6 @@ const _profileParam = new URLSearchParams(location.search).get('profile');
 const _activeProfileKey = (_profileParam && PROFILES[_profileParam]) ? _profileParam : 'demoTest';
 const S = PROFILES[_activeProfileKey];
 
-document.getElementById('heroName').textContent = S.name;
-const _youRowGuruh  = BOARDS.guruh.find(p => p.you);
-const _youRowBarcha = BOARDS.barcha.find(p => p.you);
-if (_youRowGuruh)  _youRowGuruh.name  = S.name;
-if (_youRowBarcha) _youRowBarcha.name = S.name;
-renderBoard();
-
 /* ---------- Test paneli: profil almashtirish ---------- */
 (function testPanel() {
   const select = document.getElementById('profileSelect');
@@ -307,8 +300,8 @@ document.getElementById('streakWeek').innerHTML = WEEK.map((d, i) => `
   </div>`).join('');
 
 document.querySelector('#streakCard .big-num').textContent = `${S.streak} kun`;
-document.querySelectorAll('#streakCard .duo-stats b')[0].textContent = `${S.streak} kun`;
-document.querySelectorAll('#streakCard .duo-stats b')[1].textContent = `${S.bestStreak} kun`;
+document.querySelectorAll('#streakCard .duo-stats b')[0].textContent = `${S.streak} Kun`;
+document.querySelectorAll('#streakCard .duo-stats b')[1].textContent = `${S.bestStreak} Kun`;
 
 /* ---------- Strayk oylik taqvimi (katta olovga bosilganda ochiladi) ---------- */
 (function streakModal() {
@@ -518,7 +511,7 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
     timer.hidden = false;
     note.hidden = false;
     document.getElementById('ddMsg').innerHTML = progress >= 100
-      ? `🎉 Siz <b>${mod}</b> modulini muvaffaqiyatli yakunladingiz, modul <b>100%</b> yakunlandi.
+      ? `Siz <b>${mod}</b> modulini muvaffaqiyatli yakunladingiz, modul <b>100%</b> yakunlandi.
          Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan.`
       : `<b>${mod}</b> moduli bajarilishi hozir <b>${progress}%</b>.
          Sizga <b>${date}</b> kuni soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan Demo Day belgilangan.`;
@@ -563,15 +556,15 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
       document.getElementById('elMsg').innerHTML =
         `⚠️ Siz bugun soat <b>${time}</b> ga belgilangan qo'shimcha darsga kirmadingiz.
          Mavzu: «${topic}», mentor — <b>${mentor}</b>.`;
-      note.textContent = 'Mentorga yozib, darsni boshqa kunga ko\'chiring';
+      note.innerHTML = '<svg width="14" height="14"><use href="#i-info-f"/></svg> Mentorga yozib, darsni boshqa kunga ko\'chiring';
       return;
     }
 
     timer.hidden = false;
     cancel.hidden = false;
     document.getElementById('elMsg').innerHTML =
-      `📌 Sizga <b>${mod}</b>dagi «${topic}» mavzusi bo'yicha <b>${mentor}</b> mentor bilan
-       qo'shimcha dars belgilangan.<br>Dars vaqti: <b>${date}</b>, soat <b>${time}</b>.`;
+      `Sizga <b>${mod}</b>dagi «${topic}» mavzusi bo'yicha <b>${mentor}</b> mentor bilan
+       qo'shimcha dars belgilangan. Dars vaqti: <b>${date}</b>, soat <b>${time}</b>.`;
     const left = Math.max(0, Math.floor((at - Date.now()) / 1000));
     document.getElementById('elDays').textContent  = pad(Math.floor(left / 86400));
     document.getElementById('elHours').textContent = pad(Math.floor(left % 86400 / 3600));
@@ -583,7 +576,8 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
 })();
 
 /* ---------- Kunlik chek-list ----------
-   Har kuni yangilanadi. Barcha kurslar bajarilsa — tugma bosilganda +30 coin. */
+   Har kuni yangilanadi. Barcha kurslar bajarilsa — tugma bosilganda +30 coin.
+   Freym bo'yicha: mukofot tugmasi faqat hammasi bajarilganda ko'rinadi. */
 (function checklist() {
   const items = S.checklist;
   const done  = items.filter(i => i.done).length;
@@ -599,17 +593,18 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
 
   document.getElementById('clDots').innerHTML = items.map((i, idx) => `
     ${idx > 0 ? `<span class="cl-dot-line${items[idx - 1].done ? ' done' : ''}"></span>` : ''}
-    <span class="cl-dot-check${i.done ? ' done' : ''}">✓</span>`).join('');
-  document.getElementById('clDotsReward').textContent = `+${CHECKLIST_REWARD} coin`;
+    <span class="cl-dot-check${i.done ? ' done' : ''}"><svg width="11" height="11"><use href="#i-check"/></svg></span>`).join('');
+  document.getElementById('clDotsReward').innerHTML =
+    `<svg width="14" height="14"><use href="#i-coin"/></svg> +${CHECKLIST_REWARD} coin`;
 
   document.getElementById('clList').innerHTML = items.map(i => `
     <li class="cl-item${i.done ? ' done' : ''}">
-      <span class="cl-mark">${i.done ? '✓' : ''}</span>
+      <span class="cl-mark"><svg width="11" height="11"><use href="#i-check"/></svg></span>
       <span class="cl-txt">
         <b class="cl-name">${i.name}</b>
         <span class="cl-task">«${i.task}» · ${i.note}</span>
       </span>
-      ${i.done ? '' : '<svg class="cl-go" width="16" height="16"><use href="#i-chev-r"/></svg>'}
+      ${i.done ? '' : '<svg class="cl-go" width="15" height="15"><use href="#i-chev-r"/></svg>'}
     </li>`).join('');
 
   const claim = document.getElementById('clClaim');
@@ -617,7 +612,7 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
   const sub   = document.getElementById('clClaimSub');
 
   if (left === 0) {                    // to'liq bajarildi — tugma bosilishini kutadi
-    claim.classList.add('ready');
+    claim.hidden = false;
     title.textContent = `+${CHECKLIST_REWARD} coin olish`;
     sub.textContent   = 'Barcha darslar bajarildi — mukofotni oling';
 
@@ -626,15 +621,11 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
       state.coins += CHECKLIST_REWARD;
       syncBalances();
       launchConfetti();
-      claim.classList.remove('ready');
       claim.classList.add('taken');
       title.textContent = `+${CHECKLIST_REWARD} coin qo'shildi`;
       sub.textContent   = 'Chek-list bajarildi — do\'konda sarflashingiz mumkin';
       toast(`🪙 Chek-list bajarildi! +${CHECKLIST_REWARD} coin`);
     });
-  } else {
-    title.textContent = `Yana ${left} ta dars`;
-    sub.textContent   = `To'liq bajarsangiz +${CHECKLIST_REWARD} coin`;
   }
 })();
 
@@ -643,12 +634,21 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
    3 kun ketma-ket dars qilinsa — yo'qoladi. */
 const SUGGEST_AFTER_IDLE = 3;
 const SUGGEST_POOL = {
-  'Ingliz tili':   { hook: 'Har kuni 10 daqiqa — natija seziladi 🇬🇧', outcome: 'birinchi darsda 20 ta yangi so\'z o\'rganasiz' },
-  'Grafik dizayn': { hook: 'Kod yozmasdan ijod qilishni sinab ko\'ring 🎨', outcome: 'Canva\'da o\'z birinchi posteringizni yasaysiz' },
-  'Typing':        { hook: 'Klaviaturaga qaramay yozishni o\'rganing ⌨️', outcome: 'birinchi darsda tezligingizni o\'lchaysiz' },
-  'Matematika':    { hook: 'Miyani mashq qildiradigan kurs 🧮', outcome: 'birinchi darsda mental hisobni sinab ko\'rasiz' },
+  'Ingliz tili':   { hook: 'Har kuni 10 daqiqa — natija seziladi 🇬🇧', outcome: '20 ta yangi so\'z o\'rganasiz' },
+  'Grafik dizayn': { hook: 'Kod yozmasdan ijod qilishni sinab ko\'ring!', outcome: 'Canva\'da o\'z birinchi posteringizni yasaysiz' },
+  'Typing':        { hook: 'Klaviaturaga qaramay yozishni o\'rganing ⌨️', outcome: 'tezligingizni o\'lchaysiz' },
+  'Matematika':    { hook: 'Miyani mashq qildiradigan kurs 🧮', outcome: 'mental hisobni sinab ko\'rasiz' },
   'Sun\'iy Intellekt': { hook: 'Kelajak kasbini bugundan boshlang 🤖',
     outcome: 'AI vositalaridan professional foydalanishni o\'rganasiz' },
+};
+
+/* tavsiya kartasidagi kichik muqova — karuseldagi kurs muqovasi bilan bir xil */
+const COURSE_COVER = {
+  'Grafik dizayn':     { cls: 'cover-pink',   label: 'GRAFIK<br>DIZAYN', photo: 'assets/frame/course-grafik.png' },
+  'Sun\'iy Intellekt': { cls: 'cover-purple', label: 'SUN\'IY<br>INTELLEKT' },
+  'Matematika':        { cls: 'cover-teal',   label: 'MATEMATIKA' },
+  'Ingliz tili':       { cls: 'cover-orange', label: 'INGLIZ TILI' },
+  'Typing':            { cls: 'cover-sand',   label: 'TYPING' },
 };
 
 (function suggestCourse() {
@@ -664,6 +664,16 @@ const SUGGEST_POOL = {
      <b>${name}</b> — Junior'dagi eng yangi kurs.
      Hozir <b>${S.module}</b> ustida ishlayapsiz, ikkalasi birga yaxshi ishlaydi.
      Birinchi darsda ${tone.outcome}.`;
+
+  const thumb = document.getElementById('sgThumb');
+  const cover = COURSE_COVER[name] || COURSE_COVER['Grafik dizayn'];
+  if (cover.photo) {
+    thumb.classList.add('has-photo');
+    thumb.innerHTML = `<img src="${cover.photo}" alt="">`;
+  } else {
+    thumb.classList.add(cover.cls);
+    thumb.innerHTML = `<img src="assets/robo-1.png" alt=""><span>${cover.label}</span>`;
+  }
 
   document.getElementById('sgBtn').addEventListener('click', () => {
     const tab = document.querySelector('.nav-tab[data-view="kurslar"]');
@@ -693,7 +703,7 @@ const SUGGEST_POOL = {
   document.getElementById('bonusDate').textContent =
     `${pad(p.date.getDate())}.${pad(p.date.getMonth() + 1)}.${p.date.getFullYear()}`;
   document.getElementById('bonusWhyText').innerHTML =
-    `Shu kungacha to'lasangiz — hisobingizga <b>+${p.reward} coin</b> qo'shiladi. Muddat o'tsa, bu oygi bonus berilmaydi.`;
+    `Shu kungacha to'lasangiz — hisobingizga <b>+${p.reward} coin qo'shiladi</b>. Muddat o'tsa, bu oygi bonus berilmaydi.`;
 })();
 
 /* ================= Vidjetlar tartibi =================
