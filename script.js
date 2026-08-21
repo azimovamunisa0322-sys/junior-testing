@@ -560,17 +560,10 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
   let missedModalShown = false;
   function tick() {
     const missed = Date.now() >= at.getTime() || e.forceMissed;
-    card.hidden = false;
     card.dataset.missed = missed ? '1' : '0';
 
-    if (missed) {                                // vaqti o'tdi, kirmagan
-      card.classList.add('dd-missed');
-      timer.hidden = true;
-      note.hidden = true;
-      cancel.hidden = true;
-      document.getElementById('ddMsg').innerHTML =
-        `⚠️ Sizda bugun soat <b>${time}</b> ga belgilangan Demo Day bor edi, kirmadingiz.
-         Mentor — <b>${mentor}</b>.`;
+    if (missed) {                                // vaqti o'tdi, kirmagan — vidjet o'rniga modal ogohlantiradi
+      card.hidden = true;
       if (!missedModalShown) {                    // sahifa ochilganda bir marta ogohlantirish modali chiqadi
         missedModalShown = true;
         document.getElementById('missedModalText').innerHTML =
@@ -582,6 +575,7 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
       return;
     }
 
+    card.hidden = false;
     card.classList.remove('dd-missed');
     timer.hidden = false;
     note.hidden = false;
