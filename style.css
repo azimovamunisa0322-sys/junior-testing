@@ -914,6 +914,33 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .qr-amount { font-size: 15px; font-weight: 800; color: var(--gold-txt, var(--orange)); margin-bottom: 10px; }
 .qr-modal-note { font-size: 12px; color: var(--muted); line-height: 1.4; }
 
+/* ---- Voqeani o'tkazib yuborganda ogohlantirish modali ---- */
+.missed-modal {
+  position: relative; width: 100%; max-width: 340px;
+  background: var(--card); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg); padding: 30px 22px 22px;
+  text-align: center; max-height: 90vh; overflow-y: auto;
+  border-top: 5px solid var(--red);
+}
+.missed-modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--card-soft); color: var(--muted);
+  display: grid; place-items: center; font-size: 14px;
+}
+.missed-modal-close:hover { background: var(--line); }
+.missed-modal-robot {
+  width: 108px; height: auto; margin: 0 auto 4px;
+  filter: grayscale(.35) saturate(1.15);
+}
+.missed-modal-emoji { font-size: 26px; margin-bottom: 4px; }
+.missed-modal-title { font-size: 18px; font-weight: 800; color: #C62828; margin-bottom: 10px; }
+.missed-modal-text { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin-bottom: 20px; }
+.missed-modal-text b { color: #C62828; }
+.missed-modal-btn { background: var(--red); box-shadow: 0 2.5px 0 #C62828; }
+.missed-modal-btn:hover { filter: brightness(1.05); }
+.missed-modal-btn:active { box-shadow: 0 0 0 #C62828; }
+
 /* ============ CoinShop ============ */
 .shop-layout:not([hidden]) { display: block; }
 .shop-head {

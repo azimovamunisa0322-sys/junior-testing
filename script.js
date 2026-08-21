@@ -278,6 +278,35 @@ PROFILES.munisa = {
   calendar: { green: 1, red: 2, gray: 0 },
 };
 
+/* 7-o'quvchi: 31 kunlik full strayk (eng tepada), chek-list 5/5 (claim+konfetti),
+   oylik challenge 31/31 (+500 coin), va bugungi Demo Day'ga kirmagan —
+   sahifa ochilishi bilan ogohlantirish modali chiqadi. */
+PROFILES.naima = {
+  name: 'Naima Ikramova',
+  coins: 18700,
+  streakFirst: true,          // strayk arrangeWidgets'da har doim birinchi bo'lsin
+  mainCourse: 'Dasturlash kursi',
+  module: 'HTML',
+  idleDays: 0,
+  streak: 31,
+  bestStreak: 31,
+  monthActiveDays: 31,
+  monthReward: 500,
+  checklist: [
+    { name: 'Ingliz tili',      task: 'Unit 25. Passive voice',      note: 'qabul qilindi', done: true },
+    { name: 'Matematika',       task: 'Mental hisob · 25-dars',      note: 'qabul qilindi', done: true },
+    { name: 'Grafik dizayn',    task: 'Amaliy ish. Kompozitsiya',    note: 'qabul qilindi', done: true },
+    { name: 'Dasturlash kursi', task: 'Amaliy ish. HTML',            note: 'qabul qilindi', done: true },
+    { name: 'Telegram Bot',     task: 'Telegram bot. Kirish darsi',  note: 'qabul qilindi', done: true },
+  ],
+  // Bugungi Demo Day — vaqtida kirmagan (forceMissed: sahifa ochilganda
+  // darhol ogohlantirish modali chiqishi uchun, real vaqtni kutmasdan).
+  demoDay: { at: todayAt(15, 0), mentor: 'Ali G\'aybullayev', module: 'HTML', progress: 100, forceMissed: true },
+  extraLesson: null,
+  webinars: [],
+  calendar: { green: 31, red: 0, gray: 0 },
+};
+
 /* Test panelida ko'rsatiladigan profil ro'yxati (tavsif bilan) */
 const PROFILE_META = [
   { key: 'demoTest', desc: 'Bugun Demo Day, Qo\'shimcha dars, 2 ta vebinar, to\'lov bonusi, 31 kunlik strayk — barcha vidjetlar faol.' },
@@ -285,6 +314,7 @@ const PROFILE_META = [
   { key: 'student3', desc: '3 kundan keyin Qo\'shimcha dars (Form elementlari), vebinar ertaga, chek-list 1/2.' },
   { key: 'student5', desc: 'Vebinar (Grafik dizayn) hozir ochilgan (qo\'shilish mumkin), chek-list 2/3, "IT kursi" eslatiladi, to\'lovga 3 kun qoldi (QR kod bilan).' },
   { key: 'munisa',   desc: 'Chek-list 0/3 (eng tepada), streak 3 kun, "Sun\'iy Intellekt" kursi eslatiladi, boshqa event yo\'q.' },
+  { key: 'naima',    desc: 'Strayk 31/31 (eng tepada), chek-list 5/5, challenge +500 coin, bugungi Demo Day\'ga kirmagan (ochilganda ogohlantirish modali chiqadi).' },
 ].map((p, i) => ({ ...p, label: `${i + 1}. ${PROFILES[p.key].name}` }));
 
 const _profileParam = new URLSearchParams(location.search).get('profile');
@@ -527,8 +557,9 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
   const note   = card.querySelector('.dd-note');
   const cancel = document.getElementById('ddCancel');
 
+  let missedModalShown = false;
   function tick() {
-    const missed = Date.now() >= at.getTime();
+    const missed = Date.now() >= at.getTime() || e.forceMissed;
     card.hidden = false;
     card.dataset.missed = missed ? '1' : '0';
 
@@ -540,6 +571,13 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
       document.getElementById('ddMsg').innerHTML =
         `⚠️ Sizda bugun soat <b>${time}</b> ga belgilangan Demo Day bor edi, kirmadingiz.
          Mentor — <b>${mentor}</b>.`;
+      if (!missedModalShown) {                    // sahifa ochilganda bir marta ogohlantirish modali chiqadi
+        missedModalShown = true;
+        document.getElementById('missedModalText').innerHTML =
+          `Sizga bugun soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan <b>${mod}</b> mavzusidan
+           Demo Day belgilangan edi, lekin siz vaqtida kirmadingiz.`;
+        document.getElementById('missedModalOverlay').hidden = false;
+      }
       return;
     }
 
@@ -769,6 +807,14 @@ const COURSE_COVER = {
   overlay.addEventListener('click', e => { if (e.target === overlay) overlay.hidden = true; });
 })();
 
+(function missedEventModal() {
+  const overlay = document.getElementById('missedModalOverlay');
+  const close = () => { overlay.hidden = true; };
+  document.getElementById('missedModalClose').addEventListener('click', close);
+  document.getElementById('missedModalOkBtn').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+})();
+
 /* ================= Vidjetlar tartibi =================
    Muhim eslatmalar: Demo Day → Qo'shimcha dars → Vebinar → To'lov.
    Kechqurun 19:00–00:00 da chek-list ularning ortidan birinchi bo'lib chiqadi,
@@ -786,6 +832,7 @@ function arrangeWidgets() {
   const seq = [];
 
   if (S.checklistFirst) seq.push('clCard');   // chek-list har doim eng birinchi bo'lishi kerak bo'lgan profillar uchun
+  if (S.streakFirst) seq.push('streakCard');  // strayk har doim eng birinchi bo'lishi kerak bo'lgan profillar uchun
 
   const EVENT_TIME = { ddCard: S.demoDay?.at, elCard: S.extraLesson?.at };
   (S.webinars || []).forEach((w, i) => { EVENT_TIME[`webinarCard${i}`] = w.at; });
@@ -806,7 +853,7 @@ function arrangeWidgets() {
     .forEach(id => seq.push(id));
 
   seq.push(...(evening ? ['clCard', 'streakCard'] : ['streakCard', 'clCard'])
-    .filter(id => !(S.checklistFirst && id === 'clCard')));
+    .filter(id => !(S.checklistFirst && id === 'clCard') && !(S.streakFirst && id === 'streakCard')));
 
   if (!anyEventToday) seq.push('mentorCard');
 
