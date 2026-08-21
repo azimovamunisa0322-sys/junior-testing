@@ -575,7 +575,8 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
         missedModalShown = true;
         document.getElementById('missedModalText').innerHTML =
           `Sizga bugun soat <b>${time}</b> ga <b>${mentor}</b> mentor bilan <b>${mod}</b> mavzusidan
-           Demo Day belgilangan edi, lekin siz vaqtida kirmadingiz.`;
+           Demo Day belgilangan edi, lekin siz vaqtida kirmadingiz.
+           Iltimos, Demo Day'ga qayta yozilib oling.`;
         document.getElementById('missedModalOverlay').hidden = false;
       }
       return;
