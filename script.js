@@ -252,12 +252,39 @@ PROFILES.student5 = {
   calendar: { green: 20, red: 5, gray: 5 },
 };
 
+/* 6-o'quvchi: bugun hali hech qanday dars qilinmagan (chek-list 0/3),
+   eng tepada chek-list tursin, streak 3 kun, AI kursi eslatiladi. */
+PROFILES.munisa = {
+  name: 'Munisa Azimova',
+  coins: 1450,
+  forceSuggest: true,
+  checklistFirst: true,      // chek-list arrangeWidgets'da har doim birinchi bo'lsin
+  mainCourse: 'Dasturlash kursi',
+  module: 'HTML',
+  idleDays: 0,
+  streak: 3,
+  bestStreak: 3,
+  monthActiveDays: 3,
+  monthReward: 100,
+  checklist: [
+    { name: 'Ingliz tili',      task: 'Unit 3. Present Simple',  note: 'hali boshlanmagan', done: false },
+    { name: 'Matematika',       task: 'Mental hisob · 3-dars',   note: 'hali boshlanmagan', done: false },
+    { name: 'Dasturlash kursi', task: 'Amaliy ish. HTML',        note: 'hali boshlanmagan', done: false },
+  ],
+  demoDay: null,
+  extraLesson: null,
+  webinars: [],
+  suggest: { name: 'Sun\'iy Intellekt', targetId: 'courseAI', already: true },
+  calendar: { green: 1, red: 2, gray: 0 },
+};
+
 /* Test panelida ko'rsatiladigan profil ro'yxati (tavsif bilan) */
 const PROFILE_META = [
   { key: 'demoTest', desc: 'Bugun Demo Day, Qo\'shimcha dars, 2 ta vebinar, to\'lov bonusi, 31 kunlik strayk — barcha vidjetlar faol.' },
   { key: 'student2', desc: '2 kundan keyin Demo Day, vebinarlar bugun va ertaga, chek-list 3/3 (mukofot tayyor), to\'lovga 2 kun qoldi.' },
   { key: 'student3', desc: '3 kundan keyin Qo\'shimcha dars (Form elementlari), vebinar ertaga, chek-list 1/2.' },
   { key: 'student5', desc: 'Vebinar (Grafik dizayn) hozir ochilgan (qo\'shilish mumkin), chek-list 2/3, "IT kursi" eslatiladi, to\'lovga 3 kun qoldi (QR kod bilan).' },
+  { key: 'munisa',   desc: 'Chek-list 0/3 (eng tepada), streak 3 kun, "Sun\'iy Intellekt" kursi eslatiladi, boshqa event yo\'q.' },
 ].map((p, i) => ({ ...p, label: `${i + 1}. ${PROFILES[p.key].name}` }));
 
 const _profileParam = new URLSearchParams(location.search).get('profile');
@@ -758,6 +785,8 @@ function arrangeWidgets() {
 
   const seq = [];
 
+  if (S.checklistFirst) seq.push('clCard');   // chek-list har doim eng birinchi bo'lishi kerak bo'lgan profillar uchun
+
   const EVENT_TIME = { ddCard: S.demoDay?.at, elCard: S.extraLesson?.at };
   (S.webinars || []).forEach((w, i) => { EVENT_TIME[`webinarCard${i}`] = w.at; });
 
@@ -776,7 +805,8 @@ function arrangeWidgets() {
     .sort((a, b) => EVENT_TIME[a] - EVENT_TIME[b])
     .forEach(id => seq.push(id));
 
-  seq.push(...(evening ? ['clCard', 'streakCard'] : ['streakCard', 'clCard']));
+  seq.push(...(evening ? ['clCard', 'streakCard'] : ['streakCard', 'clCard'])
+    .filter(id => !(S.checklistFirst && id === 'clCard')));
 
   if (!anyEventToday) seq.push('mentorCard');
 
