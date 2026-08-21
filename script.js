@@ -244,9 +244,11 @@ PROFILES.student5 = {
   ],
   demoDay: null,
   extraLesson: null,
-  webinars: [{ course: 'Grafik dizayn', at: dayAt(4, 20, 0), durationMin: 60 }],
+  // Eslatma: 30 daqiqalik "qo'shilish" oynasi ochilgan holatini ko'rish uchun
+  // vebinar "hozir"dan atigi 20 daqiqa keyinga (bugun) belgilangan — tugma allaqachon bosiladigan.
+  webinars: [{ course: 'Grafik dizayn', at: todayAt(9, 20), durationMin: 60 }],
   payment: { date: dayAt(3, 0, 0), paid: false, windowDays: 3, reward: 100 },
-  suggest: { name: 'Matematika', targetId: 'courseMath' },
+  suggest: { name: 'IT', targetId: 'courseIT', already: true },
   calendar: { green: 20, red: 5, gray: 5 },
 };
 
@@ -255,7 +257,7 @@ const PROFILE_META = [
   { key: 'demoTest', desc: 'Bugun Demo Day, Qo\'shimcha dars, 2 ta vebinar, to\'lov bonusi, 31 kunlik strayk — barcha vidjetlar faol.' },
   { key: 'student2', desc: '2 kundan keyin Demo Day, vebinarlar bugun va ertaga, chek-list 3/3 (mukofot tayyor), to\'lovga 2 kun qoldi.' },
   { key: 'student3', desc: '3 kundan keyin Qo\'shimcha dars (Form elementlari), vebinar ertaga, chek-list 1/2.' },
-  { key: 'student5', desc: '4 kundan keyin vebinar (Grafik dizayn), chek-list 2/3, "Matematika" tavsiya etiladi, to\'lovga 3 kun qoldi.' },
+  { key: 'student5', desc: 'Vebinar (Grafik dizayn) hozir ochilgan (qo\'shilish mumkin), chek-list 2/3, "IT kursi" eslatiladi, to\'lovga 3 kun qoldi (QR kod bilan).' },
 ].map((p, i) => ({ ...p, label: `${i + 1}. ${PROFILES[p.key].name}` }));
 
 const _profileParam = new URLSearchParams(location.search).get('profile');
@@ -647,6 +649,8 @@ const SUGGEST_POOL = {
   'Matematika':    { hook: 'Miyani mashq qildiradigan kurs 🧮', outcome: 'mental hisobni sinab ko\'rasiz' },
   'Sun\'iy Intellekt': { hook: 'Kelajak kasbini bugundan boshlang 🤖',
     outcome: 'AI vositalaridan professional foydalanishni o\'rganasiz' },
+  'IT': { hook: 'Dasturlash ko\'nikmalaringizni unutmang 💻',
+    outcome: 'HTML/JS bo\'yicha keyingi mavzuni davom ettirasiz' },
 };
 
 /* tavsiya kartasidagi kichik muqova — karuseldagi kurs muqovasi bilan bir xil */
@@ -656,21 +660,30 @@ const COURSE_COVER = {
   'Matematika':        { cls: 'cover-teal',   label: 'MATEMATIKA' },
   'Ingliz tili':       { cls: 'cover-orange', label: 'INGLIZ TILI' },
   'Typing':            { cls: 'cover-sand',   label: 'TYPING' },
+  'IT':                { cls: 'cover-orange', label: 'WEB<br>DASTURLASH' },
 };
 
+/* Doimiy 2 ta kurs — har bir o'quvchida bor deb hisoblanadi (IT va Grafik dizayn).
+   Tavsiya mantig'i: avval shu ikkisidan e'tibordan chetda qolganini eslatadi
+   (already:true — "sizda bor edi, esizdami"), aks holda butunlay yangi kurs
+   taklif qilinadi (already:false/yo'q — "Junior'dagi eng yangi kurs"). */
 (function suggestCourse() {
   if ((S.idleDays < SUGGEST_AFTER_IDLE && !S.forceSuggest) || !S.suggest) return;
 
-  const { name, targetId } = S.suggest;
+  const { name, targetId, already } = S.suggest;
   const tone = SUGGEST_POOL[name] || SUGGEST_POOL['Grafik dizayn'];
   document.getElementById('sgCard').hidden = false;
+  document.getElementById('sgKicker').textContent = already ? 'Kursni davom ettiring!' : 'Sizga tavsiya!';
   document.getElementById('sgName').textContent   = name + ' kursi';
-  document.getElementById('sgBtnTxt').textContent = name + ' kursini ochish';
-  document.getElementById('sgMsg').innerHTML =
-    `<b>${tone.hook}</b>
-     <b>${name}</b> — Junior'dagi eng yangi kurs.
-     Hozir <b>${S.module}</b> ustida ishlayapsiz, ikkalasi birga yaxshi ishlaydi.
-     Birinchi darsda ${tone.outcome}.`;
+  document.getElementById('sgBtnTxt').textContent = already ? name + ' kursiga qaytish' : name + ' kursini ochish';
+  document.getElementById('sgMsg').innerHTML = already
+    ? `<b>Sizda ${name} kursi allaqachon bor edi — esingizdami?</b>
+       ${tone.hook}
+       Hozir <b>${S.module}</b> ustida ishlayapsiz, ikkalasini birga davom ettirsangiz bo'ladi.`
+    : `<b>${tone.hook}</b>
+       <b>${name}</b> — Junior'dagi eng yangi kurs.
+       Hozir <b>${S.module}</b> ustida ishlayapsiz, ikkalasi birga yaxshi ishlaydi.
+       Birinchi darsda ${tone.outcome}.`;
 
   const thumb = document.getElementById('sgThumb');
   const cover = COURSE_COVER[name] || COURSE_COVER['Grafik dizayn'];
@@ -690,7 +703,7 @@ const COURSE_COVER = {
     card.classList.remove('flash');
     void card.offsetWidth;
     card.classList.add('flash');
-    toast(`${name} kursi ochilmoqda… 🎨`);
+    toast(already ? `${name} kursiga qaytilmoqda… 📚` : `${name} kursi ochilmoqda… 🎉`);
   });
 })();
 
@@ -711,6 +724,22 @@ const COURSE_COVER = {
     `${pad(p.date.getDate())}.${pad(p.date.getMonth() + 1)}.${p.date.getFullYear()}`;
   document.getElementById('bonusWhyText').innerHTML =
     `Shu kungacha to'lasangiz — hisobingizga <b>+${p.reward} coin qo'shiladi</b>. Muddat o'tsa, bu oygi bonus berilmaydi.`;
+
+  /* "To'lov qilish" bosilganda — ota-onaga ko'rsatish uchun QR kod chiqadi,
+     chunki to'lovni ko'pincha ota-ona amalga oshiradi, o'quvchi emas. */
+  document.getElementById('paymentBtn').addEventListener('click', () => {
+    const payload = encodeURIComponent(`JuniorPay | ${S.name} | +${p.reward} coin`);
+    document.getElementById('qrCodeImg').src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${payload}`;
+    document.getElementById('qrAmount').textContent = `To'lov summasi: +${p.reward} coin bonus`;
+    document.getElementById('qrModalOverlay').hidden = false;
+  });
+})();
+
+(function paymentQrModal() {
+  const overlay = document.getElementById('qrModalOverlay');
+  document.getElementById('qrModalClose').addEventListener('click', () => { overlay.hidden = true; });
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.hidden = true; });
 })();
 
 /* ================= Vidjetlar tartibi =================

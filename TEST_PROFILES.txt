@@ -39,12 +39,12 @@ Aktivlik kalendari: 10 yashil / 2 qizil / 3 kulrang
 -------------------
 Demo Day: yo'q
 Qo'shimcha dars: yo'q
-Vebinar: 1 ta - Grafik dizayn (24-avgust, 20:00)
+Vebinar: 1 ta - Grafik dizayn, bugun, "qo'shilish" oynasi HOZIR ochilgan (tugma bosiladigan holatda)
 Strayk: 30 kun, eng yaxshisi ham 30 kun
 Oylik challenge: 30/31 kun (deyarli tugagan)
 Kunlik chek-list: 3 kurs (Ingliz tili, Dasturlash kursi - bajarilgan; Matematika - bajarilmagan) - 2/3
-To'lov bonusi: 23-avgust - "3 kun qoldi", +100 coin
-Sizga tavsiya: Matematika kursi (majburiy ko'rsatiladi)
+To'lov bonusi: 23-avgust - "3 kun qoldi", +100 coin - "To'lov qilish" tugmasi endi QR kod ko'rsatadi
+Sizga tavsiya: IT kursi - "sizda allaqachon bor edi, esingizdami" eslatma shaklida (yangi kurs emas)
 Aktivlik kalendari: 20 yashil / 5 qizil / 5 kulrang
 
 -------------------------------------------------------

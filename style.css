@@ -889,6 +889,31 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 
 .streak-modal-nav button[disabled] { opacity: .35; cursor: not-allowed; }
 
+/* ---- To'lov QR kod modali ---- */
+.qr-modal {
+  position: relative; width: 100%; max-width: 340px;
+  background: var(--card); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg); padding: 28px 22px 22px;
+  text-align: center; max-height: 90vh; overflow-y: auto;
+}
+.qr-modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--card-soft); color: var(--muted);
+  display: grid; place-items: center; font-size: 14px;
+}
+.qr-modal-close:hover { background: var(--line); }
+.qr-modal-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.qr-modal-sub { font-size: 13px; color: var(--muted); line-height: 1.45; margin-bottom: 18px; }
+.qr-img-wrap {
+  display: inline-flex; padding: 12px; background: #fff;
+  border: 1.5px solid var(--line); border-radius: var(--r-md);
+  margin-bottom: 14px;
+}
+.qr-img-wrap img { display: block; width: 200px; height: 200px; }
+.qr-amount { font-size: 15px; font-weight: 800; color: var(--gold-txt, var(--orange)); margin-bottom: 10px; }
+.qr-modal-note { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
 /* ============ CoinShop ============ */
 .shop-layout:not([hidden]) { display: block; }
 .shop-head {
