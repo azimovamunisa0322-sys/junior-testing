@@ -246,9 +246,9 @@
         <div><b id="ddSecs">00</b><span>Soniya</span></div>
       </div>
 
-      <button class="btn-mute dd-cancel" id="ddCancel" data-toast="Mentorga xabar yuborildi, Demo Day boshqa kunga ko'chiriladi 🗑️">
-        <svg width="15" height="15"><use href="#i-trash"/></svg>
-        Demodayni bekor qilish
+      <button class="btn-mute dd-cancel" id="ddCancel" data-toast="Mentorga xabar yuborildi, Demo Day vaqti o'zgartiriladi 🕐">
+        <svg width="15" height="15"><use href="#i-clock-f"/></svg>
+        Demo Day vaqtini o'zgartirish
       </button>
 
       <p class="w-note dd-note"><svg width="14" height="14"><use href="#i-info-f"/></svg> Iltimos, Demo Day'ga kechikmang</p>
@@ -329,7 +329,7 @@
 
       <div class="note note-yellow bonus-box">
         <b class="note-title bonus-box-title">O'z vaqtida to'lov bonusi</b>
-        <p id="bonusWhyText">Shu kungacha to'lasangiz — hisobingizga <b>+100 coin</b> qo'shiladi. Muddat o'tsa, bu oygi bonus berilmaydi.</p>
+        <p id="bonusWhyText"><b>—</b>gacha to'lasangiz — hisobingizga <b>+100 coin</b> qo'shiladi. Muddat o'tsa, bu oygi bonus berilmaydi.</p>
       </div>
 
       <button class="btn-pay" id="paymentBtn">
@@ -576,7 +576,19 @@
     <div class="missed-modal-emoji">⚠️</div>
     <h3 class="missed-modal-title">Siz Demo Day'ga kirmadingiz</h3>
     <p class="missed-modal-text" id="missedModalText">—</p>
-    <button class="btn-cta missed-modal-btn" id="missedModalOkBtn">Tushunarli</button>
+    <button class="btn-cta missed-modal-btn" id="missedModalOkBtn">Demo Day'ga qayta yozilish</button>
+  </div>
+</div>
+
+<!-- ===== Kechiktirilgan coin xabarnomasi (platformaga kirmagan kunlar uchun) ===== -->
+<div class="modal-overlay" id="coinNoticeOverlay" hidden>
+  <div class="coin-notice-modal" id="coinNoticeModal">
+    <button class="coin-notice-close" id="coinNoticeClose" aria-label="Yopish">✕</button>
+    <img class="coin-notice-robot" src="assets/frame/robo-coin.png" alt="">
+    <div class="coin-notice-emoji">🎉</div>
+    <h3 class="coin-notice-title">Sizga yangilik bor!</h3>
+    <p class="coin-notice-text" id="coinNoticeText">—</p>
+    <button class="btn-cta coin-notice-btn" id="coinNoticeOkBtn">Rahmat!</button>
   </div>
 </div>
 

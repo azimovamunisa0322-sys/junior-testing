@@ -276,6 +276,9 @@ PROFILES.munisa = {
   webinars: [],
   suggest: { name: 'Sun\'iy Intellekt', targetId: 'courseAI', already: true },
   calendar: { green: 1, red: 2, gray: 0 },
+  // Test: kecha kunlik chek-listni to'liq bajargan, lekin platformaga kirmagani
+  // uchun mukofotni claim qila olmagan edi — bugun kirganda avtomatik xabar beriladi.
+  pendingCoinNotice: { amount: 30, reason: 'kecha kunlik chek-listni to\'liq bajarganingiz' },
 };
 
 /* 7-o'quvchi: 31 kunlik full strayk (eng tepada), chek-list 5/5 (claim+konfetti),
@@ -313,7 +316,7 @@ const PROFILE_META = [
   { key: 'student2', desc: '2 kundan keyin Demo Day, vebinarlar bugun va ertaga, chek-list 3/3 (mukofot tayyor), to\'lovga 2 kun qoldi.' },
   { key: 'student3', desc: '3 kundan keyin Qo\'shimcha dars (Form elementlari), vebinar ertaga, chek-list 1/2.' },
   { key: 'student5', desc: 'Vebinar (Grafik dizayn) hozir ochilgan (qo\'shilish mumkin), chek-list 2/3, "IT kursi" eslatiladi, to\'lovga 3 kun qoldi (QR kod bilan).' },
-  { key: 'munisa',   desc: 'Chek-list 0/3 (eng tepada), streak 3 kun, "Sun\'iy Intellekt" kursi eslatiladi, boshqa event yo\'q.' },
+  { key: 'munisa',   desc: 'Chek-list 0/3 (eng tepada), streak 3 kun, "Sun\'iy Intellekt" kursi eslatiladi, ochilganda +30 coin xabarnomasi chiqadi.' },
   { key: 'naima',    desc: 'Strayk 31/31 (eng tepada), chek-list 5/5, challenge +500 coin, bugungi Demo Day\'ga kirmagan (ochilganda ogohlantirish modali chiqadi).' },
 ].map((p, i) => ({ ...p, label: `${i + 1}. ${PROFILES[p.key].name}` }));
 
@@ -692,7 +695,7 @@ const WEBINAR_CARD_IDS = [];   // arrangeWidgets shu ro'yxatdan foydalanadi
       launchConfetti();
       claim.classList.add('taken');
       title.textContent = `+${CHECKLIST_REWARD} coin qo'shildi`;
-      sub.textContent   = 'Chek-list bajarildi — do\'konda sarflashingiz mumkin';
+      sub.textContent   = 'Chek-list bajarildi — CoinShop\'da sarflashingiz mumkin';
       toast(`🪙 Chek-list bajarildi! +${CHECKLIST_REWARD} coin`);
     });
   }
@@ -777,13 +780,13 @@ const COURSE_COVER = {
   if (left < 0 || left > p.windowDays) return;
 
   const pad = n => String(n).padStart(2, '0');
+  const payDateStr = `${pad(p.date.getDate())}.${pad(p.date.getMonth() + 1)}.${p.date.getFullYear()}`;
   document.getElementById('bonusCard').hidden = false;
   document.getElementById('bonusLeft').textContent =
     left === 0 ? 'Bugun to\'lov kuningiz' : `To'lovingizga ${left} kun qoldi`;
-  document.getElementById('bonusDate').textContent =
-    `${pad(p.date.getDate())}.${pad(p.date.getMonth() + 1)}.${p.date.getFullYear()}`;
+  document.getElementById('bonusDate').textContent = payDateStr;
   document.getElementById('bonusWhyText').innerHTML =
-    `Shu kungacha to'lasangiz — hisobingizga <b>+${p.reward} coin qo'shiladi</b>. Muddat o'tsa, bu oygi bonus berilmaydi.`;
+    `<b>${payDateStr}</b> gacha to'lasangiz — hisobingizga <b>+${p.reward} coin qo'shiladi</b>. Muddat o'tsa, bu oygi bonus berilmaydi.`;
 
   /* "To'lov qilish" bosilganda — ota-onaga ko'rsatish uchun QR kod chiqadi,
      chunki to'lovni ko'pincha ota-ona amalga oshiradi, o'quvchi emas. */
@@ -808,6 +811,28 @@ const COURSE_COVER = {
   document.getElementById('missedModalClose').addEventListener('click', close);
   document.getElementById('missedModalOkBtn').addEventListener('click', close);
   overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+})();
+
+/* ---------- Kechiktirilgan coin xabarnomasi ----------
+   O'quvchi mukofotni claim qilish uchun platformaga kirmagan kunlarda ham
+   coin "yo'qolib qolmasligi" kerak — shuning uchun avtomatik qo'shiladi va
+   keyingi safar kirganda shu haqda alohida modal orqali xabar beriladi. */
+(function coinNoticeModal() {
+  const notice = S.pendingCoinNotice;
+  const overlay = document.getElementById('coinNoticeOverlay');
+  const close = () => { overlay.hidden = true; };
+  document.getElementById('coinNoticeClose').addEventListener('click', close);
+  document.getElementById('coinNoticeOkBtn').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+  if (!notice) return;
+  state.coins += notice.amount;
+  syncBalances();
+  document.getElementById('coinNoticeText').innerHTML =
+    `Siz platformaga kirmagan kunda ham mukofotingiz yo'qolib qolmadi —
+     <b>${notice.reason}</b> uchun hisobingizga <b>+${notice.amount} coin</b> avtomatik qo'shib qo'ydik.`;
+  overlay.hidden = false;
+  launchConfetti();
 })();
 
 /* ================= Vidjetlar tartibi =================
