@@ -155,11 +155,16 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 348px;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "hero side"
+    "main side";
   gap: 24px;
   height: 100%;
 }
-.col-main { min-width: 0; }
-.col-side { display: flex; flex-direction: column; gap: 14px; }
+.hero { grid-area: hero; }
+.col-main { grid-area: main; min-width: 0; }
+.col-side { grid-area: side; display: flex; flex-direction: column; gap: 14px; }
 
 /* mustaqil skroll ustunlar */
 .col-main, .col-side, .shop-layout {
@@ -1053,7 +1058,12 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
   /* kichik ekranda odatiy sahifa skrolliga qaytamiz */
   body { display: block; height: auto; overflow: auto; }
   .page { height: auto; padding-bottom: 80px; }
-  .layout { height: auto; grid-template-columns: 1fr; }
+  .layout {
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "hero" "side" "main";
+  }
   .col-main, .col-side, .shop-layout { height: auto; overflow: visible; padding-bottom: 0; }
   .col-side { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
   .shop-grid { grid-template-columns: 1fr 1fr; }
