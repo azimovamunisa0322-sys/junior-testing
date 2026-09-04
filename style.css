@@ -1066,22 +1066,19 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
   }
   .col-main, .col-side, .shop-layout { height: auto; overflow: visible; padding-bottom: 0; }
   .col-side {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 85%;
     gap: 14px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    align-items: start;
     margin-bottom: 8px;
     padding-bottom: 4px;
   }
   .col-side::-webkit-scrollbar { display: none; }
-  .col-side > * { flex: 0 0 85%; scroll-snap-align: start; }
-  /* vidjet kartalari bir xil balandlikda bolishi uchun: har birining "footer"i pastga tirab qoyiladi */
-  .col-side > .card { display: flex; flex-direction: column; }
-  .col-side .dd-note, .col-side .el-note,
-  #paymentBtn, #aiOpen, #sgBtn { margin-top: auto; }
+  .col-side > * { scroll-snap-align: start; }
   .shop-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 680px) {
@@ -1099,7 +1096,7 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
   .hero-mascot img { width: 190px; }
   .hero h1 { font-size: 25px; }
   .courses { grid-auto-columns: 78%; }
-  .col-side > * { flex: 0 0 82%; }
+  .col-side { grid-auto-columns: 82%; }
   .shop-grid { grid-template-columns: 1fr; }
   .shop-head { flex-direction: column; gap: 12px; align-items: flex-start; }
   .lb-bar { display: none; }
