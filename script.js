@@ -877,7 +877,7 @@ function arrangeWidgets() {
 
   if (!anyEventToday) seq.push('mentorCard');
 
-  seq.push('sgCard', 'calCard');
+  seq.push('sgCard', 'calCard', 'refCard');
 
   seq.forEach((id, i) => {
     const el = document.getElementById(id);
