@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260904e">
+  <link rel="stylesheet" href="style.css?v=20260910b">
 </head>
 <body>
 
@@ -490,20 +490,20 @@
       <div class="w-head">
         <div class="w-head-txt">
           <h3>Do'stingizni taklif qiling</h3>
-          <div class="big-num w-date orange-txt">+50 coin</div>
+          <div class="big-num w-date orange-txt">+1000 coin</div>
         </div>
         <img class="w-art art-flag" src="assets/frame/robo-flag.png" alt="">
       </div>
 
-      <p class="note note-pink ref-msg">Do'stingiz Junior'ga sizning havolangiz orqali qo'shilsa — ikkalangizga ham <b>+50 coin</b> sovg'a beriladi 🎁</p>
+      <p class="note note-pink ref-msg">Do'stingiz Junior'ga sizning taklifingiz bilan qo'shilsa — ikkalangizga ham <b>+1000 coin</b> sovg'a beriladi 🎁</p>
 
       <div class="duo-stats">
         <div><span>Taklif qilingan</span><b id="refCount">3 ta</b></div>
-        <div><span>Ishlangan coin</span><b id="refEarned">150</b></div>
+        <div><span>Ishlangan coin</span><b id="refEarned">3000</b></div>
       </div>
 
-      <button class="btn-cta" id="refShareBtn" data-toast="Havola nusxalandi! Do'stingizga yuboring 🎉">
-        Havolani ulashish <svg width="15" height="15"><use href="#i-chev-r"/></svg>
+      <button class="btn-cta" id="refShareBtn">
+        Do'stimni taklif qilish <svg width="15" height="15"><use href="#i-chev-r"/></svg>
       </button>
     </section>
   </aside>
@@ -615,6 +615,33 @@
   </div>
 </div>
 
+<!-- ===== Do'stni taklif qilish modali ===== -->
+<div class="modal-overlay" id="inviteModalOverlay" hidden>
+  <div class="invite-modal" id="inviteModal">
+    <button class="invite-modal-close" id="inviteModalClose" aria-label="Yopish">✕</button>
+
+    <div id="inviteStepForm">
+      <div class="invite-mascots">
+        <img class="invite-mascot invite-mascot-a" src="assets/frame/robo-mentor.png" alt="">
+        <span class="invite-handshake">🤝</span>
+        <img class="invite-mascot invite-mascot-b" src="assets/robo-1.png" alt="">
+      </div>
+      <h3 class="invite-title">Do'stimni taklif qilish</h3>
+      <p class="invite-sub">Do'stingiz sizning taklifingiz bilan Junior'ga qo'shilsa — ikkalangizga ham sovg'a beriladi 🎁</p>
+      <input class="invite-input" type="text" id="inviteInput" placeholder="Do'stingizni ism familiyasini va raqamini kiriting">
+      <button class="btn-cta" id="inviteSubmitBtn">Yuborish</button>
+    </div>
+
+    <div id="inviteStepThanks" hidden>
+      <img class="invite-thanks-robot" src="assets/robo-1.png" alt="">
+      <div class="invite-thanks-emoji">🎉</div>
+      <h3 class="invite-thanks-title">Rahmat!</h3>
+      <p class="invite-thanks-text">Ma'lumotlaringizni qabul qildik. Do'stingiz akademiya o'quvchisiga aylanganida sizga <b>+1000 coin</b> va <b>1 oylik bepul ta'lim</b> taqdim etiladi 🎁</p>
+      <button class="btn-cta invite-thanks-btn" id="inviteThanksOkBtn">Ajoyib!</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== Chat ===== -->
 <button class="fab" id="chatFab" aria-label="Junior mentor yordami">
   <span class="bot-face" style="width:46px;height:46px"><img src="assets/robo-1.png" alt=""></span>
@@ -637,6 +664,6 @@
 
 <div class="toast" id="toast" role="status"></div>
 
-<script src="script.js?v=20260910a"></script>
+<script src="script.js?v=20260910b"></script>
 </body>
 </html>

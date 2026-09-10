@@ -835,6 +835,33 @@ const COURSE_COVER = {
   launchConfetti();
 })();
 
+/* ---------- Do'stni taklif qilish modali ---------- */
+(function inviteFriendModal() {
+  const overlay = document.getElementById('inviteModalOverlay');
+  const stepForm = document.getElementById('inviteStepForm');
+  const stepThanks = document.getElementById('inviteStepThanks');
+  const input = document.getElementById('inviteInput');
+
+  function open() {
+    stepForm.hidden = false;
+    stepThanks.hidden = true;
+    input.value = '';
+    overlay.hidden = false;
+  }
+  function close() { overlay.hidden = true; }
+
+  document.getElementById('refShareBtn').addEventListener('click', open);
+  document.getElementById('inviteModalClose').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+  document.getElementById('inviteSubmitBtn').addEventListener('click', () => {
+    stepForm.hidden = true;
+    stepThanks.hidden = false;
+    launchConfetti();
+  });
+  document.getElementById('inviteThanksOkBtn').addEventListener('click', close);
+})();
+
 /* ================= Vidjetlar tartibi =================
    Muhim eslatmalar: Demo Day → Qo'shimcha dars → Vebinar → To'lov.
    Kechqurun 19:00–00:00 da chek-list ularning ortidan birinchi bo'lib chiqadi,

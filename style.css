@@ -518,6 +518,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .week-connector.off { background: none; border-top: 1.5px dotted #D9D9DC; height: 0; }
 
 .duo-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.ref-card .duo-stats { margin-top: 12px; }
 .duo-stats > div {
   background: var(--pink-soft); border: 1px solid #FFE0D4; border-radius: 10px;
   padding: 8px 6px; text-align: center;
@@ -969,6 +970,52 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .coin-notice-btn { background: var(--done, var(--green)); box-shadow: 0 2.5px 0 var(--done-line, var(--green-deep)); }
 .coin-notice-btn:hover { filter: brightness(1.05); }
 .coin-notice-btn:active { box-shadow: 0 0 0 var(--done-line, var(--green-deep)); }
+
+/* ---- Do'stni taklif qilish modali ---- */
+.invite-modal {
+  position: relative; width: 100%; max-width: 360px;
+  background: var(--card); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg); padding: 30px 22px 22px;
+  text-align: center; max-height: 90vh; overflow-y: auto;
+  border-top: 5px solid var(--orange);
+}
+.invite-modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--card-soft); color: var(--muted);
+  display: grid; place-items: center; font-size: 14px;
+}
+.invite-modal-close:hover { background: var(--line); }
+
+.invite-mascots { position: relative; display: flex; align-items: flex-end; justify-content: center; height: 100px; margin-bottom: 6px; }
+.invite-mascot { width: 88px; height: auto; mix-blend-mode: multiply; }
+.invite-mascot-a { transform: translateX(10px); }
+.invite-mascot-b { transform: scaleX(-1) translateX(10px); }
+.invite-handshake {
+  position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%);
+  font-size: 20px; background: #fff; border-radius: 50%;
+  width: 32px; height: 32px; display: grid; place-items: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.invite-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.invite-sub { font-size: 13px; color: var(--muted); line-height: 1.45; margin-bottom: 16px; }
+.invite-input {
+  width: 100%; border: 1.5px solid var(--line); border-radius: 12px;
+  padding: 13px 14px; font: inherit; font-size: 13.5px; background: var(--card-soft);
+  margin-bottom: 2px;
+}
+.invite-input:focus { outline: none; border-color: var(--orange); background: #fff; }
+.invite-input::placeholder { color: var(--gray1); }
+
+.invite-thanks-robot { width: 108px; height: auto; margin: 0 auto 4px; }
+.invite-thanks-emoji { font-size: 26px; margin-bottom: 4px; }
+.invite-thanks-title { font-size: 18px; font-weight: 800; color: var(--orange); margin-bottom: 10px; }
+.invite-thanks-text { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin-bottom: 20px; }
+.invite-thanks-text b { color: var(--orange); }
+.invite-thanks-btn { background: var(--orange); box-shadow: 0 2.5px 0 var(--orange-deep); }
+.invite-thanks-btn:hover { filter: brightness(1.05); }
+.invite-thanks-btn:active { box-shadow: 0 0 0 var(--orange-deep); }
 
 /* ============ CoinShop ============ */
 .shop-layout:not([hidden]) { display: block; }
