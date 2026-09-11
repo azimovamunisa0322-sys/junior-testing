@@ -840,12 +840,14 @@ const COURSE_COVER = {
   const overlay = document.getElementById('inviteModalOverlay');
   const stepForm = document.getElementById('inviteStepForm');
   const stepThanks = document.getElementById('inviteStepThanks');
-  const input = document.getElementById('inviteInput');
+  const nameInput = document.getElementById('inviteNameInput');
+  const phoneInput = document.getElementById('invitePhoneInput');
 
   function open() {
     stepForm.hidden = false;
     stepThanks.hidden = true;
-    input.value = '';
+    nameInput.value = '';
+    phoneInput.value = '';
     overlay.hidden = false;
   }
   function close() { overlay.hidden = true; }

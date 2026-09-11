@@ -1003,10 +1003,24 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .invite-input {
   width: 100%; border: 1.5px solid var(--line); border-radius: 12px;
   padding: 13px 14px; font: inherit; font-size: 13.5px; background: var(--card-soft);
-  margin-bottom: 2px;
+  margin-bottom: 10px;
 }
 .invite-input:focus { outline: none; border-color: var(--orange); background: #fff; }
-.invite-input::placeholder { color: var(--gray1); }
+.invite-input::placeholder, .invite-phone-input::placeholder { color: var(--gray1); }
+
+.invite-phone-wrap {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--line); border-radius: 12px;
+  padding: 0 14px; background: var(--card-soft);
+  margin-bottom: 2px;
+}
+.invite-phone-wrap:focus-within { border-color: var(--orange); background: #fff; }
+.invite-phone-prefix { font-size: 13.5px; font-weight: 700; color: var(--ink-2); flex-shrink: 0; }
+.invite-phone-input {
+  flex: 1; min-width: 0; border: none; background: transparent;
+  padding: 13px 0; font: inherit; font-size: 13.5px; color: var(--ink);
+}
+.invite-phone-input:focus { outline: none; }
 
 .invite-thanks-robot { width: 108px; height: auto; margin: 0 auto 4px; }
 .invite-thanks-emoji { font-size: 26px; margin-bottom: 4px; }
