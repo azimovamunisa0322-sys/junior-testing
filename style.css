@@ -1055,7 +1055,7 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .archive-warning-robot { width: 108px; height: auto; margin: 0 auto 4px; mix-blend-mode: multiply; }
 .archive-warning-emoji { font-size: 26px; margin-bottom: 4px; }
 .archive-warning-title { font-size: 18px; font-weight: 800; color: #C62828; margin-bottom: 10px; }
-.archive-warning-text { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin-bottom: 20px; text-align: left; }
+.archive-warning-text { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin-bottom: 20px; text-wrap: balance; }
 .archive-warning-text b { color: #C62828; }
 .archive-warning-btn { background: var(--red); box-shadow: 0 2.5px 0 #C62828; }
 .archive-warning-btn:hover { filter: brightness(1.05); }
