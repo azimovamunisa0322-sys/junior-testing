@@ -441,7 +441,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 @keyframes dd-beat { 0% { transform: scale(1.07); } 40% { transform: scale(1); } }
 
 /* --- vidjet tugmalari --- */
-.btn-mute, .btn-cta, .btn-pay {
+.btn-mute, .btn-cta, .btn-pay, .btn-mentor {
   width: 100%; margin-top: 10px;
   display: flex; align-items: center; justify-content: center; gap: 7px;
   border-radius: 9px; padding: 11px 14px;
@@ -454,7 +454,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .btn-cta:hover { filter: brightness(1.06); }
 .btn-pay { background: var(--gold); color: #fff; font-weight: 800; }
 .btn-pay:hover { filter: brightness(1.04); }
-.btn-mute:active, .btn-cta:active, .btn-pay:active { transform: scale(.985); }
+.btn-mentor { background: var(--sky-soft); color: var(--sky); border: 1.5px solid var(--sky-line); }
+.btn-mentor:hover { filter: brightness(0.98); }
+.btn-mute:active, .btn-cta:active, .btn-pay:active, .btn-mentor:active { transform: scale(.985); }
 
 /* vaqti kelmagan tugma (vebinar) */
 .btn-disabled {

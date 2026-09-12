@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260911b">
+  <link rel="stylesheet" href="style.css?v=20260912a">
 </head>
 <body>
 
@@ -68,6 +68,10 @@
     <circle cx="12" cy="12" r="10" fill="#F5A623"/>
     <circle cx="12" cy="12" r="7.4" fill="#FFC94D"/>
     <path d="M12 7.4v9.2M9.6 9.6h4a1.9 1.9 0 0 1 0 3.8h-4" fill="none" stroke="#E08C00" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-send" viewBox="0 0 24 24">
+    <path d="M3 11.3 20.5 3.5 15 20.5l-3.6-6.6L3 11.3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.4 13.9 20.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
@@ -234,6 +238,11 @@
 
       <p class="note note-pink dd-msg" id="ddMsg">…</p>
 
+      <button class="btn-mentor" data-toast="Mentorga Telegram orqali yozing: @ali_mentor">
+        <svg width="15" height="15"><use href="#i-send"/></svg>
+        @ali_mentor
+      </button>
+
       <div class="mini-bar-row">
         <span class="bar-name">Modul bajarilishi</span>
         <b class="bar-pct" id="ddPct">—</b>
@@ -266,6 +275,11 @@
       </div>
 
       <p class="note note-blue el-msg" id="elMsg">…</p>
+
+      <button class="btn-mentor" data-toast="Mentorga Telegram orqali yozing: @ali_mentor">
+        <svg width="15" height="15"><use href="#i-send"/></svg>
+        @ali_mentor
+      </button>
 
       <div class="countdown dd-timer">
         <div><b id="elDays">00</b><span>Kun</span></div>
@@ -667,6 +681,6 @@
 
 <div class="toast" id="toast" role="status"></div>
 
-<script src="script.js?v=20260911b"></script>
+<script src="script.js?v=20260912a"></script>
 </body>
 </html>
