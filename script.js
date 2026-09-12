@@ -151,6 +151,7 @@ PROFILES.demoTest = {
   module: 'HTML',
   idleDays: 0,
   forceSuggest: true,        // "Sizga tavsiya" vidjetini shartsiz chiqarish
+  archiveWarningDays: 3,     // platforma arxivlanishiga necha kun qolgani haqida ogohlantirish modali
   streak: 31,
   bestStreak: 31,
   monthActiveDays: 31,       // avgustni 31/31 kun bilan yakunlagan
@@ -862,6 +863,25 @@ const COURSE_COVER = {
     launchConfetti();
   });
   document.getElementById('inviteThanksOkBtn').addEventListener('click', close);
+})();
+
+/* ---------- Platforma arxivlanishi haqida ogohlantirish ----------
+   O'quvchi platformaga kirishi bilan darhol ko'rinadi (agar profilda
+   archiveWarningDays belgilangan bo'lsa) — yig'ilgan coinlarni sarflashga undaydi. */
+(function archiveWarningModal() {
+  const days = S.archiveWarningDays;
+  const overlay = document.getElementById('archiveWarningOverlay');
+  const close = () => { overlay.hidden = true; };
+  document.getElementById('archiveWarningClose').addEventListener('click', close);
+  document.getElementById('archiveWarningOkBtn').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+  if (!days) return;
+  document.getElementById('archiveWarningText').innerHTML =
+    `Hurmatli o'quvchi, platformangiz arxivlanishiga <b>${days} kun</b> qoldi.
+     Yig'gan coinlaringizni sarflab ulguring — <b>${days} kundan so'ng</b>
+     coinlaringizni sarflash imkoniyati tugaydi.`;
+  overlay.hidden = false;
 })();
 
 /* ================= Vidjetlar tartibi =================

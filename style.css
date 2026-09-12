@@ -1032,6 +1032,35 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .invite-thanks-btn:hover { filter: brightness(1.05); }
 .invite-thanks-btn:active { box-shadow: 0 0 0 var(--orange-deep); }
 
+/* ---- Platforma arxivlanishi haqida ogohlantirish ---- */
+.archive-warning-modal {
+  position: relative; width: 100%; max-width: 340px;
+  background: var(--card); border-radius: var(--r-lg);
+  padding: 30px 22px 22px; text-align: center;
+  max-height: 90vh; overflow-y: auto;
+  border: 1.5px solid var(--red);
+  animation: archive-warning-glow 1.8s ease-in-out infinite;
+}
+@keyframes archive-warning-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 60, 60, .45), var(--shadow-lg); }
+  50%      { box-shadow: 0 0 28px 8px rgba(255, 60, 60, .55), var(--shadow-lg); }
+}
+.archive-warning-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--card-soft); color: var(--muted);
+  display: grid; place-items: center; font-size: 14px;
+}
+.archive-warning-close:hover { background: var(--line); }
+.archive-warning-robot { width: 108px; height: auto; margin: 0 auto 4px; mix-blend-mode: multiply; }
+.archive-warning-emoji { font-size: 26px; margin-bottom: 4px; }
+.archive-warning-title { font-size: 18px; font-weight: 800; color: #C62828; margin-bottom: 10px; }
+.archive-warning-text { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin-bottom: 20px; }
+.archive-warning-text b { color: #C62828; }
+.archive-warning-btn { background: var(--red); box-shadow: 0 2.5px 0 #C62828; }
+.archive-warning-btn:hover { filter: brightness(1.05); }
+.archive-warning-btn:active { box-shadow: 0 0 0 #C62828; }
+
 /* ============ CoinShop ============ */
 .shop-layout:not([hidden]) { display: block; }
 .shop-head {
