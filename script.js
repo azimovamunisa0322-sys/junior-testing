@@ -879,8 +879,7 @@ const COURSE_COVER = {
   if (!days) return;
   document.getElementById('archiveWarningText').innerHTML =
     `Hurmatli o'quvchi, platformangiz arxivlanishiga <b>${days} kun</b> qoldi.
-     Yig'gan coinlaringizni sarflab ulguring — <b>${days} kundan so'ng</b>
-     coinlaringizni sarflash imkoniyati tugaydi.`;
+     <b>${days} kundan so'ng</b> coinlaringizni sarflash imkoniyati tugaydi.`;
   overlay.hidden = false;
 })();
 
