@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260912e">
+  <link rel="stylesheet" href="style.css?v=20260914a">
 </head>
 <body>
 
@@ -72,6 +72,18 @@
   <symbol id="i-send" viewBox="0 0 24 24">
     <path d="M3 11.3 20.5 3.5 15 20.5l-3.6-6.6L3 11.3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M11.4 13.9 20.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M8.6 9c.3-.8.9-.8 1.4-.7.3 0 .5.5.7.9.2.5.5 1 .2 1.4-.2.3-.5.4-.3.8.4.9 1.4 1.7 2.2 2 .4.2.5 0 .8-.3.4-.4.9-.5 1.4-.3.5.2.9.4 1 .7.2.5.1 1.2-.4 1.6-1.4 1-3.2.2-4.7-1.1-1.4-1.3-2.7-3.3-2.3-5Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24">
+    <rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M4.5 7 12 12.5 19.5 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-chat-dots" viewBox="0 0 24 24">
+    <path d="M4 5.5h16A1.5 1.5 0 0 1 21.5 7v8A1.5 1.5 0 0 1 20 16.5H9l-4 3.2V16.5H4A1.5 1.5 0 0 1 2.5 15V7A1.5 1.5 0 0 1 4 5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    <circle cx="8" cy="10.7" r="1" fill="currentColor"/><circle cx="12" cy="10.7" r="1" fill="currentColor"/><circle cx="16" cy="10.7" r="1" fill="currentColor"/>
   </symbol>
 </svg>
 
@@ -641,11 +653,33 @@
         <img class="invite-mascot invite-mascot-b" src="assets/robo-1.png" alt="">
       </div>
       <h3 class="invite-title">Do'stimni taklif qilish</h3>
-      <input class="invite-input" type="text" id="inviteNameInput" placeholder="Do'stingizni ismi va familiyasi">
-      <div class="invite-phone-wrap">
-        <span class="invite-phone-prefix">🇺🇿 +998</span>
-        <input class="invite-phone-input" type="tel" id="invitePhoneInput" placeholder="00 000 00 00">
+
+      <div class="invite-link-box">
+        <div class="invite-link-info">
+          <span class="invite-link-label">Sizning havolangiz</span>
+          <span class="invite-link-value" id="inviteLinkValue">go.junior-it.uz/r/12465</span>
+        </div>
+        <button class="invite-link-copy" id="inviteLinkCopyBtn" type="button">Nusxalash</button>
       </div>
+
+      <span class="invite-share-label">Havolani nima orqali yuborasiz?</span>
+      <div class="invite-share-row">
+        <button class="invite-share-btn active" data-app="Telegram" type="button" aria-label="Telegram">
+          <svg width="20" height="20"><use href="#i-send"/></svg>
+        </button>
+        <button class="invite-share-btn" data-app="WhatsApp" type="button" aria-label="WhatsApp">
+          <svg width="20" height="20"><use href="#i-whatsapp"/></svg>
+        </button>
+        <button class="invite-share-btn" data-app="Email" type="button" aria-label="Email">
+          <svg width="20" height="20"><use href="#i-mail"/></svg>
+        </button>
+        <button class="invite-share-btn" data-app="SMS" type="button" aria-label="Boshqa">
+          <svg width="20" height="20"><use href="#i-chat-dots"/></svg>
+        </button>
+      </div>
+
+      <p class="invite-reward-note">Do'stingiz akademiya o'quvchisiga aylanganida <b>+1000 coin</b> hisobingizga tushadi.</p>
+
       <button class="btn-cta" id="inviteSubmitBtn">Yuborish</button>
     </div>
 
@@ -693,6 +727,6 @@
 
 <div class="toast" id="toast" role="status"></div>
 
-<script src="script.js?v=20260912e"></script>
+<script src="script.js?v=20260914a"></script>
 </body>
 </html>

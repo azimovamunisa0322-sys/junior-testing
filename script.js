@@ -836,19 +836,16 @@ const COURSE_COVER = {
   launchConfetti();
 })();
 
-/* ---------- Do'stni taklif qilish modali ---------- */
+/* ---------- Do'stni taklif qilish modali (sarafan — shaxsiy havola) ---------- */
 (function inviteFriendModal() {
   const overlay = document.getElementById('inviteModalOverlay');
   const stepForm = document.getElementById('inviteStepForm');
   const stepThanks = document.getElementById('inviteStepThanks');
-  const nameInput = document.getElementById('inviteNameInput');
-  const phoneInput = document.getElementById('invitePhoneInput');
+  const shareBtns = document.querySelectorAll('.invite-share-btn');
 
   function open() {
     stepForm.hidden = false;
     stepThanks.hidden = true;
-    nameInput.value = '';
-    phoneInput.value = '';
     overlay.hidden = false;
   }
   function close() { overlay.hidden = true; }
@@ -856,6 +853,17 @@ const COURSE_COVER = {
   document.getElementById('refShareBtn').addEventListener('click', open);
   document.getElementById('inviteModalClose').addEventListener('click', close);
   overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+  document.getElementById('inviteLinkCopyBtn').addEventListener('click', () => {
+    const link = document.getElementById('inviteLinkValue').textContent;
+    navigator.clipboard?.writeText(link).catch(() => {});
+    toast('Havola nusxalandi! Do\'stingizga yuboring 🎉');
+  });
+
+  shareBtns.forEach(btn => btn.addEventListener('click', () => {
+    shareBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }));
 
   document.getElementById('inviteSubmitBtn').addEventListener('click', () => {
     stepForm.hidden = true;
