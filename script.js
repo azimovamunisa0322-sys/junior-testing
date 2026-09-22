@@ -362,14 +362,22 @@ const todayDow = now.getDay() || 7;                 // 1=Du … 7=Ya
 const streakActive = WEEK.map((_, i) =>
   S.streak >= 7 ? 1 : (i + 1 <= todayDow ? (S.streak > i ? 1 : 0) : 0));
 
-document.getElementById('streakWeek').innerHTML = WEEK.map((d, i) => `
-  ${i > 0 ? `<span class="week-connector ${streakActive[i - 1] && streakActive[i] ? 'on' : 'off'}"></span>` : ''}
-  <div class="week-day ${streakActive[i] ? 'on' : 'off'}${i + 1 === todayDow ? ' today' : ''}">
-    <span class="week-flame">🔥</span>
-    <span class="week-label">${d}</span>
-  </div>`).join('');
+// 7 ta kun ring atrofida soat strelkasi bo'ylab joylashadi, Du yuqorida (12:00)
+const RING_CX = 95, RING_CY = 95, RING_R = 78;
+document.getElementById('streakWeek').innerHTML = WEEK.map((d, i) => {
+  const angle = (-90 + i * (360 / 7)) * Math.PI / 180;
+  const x = RING_CX + RING_R * Math.cos(angle);
+  const y = RING_CY + RING_R * Math.sin(angle);
+  return `<div class="streak-day ${streakActive[i] ? 'on' : 'off'}${i + 1 === todayDow ? ' today' : ''}" style="left:${x}px; top:${y}px;">
+    <span class="streak-day-flame">🔥</span>
+    <span class="streak-day-label">${d}</span>
+  </div>`;
+}).join('');
 
-document.querySelector('#streakCard .big-num').textContent = `${S.streak} kun`;
+const streakActiveCount = streakActive.reduce((sum, v) => sum + v, 0);
+document.getElementById('streakRingTrack').style.setProperty('--streak-pct', Math.round(streakActiveCount / 7 * 100));
+
+document.getElementById('streakRingNum').textContent = S.streak;
 document.querySelectorAll('#streakCard .duo-stats b')[0].textContent = `${S.streak} Kun`;
 document.querySelectorAll('#streakCard .duo-stats b')[1].textContent = `${S.bestStreak} Kun`;
 

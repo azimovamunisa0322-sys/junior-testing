@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260914a">
+  <link rel="stylesheet" href="style.css?v=20260922a">
 </head>
 <body>
 
@@ -407,18 +407,24 @@
     <!-- Streak -->
     <section class="card w-card streak-card" id="streakCard">
       <div class="streak-top">
-        <button class="streak-flame-btn" id="streakFlameBtn" aria-label="Strayk taqvimini ochish">🔥</button>
-        <div class="streak-title">
-          <span>Streak</span>
-          <b class="big-num">4 kun</b>
-        </div>
+        <span class="streak-top-ico">🔥</span>
+        <span class="streak-top-txt">STREAK</span>
         <div class="streak-freezes" aria-label="Strayk muzlatgichlari">
           <span class="freeze-ico">🧊</span>
           <span class="freeze-ico">🧊</span>
         </div>
       </div>
 
-      <div class="week" id="streakWeek"></div>
+      <div class="streak-ring-wrap" id="streakRingWrap">
+        <div class="streak-ring-track" id="streakRingTrack"></div>
+        <div class="streak-ring-hole"></div>
+        <div class="streak-days" id="streakWeek"></div>
+        <button class="streak-ring-center" id="streakFlameBtn" aria-label="Strayk taqvimini ochish">
+          <span class="streak-ring-flame">🔥</span>
+          <b class="big-num" id="streakRingNum">4</b>
+          <span class="streak-ring-kun">KUN</span>
+        </button>
+      </div>
 
       <div class="duo-stats">
         <div><span>Joriy streak</span><b>4 kun</b></div>
@@ -727,6 +733,6 @@
 
 <div class="toast" id="toast" role="status"></div>
 
-<script src="script.js?v=20260914a"></script>
+<script src="script.js?v=20260922a"></script>
 </body>
 </html>
