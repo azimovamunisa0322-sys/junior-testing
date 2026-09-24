@@ -178,14 +178,10 @@ PROFILES.demoTest = {
   // Kalendarda kun ustiga bosilganda qo'shimcha chiqadigan voqealar (misol sifatida)
   calendarExtra: {
     5:  [
-      { type: 'webinar', title: 'IT karyerasini qanday boshlash kerak?', time: '18:00', watched: true },
       { type: 'coin', amount: 30, reason: "Kunlik chek-list to'liq bajarilgani uchun" },
     ],
     12: [
       { type: 'coin', amount: -1200, reason: "CoinShop: \"Junior\" futbolka buyurtma qilindi" },
-    ],
-    26: [
-      { type: 'webinar', title: 'Grafik dizaynda birinchi loyiha', time: '19:30', watched: false },
     ],
   },
 };
@@ -967,6 +963,18 @@ setInterval(arrangeWidgets, 30000);   // kun/vaqt o'zgarsa tartib o'zi yangilana
 /* ---------- Aktivlik kalendari ---------- */
 const CAL_COURSES = ['Dasturlash kursi', 'Ingliz tili kursi', 'Matematika kursi'];
 
+/* Har kuni bo'ladigan vebinar — kalendarda HAR BIR kun uchun avtomatik chiqadi
+   (haftalik vebinar jadvaliga o'xshab, mavzular navbat bilan almashinadi). */
+const CAL_WEBINAR_POOL = [
+  { title: "IT karyerasini qanday boshlash kerak?", time: '18:00' },
+  { title: "Frontendda birinchi loyihangizni yarating", time: '19:00' },
+  { title: "Dasturlashda xatolarni qanday tuzatish kerak", time: '18:30' },
+  { title: "Texnik suhbat (interview) qanday o'tadi", time: '20:00' },
+  { title: "Sun'iy intellekt vositalaridan foydalanish", time: '19:30' },
+  { title: "Portfolio va rezyume qanday tuziladi", time: '18:00' },
+  { title: "Dizaynda ranglar va kompozitsiya asoslari", time: '19:00' },
+];
+
 /* Profil bo'yicha: st: full(yashil) | rej(qizil) | view(kulrang) | none(bo'sh), c: kurs indekslari
    S.calendar = { green, red, gray } — kunlar shu tartibda 1-kundan boshlab to'ldiriladi. */
 const CAL_DAYS = {};
@@ -1031,7 +1039,12 @@ const CAL_ICON = { ok: '✓', warn: '✕', '': '⏳' };
       </div>`).join('');
 
     // O'sha kunga tegishli qo'shimcha voqealar: vebinar (yozuvi bilan), coin qo'shilishi/ayirilishi va h.k.
-    const dayEvents = (S.calendarExtra && S.calendarExtra[d]) || [];
+    // Vebinar har kuni bo'ladi — mavzu kun raqami bo'yicha navbat bilan almashadi.
+    const webinarOfDay = CAL_WEBINAR_POOL[(d - 1) % CAL_WEBINAR_POOL.length];
+    const dayEvents = [
+      { type: 'webinar', title: webinarOfDay.title, time: webinarOfDay.time, watched: d <= todayNum },
+      ...((S.calendarExtra && S.calendarExtra[d]) || []),
+    ];
     const events = dayEvents.map(ev => {
       if (ev.type === 'webinar') {
         const sub = ev.watched ? `Vebinar · ${ev.time} · Ishtirok etdingiz ✓` : `Vebinar · ${ev.time} · Efirda ishtirok etmadingiz`;
