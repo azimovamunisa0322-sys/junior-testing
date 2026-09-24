@@ -784,6 +784,31 @@ button.cal-cell:hover { transform: translateY(-2px) scale(1.06); }
 .cal-d-step.ok   { background: var(--green-soft); color: var(--green); }
 .cal-d-step.warn { background: #FDECEC; color: #D33C41; }
 
+.cal-d-events { display: flex; flex-direction: column; gap: 7px; margin-top: 7px; }
+.cal-d-event {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border-radius: var(--r-sm); padding: 9px 11px;
+}
+.cal-d-event-ico {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 14px;
+  background: var(--card-soft);
+}
+.cal-d-event-body { flex: 1; min-width: 0; }
+.cal-d-event-body b { display: block; font-size: 12.8px; font-weight: 800; color: var(--ink); }
+.cal-d-event-sub { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+.cal-d-event-coin.plus .cal-d-event-body b { color: var(--green); }
+.cal-d-event-coin.minus .cal-d-event-body b { color: #D33C41; }
+.cal-d-event-btn {
+  flex-shrink: 0; background: var(--sky-soft); color: var(--sky);
+  border-radius: 999px; padding: 6px 11px; font-size: 11px; font-weight: 800;
+  white-space: nowrap;
+}
+.cal-d-event-btn:hover { filter: brightness(0.97); }
+.cal-d-event-webinar { flex-direction: column; align-items: stretch; gap: 8px; }
+.cal-d-event-row { display: flex; align-items: center; gap: 10px; }
+.cal-d-event-webinar .cal-d-event-btn { width: 100%; text-align: center; }
+
 .cal-hint { margin-top: 12px; font-size: 12px; color: var(--muted); font-weight: 600; }
 
 .cal-legend-btn {

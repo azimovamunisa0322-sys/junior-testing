@@ -175,6 +175,19 @@ PROFILES.demoTest = {
 
   suggest: { name: 'Sun\'iy Intellekt', targetId: 'courseAI' },
   calendar: { green: 25, red: 2, gray: 3 },
+  // Kalendarda kun ustiga bosilganda qo'shimcha chiqadigan voqealar (misol sifatida)
+  calendarExtra: {
+    5:  [
+      { type: 'webinar', title: 'IT karyerasini qanday boshlash kerak?', time: '18:00', watched: true },
+      { type: 'coin', amount: 30, reason: "Kunlik chek-list to'liq bajarilgani uchun" },
+    ],
+    12: [
+      { type: 'coin', amount: -1200, reason: "CoinShop: \"Junior\" futbolka buyurtma qilindi" },
+    ],
+    26: [
+      { type: 'webinar', title: 'Grafik dizaynda birinchi loyiha', time: '19:30', watched: false },
+    ],
+  },
 };
 
 /* 2-o'quvchi: ertaga Demo Day, 2 ta vebinar, chek-list 3/3 (claim+konfetti), to'lovga 2 kun qoldi */
@@ -1017,6 +1030,37 @@ const CAL_ICON = { ok: '✓', warn: '✕', '': '⏳' };
         </div>
       </div>`).join('');
 
+    // O'sha kunga tegishli qo'shimcha voqealar: vebinar (yozuvi bilan), coin qo'shilishi/ayirilishi va h.k.
+    const dayEvents = (S.calendarExtra && S.calendarExtra[d]) || [];
+    const events = dayEvents.map(ev => {
+      if (ev.type === 'webinar') {
+        const sub = ev.watched ? `Vebinar · ${ev.time} · Ishtirok etdingiz ✓` : `Vebinar · ${ev.time} · Efirda ishtirok etmadingiz`;
+        return `
+          <div class="cal-d-event cal-d-event-webinar">
+            <div class="cal-d-event-row">
+              <span class="cal-d-event-ico">🎥</span>
+              <div class="cal-d-event-body">
+                <b>${ev.title}</b>
+                <span class="cal-d-event-sub">${sub}</span>
+              </div>
+            </div>
+            <button class="cal-d-event-btn" data-toast="Vebinar yozuvi ochilmoqda… 🎬">Yozuvni ko'rish</button>
+          </div>`;
+      }
+      if (ev.type === 'coin') {
+        const plus = ev.amount >= 0;
+        return `
+          <div class="cal-d-event cal-d-event-coin ${plus ? 'plus' : 'minus'}">
+            <span class="cal-d-event-ico">🪙</span>
+            <div class="cal-d-event-body">
+              <b>${plus ? '+' : '−'}${Math.abs(ev.amount)} coin</b>
+              <span class="cal-d-event-sub">${ev.reason}</span>
+            </div>
+          </div>`;
+      }
+      return '';
+    }).join('');
+
     return `
       <div class="cal-d-head">
         <span class="cal-d-date">${d}-avgust</span>
@@ -1024,7 +1068,8 @@ const CAL_ICON = { ok: '✓', warn: '✕', '': '⏳' };
         <button class="cal-d-close" aria-label="Yopish">✕</button>
       </div>
       <p class="cal-d-text">${text}</p>
-      ${courses}`;
+      ${courses}
+      ${events ? `<div class="cal-d-events">${events}</div>` : ''}`;
   }
 
   function closeDetail() {
@@ -1047,6 +1092,8 @@ const CAL_ICON = { ok: '✓', warn: '✕', '': '⏳' };
     detail.hidden = false;
     hint.hidden = true;
     detail.querySelector('.cal-d-close').addEventListener('click', closeDetail);
+    detail.querySelectorAll('[data-toast]').forEach(btn =>
+      btn.addEventListener('click', () => toast(btn.dataset.toast)));
   });
 
   /* ranglar izohi — bosilganda ochiladi */
